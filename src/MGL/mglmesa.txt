@@ -1,0 +1,125 @@
+Things to do:
+-------------
+
+ . Generic functions for ROP codes using the putPixel functions in the
+   MGL so we can handle this properly. It will be slower but it will
+   work.
+
+ . Optimize internals where we see that there are bottlenecks in the code.
+
+   1. First place to start is with the matrix manpipulation code and to
+	  automatically determine if the matrices are special for special case
+	  code.
+
+   2. The second place is with the transformation of vertices to ensure
+	  that this is efficient,
+
+   3. The third place is to provide the ability to remove all internal
+	  error checking for maxium performance for calls to Mesa.
+
+   4. The fourth place is to optimize the calls to Mesa to directly call
+	  the loaded API functions rather than calling the C based wrappers
+	  via our MGL function pointers as this will boost performance.
+
+   5. The fifth place is to check how the conversions between floating
+	  point and integer proceed and to optimize that.
+
+   6. The sixth place is to determine what parts of the library can be
+	  optimized with high performance assembler code. The matrix math
+	  and vectors transforms is one area as well as conversions between
+	  floating point and integers.
+
+ . Disable all OpenGL support unless we have linear access for speed and
+   simplicity reasons.
+
+ . Optimize solid scanline fills where the masks as all 1! Mesa should
+   really optimize for this at a higher level than this, but then again
+   the device drivers would probably handle this better anyway with
+   optimized triangle filling code.
+
+ . In order to support our z-buffering functions, we need to have our
+   code to the zbuffer allocation stuff as we need to own the z-buffer.
+   We will only support 16-bits per pixel, and we will share the z-buffer
+   between the front and back buffers to conserve memory.
+
+ . Add support for the swap hint rectangles extension in Microsoft OpenGL
+   so that we can handle dirty rectangles.
+
+ . Need to figure out how to properly handle beginDirectAccess and
+   endDirectAccess within Mesa so that we can properly arbitrate between
+   the accelerator and our code, but we also want to make sure that we
+   optimize this to minimize the number of calls to do this. Perhaps
+   we need to set up a new device driver function that is optionally
+   called before a primitive or set of primitives is rendered to set up
+   the direct framebuffer access to get around this problem.
+
+   We may be able to do this with the begin/end functions, but we will
+   need to enable/disable these functions depending on whether we need to
+   do the direct access stuff or not for the rendering function that is
+   coming up (ie: depending on the mode specific in the begin call I guess).
+
+ . Optimize the cases for different color depths and the write_span type
+   functions for direct framebuffer access for maximum speed. We will need to
+   figure out the glBegin for direct access stuff, but this will give us a
+   big speed improvement for basic rendering functions that we can't accelerate
+   using the MGL functions.
+
+ . Optimize the cases for glDrawPixels and glReadPixels which will be used
+   to implement bitmaps and menus etc. We should be able to pass this through
+   to MGL_putBitmap for simple 1:1 cases and MGL_stretchBitmap for non
+   1:1 cases that need to be stretched.
+
+ . Enable optimized dithering routines for packed pixel TrueColor devices
+   using the code from the XMesa implementation. We can use these functions
+   with relatively optimized plotting code direct the bitmap surface
+   for reasonable speed when doing dithering in HiColor modes.
+
+ . Add support for both 16bit and 32bit depth buffering in Mesa. I guess
+   currently only one depth buffer format is supported when you compile
+   Mesa which is a bit of a problem. We really want to be able to switch
+   between the two formats on the fly.
+
+   It would be nice to be able to do the same for Accumulation buffers etc,
+   but it would get way out of hand handling the different combinations of
+   rendering functions internally. Perhaps if we have hardware acceleration
+   a 16bit z-buffer is a good choice because of the small memory requirements.
+
+   We could cut the MGL down to support only one depth buffer size which would
+   simplify a lot of the internal rendering functions.
+
+Stuff to be updated in OpenGL/Cosmo support:
+--------------------------------------------
+
+ . Figure out how to handle the compile time and runtime extensions
+   that Mesa provides that the others do not and how to provide the
+   commonality between them. We need to use the same mechanism that
+   Cosmo/Microsoft OpenGL use to determine the extensions and get the
+   function pointers so we can do this dynamically.
+
+New extensions in Mesa/OpenGL
+-----------------------------
+
+ . Transparent 2D glDrawPixels.
+ . Dirty rectangles based on Microsoft's extension.
+ . SGI's 8bpp texture mapping extensions.
+
+Notes:
+------
+
+ . Why is the current rendering context pointer passed in to all rendering
+   functions when only one context can be the currently active one? Surely
+   we should simply use the global variable to avoid passing this around
+   and to get faster access to the internal structures?
+
+   Answer: to support multi-threading.
+
+ . When we read and write pixels, what range does Mesa expect the color
+   components to be in in HiColor modes (ie: 555 etc)? Should they be
+   normalized to [0->255] or should they be in [0-4] etc.
+
+   Currently it is set for [0->4] for writing and reading.
+
+ . How are solid 2D rectangles drawn with Mesa accelerated? Are they drawn
+   as two triangles or is there an optimized solid rectangle function?
+
+ . Is there code in Mesa right now to support 16-bpp TrueColor dithering?

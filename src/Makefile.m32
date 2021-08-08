@@ -1,0 +1,80 @@
+# $Id: Makefile.m32,v 1.1.2.2 2000/01/14 16:27:05 brianp Exp $
+
+# Makefile.m32
+# Stephane Rehel (rehel@worldnet.fr) April 13 1997
+# Converted from makefile.cygnus for GCC-2.95.2/Mingw32
+#  Paul Garceau (pgarceau@teleport.com) January 14 2000
+
+# Mesa 3-D graphics library
+# Version:  3.2
+# Copyright (C) 1995-1998  Brian Paul
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Library General Public
+# License as published by the Free Software Foundation; either
+# version 2 of the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Library General Public License for more details.
+#
+# You should have received a copy of the GNU Library General Public
+# License along with this library; if not, write to the Free
+# Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+
+# Makefile for core library
+
+# $Log: Makefile.m32,v $
+# Revision 1.1.2.2  2000/01/14 16:27:05  brianp
+# updated for Mesa 3.2
+#
+# Revision 1.1.2.1  2000/01/14 16:16:18  brianp
+# initial check-in
+#
+# Initial revision
+
+MESA_MAJOR=3
+MESA_MINOR=2
+MESA_TINY=0
+VERSION=$(MESA_MAJOR).$(MESA_MINOR)
+
+CFLAGS = -I. -DWIN32 -D__WIN32__ -D_WINDOWS \
+		-O2 -funroll-loops \
+		-fexpensive-optimizations -fomit-frame-pointer -ffast-math \
+		-malign-loops=2 -malign-jumps=2 -malign-functions=2 \
+		-mwindows
+CC = gcc
+MAKELIB = ar ru
+GL_LIB = libGL.a
+
+##### MACROS #####
+
+VPATH = RCS
+
+INCDIR = ../include
+LIBDIR = ../lib
+
+CORE_SOURCES = accum.c alpha.c alphabuf.c api1.c api2.c attrib.c bitmap.c \
+	blend.c clip.c colortab.c context.c copypix.c depth.c \
+	dlist.c drawpix.c enable.c eval.c feedback.c fog.c \
+	get.c hash.c image.c light.c lines.c logic.c masking.c matrix.c \
+	glmisc.c mmath.c pb.c pixel.c points.c pointers.c polygon.c \
+	quads.c rastpos.c readpix.c rect.c scissor.c shade.c span.c \
+	stencil.c teximage.c texobj.c texstate.c texture.c triangle.c \
+	varray.c winpos.c vb.c vbfill.c vbrender.c vbxform.c xform.c \
+	zoom.c
+
+OBJECTS = $(CORE_SOURCES:.c=.o)
+
+##### RULES #####
+
+.c.o:
+	$(CC) -c -I$(INCDIR) -I$(WING_INC) $(CFLAGS) -DNO_PARALLEL -DNO_STEREO $<
+
+
+##### TARGETS #####
+
+$(LIBDIR)/libGL.a: $(OBJECTS)
+	$(MAKELIB) $(GL_LIB) $(MAJOR) $(MINOR) $(TINY) $(OBJECTS)

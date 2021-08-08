@@ -1,0 +1,30 @@
+
+
+The mklib.* scripts are use to make shared libraries on different
+flavors of Unix (and other Unix-like OSes).  But these scripts are
+only used with the Makefile.X11 (and similar) makefiles.  These
+scripts are NOT used by GNU configure.
+
+In all cases, the command line arguments are:
+
+	mklib libname major minor tiny file.o [...]
+
+where
+	libname = the library name ("libGL.so" for example)
+	major = the major version number ("1" for example)
+	minor = the minor version number ("2" for example)
+	tiny = the tiny version number ("310" for example)
+	file.o [...] = the list of one or more object files
+
+On most OSes, the final library name will be of the form:
+	libname.major.minor.tiny
+
+For example,
+	mklib libGL.so 1 2 310 file.o ...
+
+would generate the library named "libGL.so.1.2.310" which would be
+the Mesa 3.1.0 implementation of the OpenGL 1.2 spec.
+
+
+----------------------------------------------------------------------
+$Id: README,v 1.1 1999/09/15 15:17:45 brianp Exp $

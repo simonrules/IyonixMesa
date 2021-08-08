@@ -1,0 +1,837 @@
+
+I (Brian Paul) have been given the OpenGL conformance tests for the
+purpose of testing Mesa.  The test source code can not be disclosed.
+
+Following are the results of testing Mesa 3.2 as of April 22, 2000.
+
+The tests were run using the software X11 device driver on a 24-bit
+display.
+
+See end of this file for comments on the results.
+
+
+
+
+COVERAGE TESTS
+==============
+
+Test that all API functions accept the spec'd parameters and reject
+illegal parameters.  Results of each test is either pass or fail.
+
+covgl test:  passed.
+
+covglu test:  passed.
+
+covglx test:  passed.
+
+primtest:  292159 Combinations tested.  Passed.
+
+
+
+
+GL CONFORMANCE TEST
+===================
+
+Test the library with specific parameters and compare the results
+against reference values.  Mesa results follow:
+
+
+% conform -v 2
+
+OpenGL Conformance Test
+Version 1.1.1
+
+Setup Report.
+    Verbose level = 2.
+    Random number seed = 1.
+    Path inactive.
+
+Visual Report.
+    Display ID = 34. Direct Rendering.
+    Double Buffered.
+    RGBA (8, 8, 8, 0).
+    Stencil (8).
+    Depth (16).
+    Accumulation (16, 16, 16, 16).
+
+Epsilon Report.
+    zero error epsilon = 0.000122.
+    RGBA error epsilon = 0.00404, 0.00404, 0.00404, 0.000122.
+    Depth buffer error epsilon = 0.000137.
+    Stencil plane error epsilon = 0.00404.
+    Accumulation error epsilon = 0.000137, 0.000137, 0.000137, 0.000137.
+
+Default State test passed.
+Must Pass test passed.
+Divide By Zero test passed.
+Viewport Clamp test passed.
+Matrix Stack test passed.
+Matrix Stack Mixing test passed.
+Vertex Order test passed.
+Transformations test passed.
+Transformation Normal test passed.
+Viewport Transformation test passed.
+Buffer Clear test passed.
+Buffer Corners test passed.
+Buffer Color test passed.
+Color Ramp test passed.
+Mask test passed.
+Buffer Invariance test passed.
+Accumulation Buffer test passed.
+Select test passed.
+Feedback test passed.
+Scissor test passed.
+Alpha Plane Function test passed.
+Stencil Plane Clear test passed.
+Stencil Plane Corners test passed.
+Stencil Plane Operation test passed.
+Stencil Plane Function test passed.
+Depth Buffer Clear test passed.
+Depth Buffer Function test passed.
+Blend test passed.
+Dither test passed.
+LogicOp Function test does not exist for an RGB visual.
+DrawPixels test passed.
+CopyPixels test passed.
+Bitmap Rasterization test passed.
+Point Rasterization test passed.
+Anti-aliased Point test failed.
+    File - pntaa.c, line - 101.
+        Point primative did not draw.
+    State Report. (Current) <-> (Default)
+        GL_ATTRIB_STACK_DEPTH (State Information)
+            1.00 <-> 0.00
+        GL_BLEND (State Information)
+            GL_TRUE <-> GL_FALSE
+        GL_BLEND_DST (State Information)
+            GL_LINES <-> GL_NONE
+        GL_BLEND_SRC (State Information)
+            GL_SRC_ALPHA <-> GL_LINES
+        GL_CURRENT_COLOR (State Information)
+            1.00 0.00 0.00 1.00 <-> 1.00 1.00 1.00 1.00
+        GL_DITHER (State Information)
+            GL_FALSE <-> GL_TRUE
+        GL_POINT_SIZE (State Information)
+            8.56 <-> 1.00
+        GL_POINT_SMOOTH (State Information)
+            GL_TRUE <-> GL_FALSE
+        GL_PROJECTION_MATRIX (State Information)
+            +0.020 +0.000 +0.000 +0.000 <-> +1.000 +0.000 +0.000 +0.000
+            +0.000 +0.020 +0.000 +0.000 <-> +0.000 +1.000 +0.000 +0.000
+            +0.000 +0.000 -1.000 +0.000 <-> +0.000 +0.000 +1.000 +0.000
+            -1.000 -1.000 +0.000 +1.000 <-> +0.000 +0.000 +0.000 +1.000
+Line Rasterization test passed.
+Line Stipple test passed.
+Anti-aliased Line test passed.
+Horizontal and Vertical Line test passed.
+Triangle Rasterization test passed.
+Triangle Tile test passed.
+Triangle Stipple test passed.
+Anti-aliased Triangles test failed.
+    File - triaa.c, line - 114.
+        Triangle primitive did not draw.
+    State Report. (Current) <-> (Default)
+        GL_ATTRIB_STACK_DEPTH (State Information)
+            1.00 <-> 0.00
+        GL_BLEND (State Information)
+            GL_TRUE <-> GL_FALSE
+        GL_BLEND_DST (State Information)
+            GL_LINES <-> GL_NONE
+        GL_BLEND_SRC (State Information)
+            GL_SRC_ALPHA <-> GL_LINES
+        GL_CURRENT_COLOR (State Information)
+            1.00 0.00 0.00 1.00 <-> 1.00 1.00 1.00 1.00
+        GL_DITHER (State Information)
+            GL_FALSE <-> GL_TRUE
+        GL_POLYGON_SMOOTH (State Information)
+            GL_TRUE <-> GL_FALSE
+        GL_PROJECTION_MATRIX (State Information)
+            +0.020 +0.000 +0.000 +0.000 <-> +1.000 +0.000 +0.000 +0.000
+            +0.000 +0.020 +0.000 +0.000 <-> +0.000 +1.000 +0.000 +0.000
+            +0.000 +0.000 -1.000 +0.000 <-> +0.000 +0.000 +1.000 +0.000
+            -1.000 -1.000 +0.000 +1.000 <-> +0.000 +0.000 +0.000 +1.000
+Quad Rasterization test passed.
+Polygon Face test passed.
+Polygon Cull test passed.
+Polygon Stipple test passed.
+Polygon Edge test passed.
+Ambient Light test passed.
+Ambient Material test passed.
+Ambient Scene test passed.
+Attenuation Constants test passed.
+Attenuation Position test failed.
+    File - l_ap.c, line - 265.
+        Red component did not reach 1.0. Value is 0.
+    State Report. (Current) <-> (Default)
+        GL_ATTRIB_STACK_DEPTH (State Information)
+            1.00 <-> 0.00
+        GL_DITHER (State Information)
+            GL_FALSE <-> GL_TRUE
+        GL_LIGHTING (State Information)
+            GL_TRUE <-> GL_FALSE
+        GL_PROJECTION_MATRIX (State Information)
+            +0.020 +0.000 +0.000 +0.000 <-> +1.000 +0.000 +0.000 +0.000
+            +0.000 +0.020 +0.000 +0.000 <-> +0.000 +1.000 +0.000 +0.000
+            +0.000 +0.000 -1.000 +0.000 <-> +0.000 +0.000 +1.000 +0.000
+            -1.000 -1.000 +0.000 +1.000 <-> +0.000 +0.000 +0.000 +1.000
+        GL_LIGHT0, GL_CONSTANT_ATTENUATION (Lighting Information)
+            0.00 <-> 1.00
+        GL_LIGHT0, GL_LINEAR_ATTENUATION (Lighting Information)
+            1.00 <-> 0.00
+        GL_LIGHT0, GL_POSITION (Lighting Information)
+            0.50 0.50 1.00 1.00 <-> 0.00 0.00 1.00 0.00
+        GL_BACK, GL_AMBIENT (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.20 0.20 0.20 1.00
+        GL_BACK, GL_DIFFUSE (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.80 0.80 0.80 1.00
+        GL_BACK, GL_SPECULAR (Material Information)
+            1.00 0.00 0.00 1.00 <-> 0.00 0.00 0.00 1.00
+        GL_FRONT, GL_AMBIENT (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.20 0.20 0.20 1.00
+        GL_FRONT, GL_DIFFUSE (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.80 0.80 0.80 1.00
+        GL_FRONT, GL_SPECULAR (Material Information)
+            1.00 0.00 0.00 1.00 <-> 0.00 0.00 0.00 1.00
+Diffuse Light test passed.
+Diffuse Material test passed.
+Diffuse Material Normal test passed.
+Diffuse Material Positioning test passed.
+Emissive Material test passed.
+Specular Exponent test failed.
+    File - l_se.c, line - 229.
+        Red component is not monotonic. Current value is 0.00392157, last
+        value was 0.00784314.
+    State Report. (Current) <-> (Default)
+        GL_ATTRIB_STACK_DEPTH (State Information)
+            1.00 <-> 0.00
+        GL_CURRENT_NORMAL (State Information)
+            1.00 0.00 0.09 <-> 0.00 0.00 1.00
+        GL_DITHER (State Information)
+            GL_FALSE <-> GL_TRUE
+        GL_LIGHTING (State Information)
+            GL_TRUE <-> GL_FALSE
+        GL_PROJECTION_MATRIX (State Information)
+            +0.020 +0.000 +0.000 +0.000 <-> +1.000 +0.000 +0.000 +0.000
+            +0.000 +0.020 +0.000 +0.000 <-> +0.000 +1.000 +0.000 +0.000
+            +0.000 +0.000 -1.000 +0.000 <-> +0.000 +0.000 +1.000 +0.000
+            -1.000 -1.000 +0.000 +1.000 <-> +0.000 +0.000 +0.000 +1.000
+        GL_LIGHT0, GL_POSITION (Lighting Information)
+            0.50 0.50 1.00 1.00 <-> 0.00 0.00 1.00 0.00
+        GL_LIGHT0, GL_SPECULAR (Lighting Information)
+            1.00 0.00 0.00 1.00 <-> 1.00 1.00 1.00 1.00
+        GL_BACK, GL_AMBIENT (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.20 0.20 0.20 1.00
+        GL_BACK, GL_DIFFUSE (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.80 0.80 0.80 1.00
+        GL_BACK, GL_SHININESS (Material Information)
+            1.76 <-> 0.00
+        GL_BACK, GL_SPECULAR (Material Information)
+            1.00 0.00 0.00 1.00 <-> 0.00 0.00 0.00 1.00
+        GL_FRONT, GL_AMBIENT (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.20 0.20 0.20 1.00
+        GL_FRONT, GL_DIFFUSE (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.80 0.80 0.80 1.00
+        GL_FRONT, GL_SHININESS (Material Information)
+            1.76 <-> 0.00
+        GL_FRONT, GL_SPECULAR (Material Information)
+            1.00 0.00 0.00 1.00 <-> 0.00 0.00 0.00 1.00
+Specular Exponent Normal test failed.
+    File - l_sen.c, line - 301.
+    State Report. (Current) <-> (Default)
+        GL_ATTRIB_STACK_DEPTH (State Information)
+            1.00 <-> 0.00
+        GL_CURRENT_NORMAL (State Information)
+            1.00 0.00 0.05 <-> 0.00 0.00 1.00
+        GL_DITHER (State Information)
+            GL_FALSE <-> GL_TRUE
+        GL_LIGHTING (State Information)
+            GL_TRUE <-> GL_FALSE
+        GL_PROJECTION_MATRIX (State Information)
+            +0.020 +0.000 +0.000 +0.000 <-> +1.000 +0.000 +0.000 +0.000
+            +0.000 +0.020 +0.000 +0.000 <-> +0.000 +1.000 +0.000 +0.000
+            +0.000 +0.000 -1.000 +0.000 <-> +0.000 +0.000 +1.000 +0.000
+            -1.000 -1.000 +0.000 +1.000 <-> +0.000 +0.000 +0.000 +1.000
+        GL_LIGHT0, GL_POSITION (Lighting Information)
+            0.50 0.50 1.00 1.00 <-> 0.00 0.00 1.00 0.00
+        GL_BACK, GL_AMBIENT (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.20 0.20 0.20 1.00
+        GL_BACK, GL_DIFFUSE (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.80 0.80 0.80 1.00
+        GL_BACK, GL_SHININESS (Material Information)
+            1.00 <-> 0.00
+        GL_BACK, GL_SPECULAR (Material Information)
+            1.00 0.00 0.00 1.00 <-> 0.00 0.00 0.00 1.00
+        GL_FRONT, GL_AMBIENT (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.20 0.20 0.20 1.00
+        GL_FRONT, GL_DIFFUSE (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.80 0.80 0.80 1.00
+        GL_FRONT, GL_SHININESS (Material Information)
+            1.00 <-> 0.00
+        GL_FRONT, GL_SPECULAR (Material Information)
+            1.00 0.00 0.00 1.00 <-> 0.00 0.00 0.00 1.00
+Specular Local Eye Half Angle test failed.
+    File - l_sleha.c, line - 178.
+    State Report. (Current) <-> (Default)
+        GL_ATTRIB_STACK_DEPTH (State Information)
+            1.00 <-> 0.00
+        GL_CURRENT_COLOR (State Information)
+            0.02 0.00 0.00 1.00 <-> 1.00 1.00 1.00 1.00
+        GL_CURRENT_NORMAL (State Information)
+            0.00 -1.00 0.00 <-> 0.00 0.00 1.00
+        GL_DITHER (State Information)
+            GL_FALSE <-> GL_TRUE
+        GL_LIGHT_MODEL_LOCAL_VIEWER (State Information)
+            GL_TRUE <-> GL_FALSE
+        GL_PROJECTION_MATRIX (State Information)
+            +0.020 +0.000 +0.000 +0.000 <-> +1.000 +0.000 +0.000 +0.000
+            +0.000 +0.020 +0.000 +0.000 <-> +0.000 +1.000 +0.000 +0.000
+            +0.000 +0.000 -1.000 +0.000 <-> +0.000 +0.000 +1.000 +0.000
+            -1.000 -1.000 +0.000 +1.000 <-> +0.000 +0.000 +0.000 +1.000
+        GL_LIGHT0, GL_POSITION (Lighting Information)
+            0.00 0.00 0.00 1.00 <-> 0.00 0.00 1.00 0.00
+        GL_BACK, GL_AMBIENT (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.20 0.20 0.20 1.00
+        GL_BACK, GL_DIFFUSE (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.80 0.80 0.80 1.00
+        GL_BACK, GL_SHININESS (Material Information)
+            1.00 <-> 0.00
+        GL_BACK, GL_SPECULAR (Material Information)
+            1.00 0.00 0.00 1.00 <-> 0.00 0.00 0.00 1.00
+        GL_FRONT, GL_AMBIENT (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.20 0.20 0.20 1.00
+        GL_FRONT, GL_DIFFUSE (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.80 0.80 0.80 1.00
+        GL_FRONT, GL_SHININESS (Material Information)
+            1.00 <-> 0.00
+        GL_FRONT, GL_SPECULAR (Material Information)
+            1.00 0.00 0.00 1.00 <-> 0.00 0.00 0.00 1.00
+Specular Light test passed.
+Specular Material test passed.
+Specular Normal test passed.
+Spot Positioning test passed.
+Spot Exponent and Positioning test failed.
+    File - l_sep.c, line - 318.
+    State Report. (Current) <-> (Default)
+        GL_ATTRIB_STACK_DEPTH (State Information)
+            1.00 <-> 0.00
+        GL_DITHER (State Information)
+            GL_FALSE <-> GL_TRUE
+        GL_LIGHTING (State Information)
+            GL_TRUE <-> GL_FALSE
+        GL_LIGHT_MODEL_AMBIENT (State Information)
+            0.00 0.00 0.00 1.00 <-> 0.20 0.20 0.20 1.00
+        GL_PROJECTION_MATRIX (State Information)
+            +0.020 +0.000 +0.000 +0.000 <-> +1.000 +0.000 +0.000 +0.000
+            +0.000 +0.020 +0.000 +0.000 <-> +0.000 +1.000 +0.000 +0.000
+            +0.000 +0.000 -1.000 +0.000 <-> +0.000 +0.000 +1.000 +0.000
+            -1.000 -1.000 +0.000 +1.000 <-> +0.000 +0.000 +0.000 +1.000
+        GL_LIGHT0, GL_AMBIENT (Lighting Information)
+            1.00 0.00 0.00 1.00 <-> 0.00 0.00 0.00 1.00
+        GL_LIGHT0, GL_POSITION (Lighting Information)
+            1.50 0.50 0.00 1.00 <-> 0.00 0.00 1.00 0.00
+        GL_LIGHT0, GL_SPOT_CUTOFF (Lighting Information)
+            75.62 <-> 180.00
+        GL_LIGHT0, GL_SPOT_EXPONENT (Lighting Information)
+            1.00 <-> 0.00
+        GL_BACK, GL_AMBIENT (Material Information)
+            1.00 1.00 1.00 1.00 <-> 0.20 0.20 0.20 1.00
+        GL_BACK, GL_DIFFUSE (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.80 0.80 0.80 1.00
+        GL_FRONT, GL_AMBIENT (Material Information)
+            1.00 1.00 1.00 1.00 <-> 0.20 0.20 0.20 1.00
+        GL_FRONT, GL_DIFFUSE (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.80 0.80 0.80 1.00
+Spot Exponent and Direction test failed.
+    File - l_sed.c, line - 326.
+    State Report. (Current) <-> (Default)
+        GL_ATTRIB_STACK_DEPTH (State Information)
+            1.00 <-> 0.00
+        GL_DITHER (State Information)
+            GL_FALSE <-> GL_TRUE
+        GL_LIGHTING (State Information)
+            GL_TRUE <-> GL_FALSE
+        GL_LIGHT_MODEL_AMBIENT (State Information)
+            0.00 0.00 0.00 1.00 <-> 0.20 0.20 0.20 1.00
+        GL_PROJECTION_MATRIX (State Information)
+            +0.020 +0.000 +0.000 +0.000 <-> +1.000 +0.000 +0.000 +0.000
+            +0.000 +0.020 +0.000 +0.000 <-> +0.000 +1.000 +0.000 +0.000
+            +0.000 +0.000 -1.000 +0.000 <-> +0.000 +0.000 +1.000 +0.000
+            -1.000 -1.000 +0.000 +1.000 <-> +0.000 +0.000 +0.000 +1.000
+        GL_LIGHT0, GL_AMBIENT (Lighting Information)
+            1.00 0.00 0.00 1.00 <-> 0.00 0.00 0.00 1.00
+        GL_LIGHT0, GL_POSITION (Lighting Information)
+            0.50 0.50 -1.00 1.00 <-> 0.00 0.00 1.00 0.00
+        GL_LIGHT0, GL_SPOT_CUTOFF (Lighting Information)
+            75.62 <-> 180.00
+        GL_LIGHT0, GL_SPOT_DIRECTION (Lighting Information)
+            1.00 0.00 0.00 <-> 0.00 0.00 -1.00
+        GL_LIGHT0, GL_SPOT_EXPONENT (Lighting Information)
+            1.00 <-> 0.00
+        GL_BACK, GL_AMBIENT (Material Information)
+            1.00 1.00 1.00 1.00 <-> 0.20 0.20 0.20 1.00
+        GL_BACK, GL_DIFFUSE (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.80 0.80 0.80 1.00
+        GL_FRONT, GL_AMBIENT (Material Information)
+            1.00 1.00 1.00 1.00 <-> 0.20 0.20 0.20 1.00
+        GL_FRONT, GL_DIFFUSE (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.80 0.80 0.80 1.00
+Fog Exponential test passed.
+Fog Linear test passed.
+Texture Decal test passed.
+Texture Border test passed.
+Mipmaps Selection test passed.
+Mipmaps Interpolation test passed.
+Display Lists test passed.
+Evaluator test passed.
+Evaluator Color test passed.
+
+Conform failed.
+    Anti-aliased Point test (Test number #33) failed.
+    Anti-aliased Triangles test (Test number #41) failed.
+    Attenuation Position test (Test number #51) failed.
+    Specular Exponent test (Test number #57) failed.
+    Specular Exponent Normal test (Test number #58) failed.
+    Specular Local Eye Half Angle test (Test number #59) failed.
+    Spot Exponent and Positioning test (Test number #64) failed.
+    Spot Exponent and Direction test (Test number #65) failed.
+
+Setup Report.
+    Verbose level = 2.
+    Random number seed = 1.
+    Path inactive.
+
+Visual Report.
+    Display ID = 34. Indirect Rendering.
+    Double Buffered.
+    RGBA (8, 8, 8, 0).
+    Stencil (8).
+    Depth (16).
+    Accumulation (16, 16, 16, 16).
+
+Epsilon Report.
+    zero error epsilon = 0.000122.
+    RGBA error epsilon = 0.00404, 0.00404, 0.00404, 0.000122.
+    Depth buffer error epsilon = 0.000137.
+    Stencil plane error epsilon = 0.00404.
+    Accumulation error epsilon = 0.000137, 0.000137, 0.000137, 0.000137.
+
+Default State test passed.
+Must Pass test passed.
+Divide By Zero test passed.
+Viewport Clamp test passed.
+Matrix Stack test passed.
+Matrix Stack Mixing test passed.
+Vertex Order test passed.
+Transformations test passed.
+Transformation Normal test passed.
+Viewport Transformation test passed.
+Buffer Clear test passed.
+Buffer Corners test passed.
+Buffer Color test passed.
+Color Ramp test passed.
+Mask test passed.
+Buffer Invariance test passed.
+Accumulation Buffer test passed.
+Select test passed.
+Feedback test passed.
+Scissor test passed.
+Alpha Plane Function test passed.
+Stencil Plane Clear test passed.
+Stencil Plane Corners test passed.
+Stencil Plane Operation test passed.
+Stencil Plane Function test passed.
+Depth Buffer Clear test passed.
+Depth Buffer Function test passed.
+Blend test passed.
+Dither test passed.
+LogicOp Function test does not exist for an RGB visual.
+DrawPixels test passed.
+CopyPixels test passed.
+Bitmap Rasterization test passed.
+Point Rasterization test passed.
+Anti-aliased Point test failed.
+    File - pntaa.c, line - 101.
+        Point primative did not draw.
+    State Report. (Current) <-> (Default)
+        GL_ATTRIB_STACK_DEPTH (State Information)
+            1.00 <-> 0.00
+        GL_BLEND (State Information)
+            GL_TRUE <-> GL_FALSE
+        GL_BLEND_DST (State Information)
+            GL_LINES <-> GL_NONE
+        GL_BLEND_SRC (State Information)
+            GL_SRC_ALPHA <-> GL_LINES
+        GL_CURRENT_COLOR (State Information)
+            1.00 0.00 0.00 1.00 <-> 1.00 1.00 1.00 1.00
+        GL_DITHER (State Information)
+            GL_FALSE <-> GL_TRUE
+        GL_POINT_SIZE (State Information)
+            8.56 <-> 1.00
+        GL_POINT_SMOOTH (State Information)
+            GL_TRUE <-> GL_FALSE
+        GL_PROJECTION_MATRIX (State Information)
+            +0.020 +0.000 +0.000 +0.000 <-> +1.000 +0.000 +0.000 +0.000
+            +0.000 +0.020 +0.000 +0.000 <-> +0.000 +1.000 +0.000 +0.000
+            +0.000 +0.000 -1.000 +0.000 <-> +0.000 +0.000 +1.000 +0.000
+            -1.000 -1.000 +0.000 +1.000 <-> +0.000 +0.000 +0.000 +1.000
+Line Rasterization test passed.
+Line Stipple test passed.
+Anti-aliased Line test passed.
+Horizontal and Vertical Line test passed.
+Triangle Rasterization test passed.
+Triangle Tile test passed.
+Triangle Stipple test passed.
+Anti-aliased Triangles test failed.
+    File - triaa.c, line - 114.
+        Triangle primitive did not draw.
+    State Report. (Current) <-> (Default)
+        GL_ATTRIB_STACK_DEPTH (State Information)
+            1.00 <-> 0.00
+        GL_BLEND (State Information)
+            GL_TRUE <-> GL_FALSE
+        GL_BLEND_DST (State Information)
+            GL_LINES <-> GL_NONE
+        GL_BLEND_SRC (State Information)
+            GL_SRC_ALPHA <-> GL_LINES
+        GL_CURRENT_COLOR (State Information)
+            1.00 0.00 0.00 1.00 <-> 1.00 1.00 1.00 1.00
+        GL_DITHER (State Information)
+            GL_FALSE <-> GL_TRUE
+        GL_POLYGON_SMOOTH (State Information)
+            GL_TRUE <-> GL_FALSE
+        GL_PROJECTION_MATRIX (State Information)
+            +0.020 +0.000 +0.000 +0.000 <-> +1.000 +0.000 +0.000 +0.000
+            +0.000 +0.020 +0.000 +0.000 <-> +0.000 +1.000 +0.000 +0.000
+            +0.000 +0.000 -1.000 +0.000 <-> +0.000 +0.000 +1.000 +0.000
+            -1.000 -1.000 +0.000 +1.000 <-> +0.000 +0.000 +0.000 +1.000
+Quad Rasterization test passed.
+Polygon Face test passed.
+Polygon Cull test passed.
+Polygon Stipple test passed.
+Polygon Edge test passed.
+Ambient Light test passed.
+Ambient Material test passed.
+Ambient Scene test passed.
+Attenuation Constants test passed.
+Attenuation Position test failed.
+    File - l_ap.c, line - 265.
+        Red component did not reach 1.0. Value is 0.372549.
+    State Report. (Current) <-> (Default)
+        GL_ATTRIB_STACK_DEPTH (State Information)
+            1.00 <-> 0.00
+        GL_DITHER (State Information)
+            GL_FALSE <-> GL_TRUE
+        GL_LIGHTING (State Information)
+            GL_TRUE <-> GL_FALSE
+        GL_PROJECTION_MATRIX (State Information)
+            +0.020 +0.000 +0.000 +0.000 <-> +1.000 +0.000 +0.000 +0.000
+            +0.000 +0.020 +0.000 +0.000 <-> +0.000 +1.000 +0.000 +0.000
+            +0.000 +0.000 -1.000 +0.000 <-> +0.000 +0.000 +1.000 +0.000
+            -1.000 -1.000 +0.000 +1.000 <-> +0.000 +0.000 +0.000 +1.000
+        GL_LIGHT0, GL_CONSTANT_ATTENUATION (Lighting Information)
+            0.00 <-> 1.00
+        GL_LIGHT0, GL_LINEAR_ATTENUATION (Lighting Information)
+            1.00 <-> 0.00
+        GL_LIGHT0, GL_POSITION (Lighting Information)
+            0.50 0.50 1.00 1.00 <-> 0.00 0.00 1.00 0.00
+        GL_BACK, GL_AMBIENT (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.20 0.20 0.20 1.00
+        GL_BACK, GL_DIFFUSE (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.80 0.80 0.80 1.00
+        GL_BACK, GL_SPECULAR (Material Information)
+            1.00 0.00 0.00 1.00 <-> 0.00 0.00 0.00 1.00
+        GL_FRONT, GL_AMBIENT (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.20 0.20 0.20 1.00
+        GL_FRONT, GL_DIFFUSE (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.80 0.80 0.80 1.00
+        GL_FRONT, GL_SPECULAR (Material Information)
+            1.00 0.00 0.00 1.00 <-> 0.00 0.00 0.00 1.00
+Diffuse Light test passed.
+Diffuse Material test passed.
+Diffuse Material Normal test passed.
+Diffuse Material Positioning test passed.
+Emissive Material test passed.
+Specular Exponent test failed.
+    File - l_se.c, line - 229.
+        Red component is not monotonic. Current value is 0.00392157, last
+        value was 0.00784314.
+    State Report. (Current) <-> (Default)
+        GL_ATTRIB_STACK_DEPTH (State Information)
+            1.00 <-> 0.00
+        GL_CURRENT_NORMAL (State Information)
+            1.00 0.00 0.09 <-> 0.00 0.00 1.00
+        GL_DITHER (State Information)
+            GL_FALSE <-> GL_TRUE
+        GL_LIGHTING (State Information)
+            GL_TRUE <-> GL_FALSE
+        GL_PROJECTION_MATRIX (State Information)
+            +0.020 +0.000 +0.000 +0.000 <-> +1.000 +0.000 +0.000 +0.000
+            +0.000 +0.020 +0.000 +0.000 <-> +0.000 +1.000 +0.000 +0.000
+            +0.000 +0.000 -1.000 +0.000 <-> +0.000 +0.000 +1.000 +0.000
+            -1.000 -1.000 +0.000 +1.000 <-> +0.000 +0.000 +0.000 +1.000
+        GL_LIGHT0, GL_POSITION (Lighting Information)
+            0.50 0.50 1.00 1.00 <-> 0.00 0.00 1.00 0.00
+        GL_LIGHT0, GL_SPECULAR (Lighting Information)
+            1.00 0.00 0.00 1.00 <-> 1.00 1.00 1.00 1.00
+        GL_BACK, GL_AMBIENT (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.20 0.20 0.20 1.00
+        GL_BACK, GL_DIFFUSE (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.80 0.80 0.80 1.00
+        GL_BACK, GL_SHININESS (Material Information)
+            1.76 <-> 0.00
+        GL_BACK, GL_SPECULAR (Material Information)
+            1.00 0.00 0.00 1.00 <-> 0.00 0.00 0.00 1.00
+        GL_FRONT, GL_AMBIENT (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.20 0.20 0.20 1.00
+        GL_FRONT, GL_DIFFUSE (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.80 0.80 0.80 1.00
+        GL_FRONT, GL_SHININESS (Material Information)
+            1.76 <-> 0.00
+        GL_FRONT, GL_SPECULAR (Material Information)
+            1.00 0.00 0.00 1.00 <-> 0.00 0.00 0.00 1.00
+Specular Exponent Normal test failed.
+    File - l_sen.c, line - 301.
+    State Report. (Current) <-> (Default)
+        GL_ATTRIB_STACK_DEPTH (State Information)
+            1.00 <-> 0.00
+        GL_CURRENT_NORMAL (State Information)
+            1.00 0.00 0.05 <-> 0.00 0.00 1.00
+        GL_DITHER (State Information)
+            GL_FALSE <-> GL_TRUE
+        GL_LIGHTING (State Information)
+            GL_TRUE <-> GL_FALSE
+        GL_PROJECTION_MATRIX (State Information)
+            +0.020 +0.000 +0.000 +0.000 <-> +1.000 +0.000 +0.000 +0.000
+            +0.000 +0.020 +0.000 +0.000 <-> +0.000 +1.000 +0.000 +0.000
+            +0.000 +0.000 -1.000 +0.000 <-> +0.000 +0.000 +1.000 +0.000
+            -1.000 -1.000 +0.000 +1.000 <-> +0.000 +0.000 +0.000 +1.000
+        GL_LIGHT0, GL_POSITION (Lighting Information)
+            0.50 0.50 1.00 1.00 <-> 0.00 0.00 1.00 0.00
+        GL_BACK, GL_AMBIENT (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.20 0.20 0.20 1.00
+        GL_BACK, GL_DIFFUSE (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.80 0.80 0.80 1.00
+        GL_BACK, GL_SHININESS (Material Information)
+            1.00 <-> 0.00
+        GL_BACK, GL_SPECULAR (Material Information)
+            1.00 0.00 0.00 1.00 <-> 0.00 0.00 0.00 1.00
+        GL_FRONT, GL_AMBIENT (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.20 0.20 0.20 1.00
+        GL_FRONT, GL_DIFFUSE (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.80 0.80 0.80 1.00
+        GL_FRONT, GL_SHININESS (Material Information)
+            1.00 <-> 0.00
+        GL_FRONT, GL_SPECULAR (Material Information)
+            1.00 0.00 0.00 1.00 <-> 0.00 0.00 0.00 1.00
+Specular Local Eye Half Angle test failed.
+    File - l_sleha.c, line - 178.
+    State Report. (Current) <-> (Default)
+        GL_ATTRIB_STACK_DEPTH (State Information)
+            1.00 <-> 0.00
+        GL_CURRENT_COLOR (State Information)
+            0.02 0.00 0.00 1.00 <-> 1.00 1.00 1.00 1.00
+        GL_CURRENT_NORMAL (State Information)
+            0.00 -1.00 0.00 <-> 0.00 0.00 1.00
+        GL_DITHER (State Information)
+            GL_FALSE <-> GL_TRUE
+        GL_LIGHT_MODEL_LOCAL_VIEWER (State Information)
+            GL_TRUE <-> GL_FALSE
+        GL_PROJECTION_MATRIX (State Information)
+            +0.020 +0.000 +0.000 +0.000 <-> +1.000 +0.000 +0.000 +0.000
+            +0.000 +0.020 +0.000 +0.000 <-> +0.000 +1.000 +0.000 +0.000
+            +0.000 +0.000 -1.000 +0.000 <-> +0.000 +0.000 +1.000 +0.000
+            -1.000 -1.000 +0.000 +1.000 <-> +0.000 +0.000 +0.000 +1.000
+        GL_LIGHT0, GL_POSITION (Lighting Information)
+            0.00 0.00 0.00 1.00 <-> 0.00 0.00 1.00 0.00
+        GL_BACK, GL_AMBIENT (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.20 0.20 0.20 1.00
+        GL_BACK, GL_DIFFUSE (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.80 0.80 0.80 1.00
+        GL_BACK, GL_SHININESS (Material Information)
+            1.00 <-> 0.00
+        GL_BACK, GL_SPECULAR (Material Information)
+            1.00 0.00 0.00 1.00 <-> 0.00 0.00 0.00 1.00
+        GL_FRONT, GL_AMBIENT (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.20 0.20 0.20 1.00
+        GL_FRONT, GL_DIFFUSE (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.80 0.80 0.80 1.00
+        GL_FRONT, GL_SHININESS (Material Information)
+            1.00 <-> 0.00
+        GL_FRONT, GL_SPECULAR (Material Information)
+            1.00 0.00 0.00 1.00 <-> 0.00 0.00 0.00 1.00
+Specular Light test passed.
+Specular Material test passed.
+Specular Normal test passed.
+Spot Positioning test passed.
+Spot Exponent and Positioning test failed.
+    File - l_sep.c, line - 318.
+    State Report. (Current) <-> (Default)
+        GL_ATTRIB_STACK_DEPTH (State Information)
+            1.00 <-> 0.00
+        GL_DITHER (State Information)
+            GL_FALSE <-> GL_TRUE
+        GL_LIGHTING (State Information)
+            GL_TRUE <-> GL_FALSE
+        GL_LIGHT_MODEL_AMBIENT (State Information)
+            0.00 0.00 0.00 1.00 <-> 0.20 0.20 0.20 1.00
+        GL_PROJECTION_MATRIX (State Information)
+            +0.020 +0.000 +0.000 +0.000 <-> +1.000 +0.000 +0.000 +0.000
+            +0.000 +0.020 +0.000 +0.000 <-> +0.000 +1.000 +0.000 +0.000
+            +0.000 +0.000 -1.000 +0.000 <-> +0.000 +0.000 +1.000 +0.000
+            -1.000 -1.000 +0.000 +1.000 <-> +0.000 +0.000 +0.000 +1.000
+        GL_LIGHT0, GL_AMBIENT (Lighting Information)
+            1.00 0.00 0.00 1.00 <-> 0.00 0.00 0.00 1.00
+        GL_LIGHT0, GL_POSITION (Lighting Information)
+            1.50 0.50 0.00 1.00 <-> 0.00 0.00 1.00 0.00
+        GL_LIGHT0, GL_SPOT_CUTOFF (Lighting Information)
+            75.62 <-> 180.00
+        GL_LIGHT0, GL_SPOT_EXPONENT (Lighting Information)
+            1.00 <-> 0.00
+        GL_BACK, GL_AMBIENT (Material Information)
+            1.00 1.00 1.00 1.00 <-> 0.20 0.20 0.20 1.00
+        GL_BACK, GL_DIFFUSE (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.80 0.80 0.80 1.00
+        GL_FRONT, GL_AMBIENT (Material Information)
+            1.00 1.00 1.00 1.00 <-> 0.20 0.20 0.20 1.00
+        GL_FRONT, GL_DIFFUSE (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.80 0.80 0.80 1.00
+Spot Exponent and Direction test failed.
+    File - l_sed.c, line - 326.
+    State Report. (Current) <-> (Default)
+        GL_ATTRIB_STACK_DEPTH (State Information)
+            1.00 <-> 0.00
+        GL_DITHER (State Information)
+            GL_FALSE <-> GL_TRUE
+        GL_LIGHTING (State Information)
+            GL_TRUE <-> GL_FALSE
+        GL_LIGHT_MODEL_AMBIENT (State Information)
+            0.00 0.00 0.00 1.00 <-> 0.20 0.20 0.20 1.00
+        GL_PROJECTION_MATRIX (State Information)
+            +0.020 +0.000 +0.000 +0.000 <-> +1.000 +0.000 +0.000 +0.000
+            +0.000 +0.020 +0.000 +0.000 <-> +0.000 +1.000 +0.000 +0.000
+            +0.000 +0.000 -1.000 +0.000 <-> +0.000 +0.000 +1.000 +0.000
+            -1.000 -1.000 +0.000 +1.000 <-> +0.000 +0.000 +0.000 +1.000
+        GL_LIGHT0, GL_AMBIENT (Lighting Information)
+            1.00 0.00 0.00 1.00 <-> 0.00 0.00 0.00 1.00
+        GL_LIGHT0, GL_POSITION (Lighting Information)
+            0.50 0.50 -1.00 1.00 <-> 0.00 0.00 1.00 0.00
+        GL_LIGHT0, GL_SPOT_CUTOFF (Lighting Information)
+            75.62 <-> 180.00
+        GL_LIGHT0, GL_SPOT_DIRECTION (Lighting Information)
+            1.00 0.00 0.00 <-> 0.00 0.00 -1.00
+        GL_LIGHT0, GL_SPOT_EXPONENT (Lighting Information)
+            1.00 <-> 0.00
+        GL_BACK, GL_AMBIENT (Material Information)
+            1.00 1.00 1.00 1.00 <-> 0.20 0.20 0.20 1.00
+        GL_BACK, GL_DIFFUSE (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.80 0.80 0.80 1.00
+        GL_FRONT, GL_AMBIENT (Material Information)
+            1.00 1.00 1.00 1.00 <-> 0.20 0.20 0.20 1.00
+        GL_FRONT, GL_DIFFUSE (Material Information)
+            0.00 0.00 0.00 1.00 <-> 0.80 0.80 0.80 1.00
+Fog Exponential test passed.
+Fog Linear test passed.
+Texture Decal test passed.
+Texture Border test passed.
+Mipmaps Selection test passed.
+Mipmaps Interpolation test passed.
+Display Lists test passed.
+Evaluator test passed.
+Evaluator Color test passed.
+
+Conform failed.
+    Anti-aliased Point test (Test number #33) failed.
+    Anti-aliased Triangles test (Test number #41) failed.
+    Attenuation Position test (Test number #51) failed.
+    Specular Exponent test (Test number #57) failed.
+    Specular Exponent Normal test (Test number #58) failed.
+    Specular Local Eye Half Angle test (Test number #59) failed.
+    Spot Exponent and Positioning test (Test number #64) failed.
+    Spot Exponent and Direction test (Test number #65) failed.
+
+
+
+GLX CONFORMANCE TEST
+====================
+
+% conformx -v 2
+
+OpenGL X Conformance Test
+Version 1.1.1
+
+Setup Report.
+    Verbose level = 2.
+    Random number seed = 1.
+    Path inactive.
+
+Visual Report.
+    Display ID = 34. Direct Rendering.
+    Double Buffered.
+    RGBA (8, 8, 8, 0).
+    Stencil (8).
+    Depth (16).
+    Accumulation (16, 16, 16, 16).
+
+Epsilon Report.
+    zero error epsilon = 0.000122.
+    RGBA error epsilon = 0.00404, 0.00404, 0.00404, 0.000122.
+    Depth buffer error epsilon = 0.000137.
+    Stencil plane error epsilon = 0.00404.
+    Accumulation error epsilon = 0.000137, 0.000137, 0.000137, 0.000137.
+
+Default State test passed.
+glReadPixels() test passed.
+Font test passed.
+
+Conformx passed.
+
+Setup Report.
+    Verbose level = 2.
+    Random number seed = 1.
+    Path inactive.
+
+Visual Report.
+    Display ID = 34. Indirect Rendering.
+    Double Buffered.
+    RGBA (8, 8, 8, 0).
+    Stencil (8).
+    Depth (16).
+    Accumulation (16, 16, 16, 16).
+
+Epsilon Report.
+    zero error epsilon = 0.000122.
+    RGBA error epsilon = 0.00404, 0.00404, 0.00404, 0.000122.
+    Depth buffer error epsilon = 0.000137.
+    Stencil plane error epsilon = 0.00404.
+    Accumulation error epsilon = 0.000137, 0.000137, 0.000137, 0.000137.
+
+Default State test passed.
+glReadPixels() test passed.
+Font test passed.
+
+Conformx passed.
+
+
+
+COMMENTS
+========
+
+The antialiased point test fails because the first point drawn
+is accidently clipped.  Something in the preceeding test upsets
+the Mesa vertex buffer.  When run solo, the antialiased point test
+passes.
+
+Antialiased triangles are not implemented in Mesa yet.
+
+The lighting tests likely fail due to small numeric errors.  We
+haven't seen lighting problems in applications.
+
+These conformance tests will be fixed ASAP.
+
+Note that we're using the OpenGL 1.1 conformance tests.  The 1.2
+tests aren't available to us at this time.
+
+
+
+-----------------------------------------------------------------------------
+$Id: CONFORM,v 1.3.2.2 2000/04/24 14:39:43 brianp Exp $

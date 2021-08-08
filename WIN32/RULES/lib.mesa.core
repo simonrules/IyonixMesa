@@ -1,0 +1,14 @@
+
+SRCALT1=.\$(MESAROOT)\src
+
+CPPOPTS=$(CPPOPTS) /I$(MESAROOT)\src
+
+MESA_CORE = accum.c alpha.c alphabuf.c api1.c api2.c apiext.c\
+   attrib.c bbox.c bitmap.c blend.c clip.c colortab.c config.c context.c\
+   copypix.c cva.c depth.c dlist.c drawpix.c enable.c enums.c eval.c\
+   extensions.c feedback.c fog.c get.c glmisc.c hash.c image.c light.c\
+   lines.c logic.c masking.c matrix.c mmath.c mthreads.c pb.c pipeline.c\
+   pixel.c pointers.c points.c polygon.c quads.c rastpos.c readpix.c\
+   rect.c scissor.c shade.c span.c stages.c stencil.c teximage.c texobj.c texstate.c\
+   texture.c translate.c triangle.c varray.c vb.c vbcull.c vbfill.c\
+   vbindirect.c vbrender.c vbxform.c vector.c vertices.c winpos.c xform.c zoom.c
