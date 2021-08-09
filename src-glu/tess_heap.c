@@ -196,11 +196,11 @@ GLboolean heap_insert( heap_t *heap, heap_elt_t *element )
     if ( heap->size > heap->length )
     {
 	/* Allocate some more space for the heap. */
-	if ( ( heap->elements =
-	           realloc( heap->elements, ( heap->length + HEAP_ALLOC )
-			    * sizeof(heap_elt_t *) ) ) == NULL )
+	if ( ( heap->elements = (heap_elt_t		**)
+	           (realloc( heap->elements, ( heap->length + HEAP_ALLOC )
+			    * sizeof(heap_elt_t *) )) ) == NULL )
 	{
-	    return GL_FALSE;
+	    return (GLenum)GL_FALSE;
 	}
 
 	heap->length += HEAP_ALLOC;

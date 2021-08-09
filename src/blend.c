@@ -784,7 +784,8 @@ void gl_blend_span( GLcontext *ctx, GLuint n, GLint x, GLint y,
    if (!ctx->Color.BlendFunc)
       set_blend_function(ctx);
 
-   (*ctx->Color.BlendFunc)( ctx, n, mask, rgba, (const GLubyte (*)[4])dest );
+//   (*ctx->Color.BlendFunc)( ctx, n, mask, rgba, (const GLubyte (*)[4])dest );
+   (*ctx->Color.BlendFunc)( ctx, n, mask, rgba, (GLubyte (*)[4])dest );
 }
 
 
@@ -818,5 +819,6 @@ void gl_blend_pixels( GLcontext *ctx,
    if (!ctx->Color.BlendFunc)
       set_blend_function(ctx);
 
-   (*ctx->Color.BlendFunc)( ctx, n, mask, rgba, (const GLubyte (*)[4])dest );
+//   (*ctx->Color.BlendFunc)( ctx, n, mask, rgba, (const GLubyte (*)[4])dest );
+   (*ctx->Color.BlendFunc)( ctx, n, mask, rgba, (GLubyte (*)[4])dest );
 }

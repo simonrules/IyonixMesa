@@ -1,0 +1,3 @@
+|Wimpslot -min 4096k -max 4096k
+Wimpslot -min 8192k -max 8192k
+Run <Obey$Dir>.!RunImage

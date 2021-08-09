@@ -90,37 +90,37 @@ test_nurbs_curve(GLUnurbsObj *nobj, curve_attribs *attribs)
 
 	if(attribs->order < 0)
 	{
-		call_user_error(nobj,GLU_INVALID_VALUE);
-		return GLU_ERROR;
+		call_user_error(nobj,(GLenum)GLU_INVALID_VALUE);
+		return (GLenum)GLU_ERROR;
 	}
 	glGetIntegerv(GL_MAX_EVAL_ORDER,&tmp_int);
 	if(attribs->order > tmp_int || attribs->order < 2)
 	{
-		call_user_error(nobj,GLU_NURBS_ERROR1);
-		return GLU_ERROR;
+		call_user_error(nobj,(GLenum)GLU_NURBS_ERROR1);
+		return (GLenum)GLU_ERROR;
 	}
 	if(attribs->knot_count < attribs->order +2)
 	{
-		call_user_error(nobj,GLU_NURBS_ERROR2);
-		return GLU_ERROR;
+		call_user_error(nobj,(GLenum)GLU_NURBS_ERROR2);
+		return (GLenum)GLU_ERROR;
 	}
 	if(attribs->stride < 0)
 	{
-		call_user_error(nobj,GLU_NURBS_ERROR34);
-		return GLU_ERROR;
+		call_user_error(nobj,(GLenum)GLU_NURBS_ERROR34);
+		return (GLenum)GLU_ERROR;
 	}
 	if(attribs->knot==NULL || attribs->ctrlarray==NULL)
 	{
-		call_user_error(nobj,GLU_NURBS_ERROR36);
-		return GLU_ERROR;
+		call_user_error(nobj,(GLenum)GLU_NURBS_ERROR36);
+		return (GLenum)GLU_ERROR;
 	}
 	if((err=test_knot(attribs->knot_count,attribs->knot,attribs->order))
 		!=GLU_NO_ERROR)
 	{
 		call_user_error(nobj,err);
-		return GLU_ERROR;
+		return (GLenum)GLU_ERROR;
 	}
-	return GLU_NO_ERROR;
+	return (GLenum)GLU_NO_ERROR;
 }
 
 static GLenum
@@ -128,21 +128,21 @@ test_nurbs_curves(GLUnurbsObj *nobj)
 {
 	/* test the geometric data */
 	if(test_nurbs_curve(nobj,&(nobj->curve.geom))!=GLU_NO_ERROR)
-		return GLU_ERROR;
+		return (GLenum)GLU_ERROR;
 	/* now test the attributive data */
 	/* color */
 	if(nobj->curve.color.type!=GLU_INVALID_ENUM)
 		if(test_nurbs_curve(nobj,&(nobj->curve.color))!=GLU_NO_ERROR)
-			return GLU_ERROR;
+			return (GLenum)GLU_ERROR;
 	/* normal */
 	if(nobj->curve.normal.type!=GLU_INVALID_ENUM)
 		if(test_nurbs_curve(nobj,&(nobj->curve.normal))!=GLU_NO_ERROR)
-			return GLU_ERROR;
+			return (GLenum)GLU_ERROR;
 	/* texture */
 	if(nobj->curve.texture.type!=GLU_INVALID_ENUM)
 		if(test_nurbs_curve(nobj,&(nobj->curve.texture))!=GLU_NO_ERROR)
-			return GLU_ERROR;
-	return GLU_NO_ERROR;
+			return (GLenum)GLU_ERROR;
+	return (GLenum)GLU_NO_ERROR;
 }
 
 /* prepare the knot information structures */
@@ -165,8 +165,8 @@ fill_knot_structures(GLUnurbsObj *nobj,knot_str_type *geom_knot,
 	t_max=geom_knot->t_max=nknots-order;
 	if(fabs(knot[t_min]-knot[t_max])<EPSILON)
 	{
-		call_user_error(nobj,GLU_NURBS_ERROR3);
-		return GLU_ERROR;
+		call_user_error(nobj,(GLenum)GLU_NURBS_ERROR3);
+		return (GLenum)GLU_ERROR;
 	}
 	if(fabs(knot[0]-knot[t_min])<EPSILON)
 	{
@@ -193,8 +193,8 @@ fill_knot_structures(GLUnurbsObj *nobj,knot_str_type *geom_knot,
 		t_max=color_knot->t_max=nknots-order;
 		if(fabs(knot[t_min]-knot[t_max])<EPSILON)
 		{
-			call_user_error(nobj,GLU_NURBS_ERROR3);
-			return GLU_ERROR;
+			call_user_error(nobj,(GLenum)GLU_NURBS_ERROR3);
+			return (GLenum)GLU_ERROR;
 		}
 		if(fabs(knot[0]-knot[t_min])<EPSILON)
 		{
@@ -224,8 +224,8 @@ fill_knot_structures(GLUnurbsObj *nobj,knot_str_type *geom_knot,
 		t_max=normal_knot->t_max=nknots-order;
 		if(fabs(knot[t_min]-knot[t_max])<EPSILON)
 		{
-			call_user_error(nobj,GLU_NURBS_ERROR3);
-			return GLU_ERROR;
+			call_user_error(nobj,(GLenum)GLU_NURBS_ERROR3);
+			return (GLenum)GLU_ERROR;
 		}
 		if(fabs(knot[0]-knot[t_min])<EPSILON)
 		{
@@ -255,8 +255,8 @@ fill_knot_structures(GLUnurbsObj *nobj,knot_str_type *geom_knot,
 		t_max=texture_knot->t_max=nknots-order;
 		if(fabs(knot[t_min]-knot[t_max])<EPSILON)
 		{
-			call_user_error(nobj,GLU_NURBS_ERROR3);
-			return GLU_ERROR;
+			call_user_error(nobj,(GLenum)GLU_NURBS_ERROR3);
+			return (GLenum)GLU_ERROR;
 		}
 		if(fabs(knot[0]-knot[t_min])<EPSILON)
 		{
@@ -275,7 +275,7 @@ fill_knot_structures(GLUnurbsObj *nobj,knot_str_type *geom_knot,
 	}
 	else
 		texture_knot->unified_knot=NULL;
-	return GLU_NO_ERROR;
+	return (GLenum)GLU_NO_ERROR;
 }
 
 /* covert the NURBS curve into a series of adjacent Bezier curves */
@@ -313,7 +313,7 @@ convert_curve(knot_str_type *the_knot, curve_attribs *attrib,
 		return err;
 	}
 	free(the_knot->alpha);
-	return GLU_NO_ERROR;
+	return (GLenum)GLU_NO_ERROR;
 }
 
 /* covert curves - geometry and possible attribute ones into equivalent */
@@ -331,7 +331,7 @@ convert_curves(GLUnurbsObj *nobj, GLfloat **new_geom_ctrl,
 
 	if(fill_knot_structures(nobj,&geom_knot,&color_knot,&normal_knot,
 			&texture_knot)!=GLU_NO_ERROR)
-		return GLU_ERROR;
+		return (GLenum)GLU_ERROR;
 
 	/* unify knots - all knots should have the same number of working */
 	/* ranges */
@@ -392,7 +392,7 @@ convert_curves(GLUnurbsObj *nobj, GLfloat **new_geom_ctrl,
 			return err;
 		}
 	}
-	return GLU_NO_ERROR;
+	return (GLenum)GLU_NO_ERROR;
 }
 
 /* main NURBS curve procedure */

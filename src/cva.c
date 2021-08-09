@@ -3,19 +3,19 @@
 /*
  * Mesa 3-D graphics library
  * Version:  3.1
- * 
+ *
  * Copyright (C) 1999  Brian Paul   All Rights Reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
@@ -24,7 +24,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/* Mesa CVA implementation.  
+/* Mesa CVA implementation.
  * Copyright (C) 1999 Keith Whitwell
  */
 
@@ -46,14 +46,14 @@
 #include "vbxform.h"
 #include "vector.h"
 
-/* Mesa CVA implementation.  
+/* Mesa CVA implementation.
  * Copyright (C) 1999 Keith Whitwell
  */
 
 
 
 static void copy_clipmask( GLubyte *dest, GLubyte *ormask, GLubyte *andmask,
-			   const GLubyte *src, 
+			   const GLubyte *src,
 			   const GLuint *elt, GLuint nr )
 {
    GLuint i;
@@ -65,40 +65,40 @@ static void copy_clipmask( GLubyte *dest, GLubyte *ormask, GLubyte *andmask,
       dest[i] = t;
       o |= t;
       a &= t;
-   }  
+   }
 
    *ormask = o;
    *andmask = a;
 }
 
-static void translate_4f( GLvector4f *dest, 
-			  CONST GLvector4f *src, 
-			  CONST GLuint elt[], 
+static void translate_4f( GLvector4f *dest,
+			  CONST GLvector4f *src,
+			  CONST GLuint elt[],
 			  GLuint nr )
 {
    GLuint i;
    GLfloat (*from)[4] = (GLfloat (*)[4])src->start;
    GLfloat (*to)[4] = (GLfloat (*)[4])dest->start;
    GLuint stride = src->stride;
-   
+
    if (stride == 4 * sizeof(GLfloat)) {
-      for (i = 0 ; i < nr ; i++) 
+      for (i = 0 ; i < nr ; i++)
 	 COPY_4FV( to[i], from[elt[i]] );
    } else {
       for (i = 0 ; i < nr ; i++) {
 	 CONST GLubyte *f = (GLubyte *)from + elt[i] * stride;
 	 COPY_4FV( to[i], (GLfloat *)f );
       }
-   }      
+   }
 
    dest->size = src->size;
    dest->flags |= (src->flags & VEC_SIZE_4);
    dest->count = nr;
 }
 
-static void translate_3f( GLvector3f *dest, 
-			  CONST GLvector3f *src, 
-			  CONST GLuint elt[], 
+static void translate_3f( GLvector3f *dest,
+			  CONST GLvector3f *src,
+			  CONST GLuint elt[],
 			  GLuint nr )
 {
    GLuint i;
@@ -107,7 +107,7 @@ static void translate_3f( GLvector3f *dest,
    GLuint stride = src->stride;
 
    if (stride == 3 * sizeof(GLfloat)) {
-      for (i = 0 ; i < nr ; i++) 
+      for (i = 0 ; i < nr ; i++)
 	 COPY_3FV( to[i], from[elt[i]] );
    } else {
       for (i = 0 ; i < nr ; i++) {
@@ -119,9 +119,9 @@ static void translate_3f( GLvector3f *dest,
    dest->count = nr;
 }
 
-static void translate_4ub( GLvector4ub *dest, 
+static void translate_4ub( GLvector4ub *dest,
 			   CONST GLvector4ub *src,
-			   GLuint elt[], 
+			   GLuint elt[],
 			   GLuint nr )
 {
    GLuint i;
@@ -142,9 +142,9 @@ static void translate_4ub( GLvector4ub *dest,
    dest->count = nr;
 }
 
-static void translate_1ui( GLvector1ui *dest, 
-			   GLvector1ui *src, 
-			   GLuint elt[], 
+static void translate_1ui( GLvector1ui *dest,
+			   GLvector1ui *src,
+			   GLuint elt[],
 			   GLuint nr )
 {
    GLuint i;
@@ -165,9 +165,9 @@ static void translate_1ui( GLvector1ui *dest,
    dest->count = nr;
 }
 
-static void translate_1ub( GLvector1ub *dest, 
-			   GLvector1ub *src, 
-			   GLuint elt[], 
+static void translate_1ub( GLvector1ub *dest,
+			   GLvector1ub *src,
+			   GLuint elt[],
 			   GLuint nr )
 {
    GLuint i;
@@ -214,11 +214,11 @@ void gl_merge_cva( struct vertex_buffer *VB,
     * prims in the VB, so a software points function doesn't screw us
     * when we're doing hardware triangles.
     */
-   if ((required & VERT_SETUP_FULL) && 
+   if ((required & VERT_SETUP_FULL) &&
        (ctx->IndirectTriangles & DD_SW_SETUP))
    {
       if (MESA_VERBOSE & VERBOSE_PIPELINE)
-	 gl_print_vert_flags("extra flags for setup", 
+	 gl_print_vert_flags("extra flags for setup",
 			     ctx->RenderFlags & available & ~required);
       required |= ctx->RenderFlags;
    }
@@ -227,24 +227,24 @@ void gl_merge_cva( struct vertex_buffer *VB,
 
    if ((flags & VERT_DATA) == 0)
       return;
-   
+
    if (MESA_VERBOSE&VERBOSE_PIPELINE)
-      gl_print_vert_flags("cva merge", flags); 
+      gl_print_vert_flags("cva merge", flags);
 
    if (flags & VERT_WIN) {
       VB->ClipPtr = &VB->Clip;
       VB->Projected = &VB->Win;
       VB->CullMode = 0;
-   
+
       if (cvaVB->ClipOrMask) {
 
 	 /* Copy clipmask back into VB, build a new clipOrMask */
-	 copy_clipmask( VB->ClipMask + VB->Start, 
+	 copy_clipmask( VB->ClipMask + VB->Start,
 			&VB->ClipOrMask, &VB->ClipAndMask,
-			cvaVB->ClipMask, 
-			elt, 
+			cvaVB->ClipMask,
+			elt,
 			VB->Count - VB->Start );
-	 
+
 	 /* overkill if !VB->ClipOrMask - should just copy 'copied' verts */
 	 translate_4f( VB->ClipPtr, cvaVB->ClipPtr, elt, count);
 
@@ -256,16 +256,16 @@ void gl_merge_cva( struct vertex_buffer *VB,
 			   cvaVB->UserClipMask,
 			   elt,
 			   VB->Count - VB->Start);
-	    
+
 	    if (and) VB->ClipAndMask |= CLIP_USER_BIT;
 	 }
 
-	 if (VB->ClipOrMask) 
-	    VB->CullMode |= CLIP_MASK_ACTIVE;      
+	 if (VB->ClipOrMask)
+	    VB->CullMode |= CLIP_MASK_ACTIVE;
 
 	 if (VB->ClipAndMask) {
 	    VB->Culled = 1;
-	    gl_dont_cull_vb( VB );   
+	    gl_dont_cull_vb( VB );
 	    return;
 	 }
       }
@@ -276,38 +276,38 @@ void gl_merge_cva( struct vertex_buffer *VB,
        */
       if (ctx->IndirectTriangles & DD_ANY_CULL)
       {
-	 GLuint cullcount = gl_cull_vb( VB );      
+	 GLuint cullcount = gl_cull_vb( VB );
 	 if (cullcount) VB->CullMode |= CULL_MASK_ACTIVE;
 	 if (cullcount == VB->Count) { VB->Culled = 2 ; return; }
       }
-      else 
-	 gl_dont_cull_vb( VB );   
+      else
+	 gl_dont_cull_vb( VB );
    } else {
       VB->ClipPtr = &VB->Clip;
       VB->Projected = &VB->Win;
    }
 
-   if (flags & VERT_EYE) 
+   if (flags & VERT_EYE)
    {
       VB->Unprojected = VB->EyePtr = &VB->Eye;
       translate_4f( VB->EyePtr, cvaVB->EyePtr, elt, count);
    }
 
-   if (flags & VERT_OBJ_ANY) 
+   if (flags & VERT_OBJ_ANY)
    {
       VB->ObjPtr = &VB->IM->v.Obj;
       if (!ctx->NeedEyeCoords) VB->Unprojected = VB->ObjPtr;
       translate_4f( VB->ObjPtr, cvaVB->ObjPtr, elt, count);
    }
 
-   if (flags & VERT_NORM) 
+   if (flags & VERT_NORM)
    {
-      VB->NormalPtr = &VB->IM->v.Normal;      
+      VB->NormalPtr = &VB->IM->v.Normal;
       translate_3f( VB->NormalPtr, cvaVB->NormalPtr, elt, count );
       VB->CullMode &= ~COMPACTED_NORMALS;
    }
 
-   if (flags & VERT_RGBA) 
+   if (flags & VERT_RGBA)
    {
       VB->ColorPtr = VB->Color[0] = VB->LitColor[0];
       translate_4ub( VB->Color[0], cvaVB->Color[0], elt, count );
@@ -317,8 +317,8 @@ void gl_merge_cva( struct vertex_buffer *VB,
 	 translate_4ub( VB->Color[1], cvaVB->Color[1], elt, count );
       }
    }
-   
-   if (flags & VERT_INDEX) 
+
+   if (flags & VERT_INDEX)
    {
       VB->IndexPtr = VB->Index[0] = VB->LitIndex[0];
       translate_1ui( VB->Index[0], cvaVB->Index[0], elt, count );
@@ -329,21 +329,21 @@ void gl_merge_cva( struct vertex_buffer *VB,
       }
    }
 
-   if (flags & VERT_EDGE) 
+   if (flags & VERT_EDGE)
    {
-      VB->EdgeFlagPtr = &VB->IM->v.EdgeFlag;      
+      VB->EdgeFlagPtr = &VB->IM->v.EdgeFlag;
       translate_1ub( VB->EdgeFlagPtr, cvaVB->EdgeFlagPtr, elt, count );
    }
 
-   if (flags & VERT_TEX0_ANY) 
+   if (flags & VERT_TEX0_ANY)
    {
       VB->TexCoordPtr[0] = &VB->IM->v.TexCoord[0];
       translate_4f( VB->TexCoordPtr[0], cvaVB->TexCoordPtr[0], elt, count);
    }
 
-   if (flags & VERT_TEX1_ANY) 
+   if (flags & VERT_TEX1_ANY)
    {
-      VB->TexCoordPtr[1] = &VB->IM->v.TexCoord[1];      
+      VB->TexCoordPtr[1] = &VB->IM->v.TexCoord[1];
       translate_4f( VB->TexCoordPtr[1], cvaVB->TexCoordPtr[1], elt, count);
    }
 }
@@ -375,7 +375,7 @@ void gl_rescue_cva( GLcontext *ctx, struct immediate *IM )
 
 /* Transform the array components now, upto the setup call.  When
  * actual draw commands arrive, the data will be merged prior to
- * calling render_vb.  
+ * calling render_vb.
  */
 void GLAPIENTRY glLockArraysEXT(CTX_ARG GLint first, GLsizei count )
 {
@@ -389,12 +389,12 @@ void GLAPIENTRY glLockArraysEXT(CTX_ARG GLint first, GLsizei count )
       fprintf(stderr, "glLockArrays %d %d\n", first, count);
 
    /* Can't mix locked & unlocked - if count is too large, just
-    * unlock.  
+    * unlock.
     */
-   if (first == 0 && 
-       count > 0 && 
+   if (first == 0 &&
+       count > 0 &&
        count <= ctx->Const.MaxArrayLockSize)
-   {   
+   {
       struct gl_cva *cva = &ctx->CVA;
 
       if (!ctx->Array.LockCount) {
@@ -404,7 +404,7 @@ void GLAPIENTRY glLockArraysEXT(CTX_ARG GLint first, GLsizei count )
       }
 
       ctx->Array.LockFirst = first;
-      ctx->Array.LockCount = count;     
+      ctx->Array.LockCount = count;
       ctx->CompileCVAFlag = !ctx->CompileFlag;
 
       if (!cva->VB) {
@@ -412,7 +412,7 @@ void GLAPIENTRY glLockArraysEXT(CTX_ARG GLint first, GLsizei count )
 	 gl_alloc_cva_store( cva, cva->VB->Size );
 	 gl_reset_cva_vb( cva->VB, ~0 );
       }
-   } 
+   }
    else
    {
       if (ctx->Array.LockCount) {
@@ -497,12 +497,12 @@ void gl_prepare_arrays_cva( struct vertex_buffer *VB )
       gl_print_vert_flags("*** DISABLE", disable);
    }
 
-   if (enable) 
+   if (enable)
    {
       struct gl_client_array *client_data;
       GLuint fallback = VB->pipeline->fallback;
-   
-      if (enable & VERT_ELT) 
+
+      if (enable & VERT_ELT)
       {
 	 GLvector1ui *elt = VB->EltPtr = &cva->v.Elt;
 
@@ -515,16 +515,16 @@ void gl_prepare_arrays_cva( struct vertex_buffer *VB )
 	    elt->data = cva->store.Elt;
 	    elt->stride = sizeof(GLuint);
 
-	    if (cva->elt_count > cva->elt_size) 
+	    if (cva->elt_count > cva->elt_size)
 	    {
 	       while (cva->elt_count > (cva->elt_size *= 2)) {};
 	       FREE(cva->store.Elt);
-	       cva->store.Elt = (GLuint *) MALLOC(cva->elt_size * 
+	       cva->store.Elt = (GLuint *) MALLOC(cva->elt_size *
 						  sizeof(GLuint));
 	    }
 	    cva->EltFunc( elt->data, &cva->Elt, 0, cva->elt_count );
-	 }	
-	 elt->start = VEC_ELT(elt, GLuint, 0); 
+	 }
+	 elt->start = VEC_ELT(elt, GLuint, 0);
 	 elt->count = cva->elt_count;
 
 	 fallback |= (cva->pre.new_inputs & ~ctx->Array.Summary);
@@ -536,7 +536,7 @@ void gl_prepare_arrays_cva( struct vertex_buffer *VB )
 	 }
       }
 
-      if (enable & VERT_RGBA) 
+      if (enable & VERT_RGBA)
       {
 	 GLvector4ub *col = &cva->v.Color;
 
@@ -544,7 +544,7 @@ void gl_prepare_arrays_cva( struct vertex_buffer *VB )
 	 if (fallback & VERT_RGBA) client_data = &ctx->Fallback.Color;
 
 	 VB->Color[0] = VB->Color[1] = VB->ColorPtr = &cva->v.Color;
-      
+
 	 if (client_data->Type != GL_UNSIGNED_BYTE ||
 	     client_data->Size != 4)
 	 {
@@ -556,16 +556,16 @@ void gl_prepare_arrays_cva( struct vertex_buffer *VB )
 	    col->data = (GLubyte (*)[4]) client_data->Ptr;
 	    col->stride = client_data->StrideB;
 	    col->flags = VEC_NOT_WRITABLE|VEC_GOOD_STRIDE;
-	    if (client_data->StrideB != 4 * sizeof(GLubyte)) 
+	    if (client_data->StrideB != 4 * sizeof(GLubyte))
 	       col->flags ^= VEC_STRIDE_FLAGS;
-	 }	
-	 col->start = VEC_ELT(col, GLubyte, start); 
+	 }
+	 col->start = VEC_ELT(col, GLubyte, start);
 	 col->count = n;
       }
-   
-      if (enable & VERT_INDEX) 
+
+      if (enable & VERT_INDEX)
       {
-	 GLvector1ui *index = VB->IndexPtr = &cva->v.Index; 
+	 GLvector1ui *index = VB->IndexPtr = &cva->v.Index;
 	 VB->Index[0] = VB->Index[1] = VB->IndexPtr;
 
 	 client_data = &ctx->Array.Index;
@@ -580,12 +580,12 @@ void gl_prepare_arrays_cva( struct vertex_buffer *VB )
 	 } else {
 	    index->data = (GLuint *) client_data->Ptr;
 	    index->stride = client_data->StrideB;
-	    index->flags = VEC_NOT_WRITABLE|VEC_GOOD_STRIDE; 
+	    index->flags = VEC_NOT_WRITABLE|VEC_GOOD_STRIDE;
 	    if (index->stride != sizeof(GLuint))
 	       index->flags ^= VEC_STRIDE_FLAGS;
-	 }	
+	 }
 	 index->count = n;
-	 index->start = VEC_ELT(index, GLuint, start); 
+	 index->start = VEC_ELT(index, GLuint, start);
       }
 
       for (i = 0 ; i < ctx->Const.MaxTextureUnits ; i++)
@@ -600,27 +600,27 @@ void gl_prepare_arrays_cva( struct vertex_buffer *VB )
 	    }
 
 	    /* Writeability and stride handled lazily by
-	     * gl_import_client_data(). 
+	     * gl_import_client_data().
 	     */
 	    if (client_data->Type == GL_FLOAT)
 	    {
 	       tc->data = (GLfloat (*)[4]) client_data->Ptr;
 	       tc->stride = client_data->StrideB;
 	       tc->flags = VEC_NOT_WRITABLE|VEC_GOOD_STRIDE;
-	       if (tc->stride != 4 * sizeof(GLfloat)) 
+	       if (tc->stride != 4 * sizeof(GLfloat))
 		  tc->flags ^= VEC_STRIDE_FLAGS;
 	    } else {
 	       tc->data = cva->store.TexCoord[i];
 	       tc->stride = 4 * sizeof(GLfloat);
 	       ctx->Array.TexCoordFunc[i]( tc->data, client_data, start, n );
 	       tc->flags = VEC_WRITABLE|VEC_GOOD_STRIDE;
-	    }		 
+	    }
 	    tc->count = n;
-	    tc->start = VEC_ELT(tc, GLfloat, start); 
+	    tc->start = VEC_ELT(tc, GLfloat, start);
 	    tc->size = client_data->Size;
 	 }
-      
-      if (enable & VERT_OBJ_ANY) 
+
+      if (enable & VERT_OBJ_ANY)
       {
 	 GLvector4f *obj = VB->ObjPtr = &cva->v.Obj;
 
@@ -629,7 +629,7 @@ void gl_prepare_arrays_cva( struct vertex_buffer *VB )
 	    obj->data = (GLfloat (*)[4]) ctx->Array.Vertex.Ptr;
 	    obj->stride = ctx->Array.Vertex.StrideB;
 	    obj->flags = VEC_NOT_WRITABLE|VEC_GOOD_STRIDE;
-	    if (obj->stride != 4 * sizeof(GLfloat)) 
+	    if (obj->stride != 4 * sizeof(GLfloat))
 	       obj->flags ^= VEC_STRIDE_FLAGS;
 	 } else {
 	    obj->data = cva->store.Obj;
@@ -642,13 +642,13 @@ void gl_prepare_arrays_cva( struct vertex_buffer *VB )
 	 obj->size = ctx->Array.Vertex.Size;
       }
 
-      if (enable & VERT_NORM) 
+      if (enable & VERT_NORM)
       {
 	 GLvector3f *norm = VB->NormalPtr = &cva->v.Normal;
 
 	 client_data = &ctx->Array.Normal;
 
-	 if (fallback & VERT_NORM) 
+	 if (fallback & VERT_NORM)
 	    client_data = &ctx->Fallback.Normal;
 
 	 /* Never need to write to normals, and we can always cope with stride.
@@ -666,13 +666,13 @@ void gl_prepare_arrays_cva( struct vertex_buffer *VB )
 	 norm->start = VEC_ELT(norm, GLfloat, start);
       }
 
-      if (enable & VERT_EDGE) 
+      if (enable & VERT_EDGE)
       {
 	 GLvector1ub *edge = VB->EdgeFlagPtr = &cva->v.EdgeFlag;
 
 	 client_data = &ctx->Array.EdgeFlag;
 
-	 if (fallback & VERT_EDGE) 
+	 if (fallback & VERT_EDGE)
 	    client_data = &ctx->Fallback.EdgeFlag;
 
 	 edge->data = (GLboolean *) client_data->Ptr;
@@ -695,17 +695,17 @@ void gl_prepare_arrays_cva( struct vertex_buffer *VB )
       if (disable & VERT_TEX0_ANY) cva->v.TexCoord[1]= *(VB->store.TexCoord[1]);
       if (disable & VERT_EDGE) cva->v.EdgeFlag = *VB->store.EdgeFlag;
    }
-      
+
    VB->Flag[VB->Count] &= ~VERT_END_VB;
    VB->Count = n;
-      	 
-   if (ctx->Enabled & ENABLE_LIGHT) 
+
+   if (ctx->Enabled & ENABLE_LIGHT)
    {
       if (ctx->Array.Flags != VB->Flag[0])
 	 VB->FlagMax = 0;
-      
+
       if (VB->FlagMax < n) {
-	 for (i = VB->FlagMax ; i < n ; i++) 
+	 for (i = VB->FlagMax ; i < n ; i++)
 	    VB->Flag[i] = ctx->Array.Flags;
 	 VB->Flag[i] = 0;
 	 VB->FlagMax = n;
@@ -719,7 +719,7 @@ void gl_cva_force_precalc( GLcontext *ctx )
 {
    struct gl_cva *cva = &ctx->CVA;
 
-   if (cva->pre.changed_ops) 
+   if (cva->pre.changed_ops)
       gl_reset_cva_vb( cva->VB, cva->pre.changed_ops );
 
    gl_run_pipeline( cva->VB );
@@ -737,9 +737,9 @@ void gl_cva_compile_cassette( GLcontext *ctx, struct immediate *IM )
 
    /* Allow pipeline recalculation based on inputs received from client.
     */
-   if (IM->OrFlag & (cva->pre.forbidden_inputs|cva->elt.forbidden_inputs)) 
+   if (IM->OrFlag & (cva->pre.forbidden_inputs|cva->elt.forbidden_inputs))
    {
-      if (IM->OrFlag & cva->pre.forbidden_inputs) 
+      if (IM->OrFlag & cva->pre.forbidden_inputs)
       {
 	 cva->pre.pipeline_valid = 0;
 	 cva->pre.data_valid = 0;
@@ -756,11 +756,11 @@ void gl_cva_compile_cassette( GLcontext *ctx, struct immediate *IM )
 
    /* Recalculate CVA data if necessary.
     */
-   if (ctx->CompileCVAFlag && !cva->pre.data_valid) 
+   if (ctx->CompileCVAFlag && !cva->pre.data_valid)
    {
-      if (!cva->pre.pipeline_valid) 
+      if (!cva->pre.pipeline_valid)
 	 gl_build_precalc_pipeline( ctx );
-   
+
       gl_cva_force_precalc( ctx );
    }
 
@@ -770,7 +770,8 @@ void gl_cva_compile_cassette( GLcontext *ctx, struct immediate *IM )
       gl_build_immediate_pipeline( ctx );
 
    gl_fixup_input( ctx, IM );
-   gl_execute_cassette( ctx, IM );      
+
+   gl_execute_cassette( ctx, IM );
 }
 
 

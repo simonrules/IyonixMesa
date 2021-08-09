@@ -189,10 +189,10 @@ static void multi_write_rgba_pixels( GLcontext *ctx, GLuint n,
          }
 
          (*ctx->Driver.WriteRGBAPixels)( ctx, n, x, y, 
-					 (const GLubyte (*)[4])rgbaTmp, mask );
+					 (GLubyte (*)[4])rgbaTmp, mask );
          if (ctx->RasterMask & ALPHABUF_BIT) {
             gl_write_alpha_pixels( ctx, n, x, y, 
-				   (const GLubyte (*)[4])rgbaTmp, mask );
+				   (GLubyte (*)[4])rgbaTmp, mask );
          }
       }
    }
@@ -281,7 +281,7 @@ void gl_flush_pb( GLcontext *ctx )
          if (ctx->Light.Model.ColorControl == GL_SEPARATE_SPECULAR_COLOR
              && ctx->Light.Enabled) {
             /* add specular color to primary color */
-            add_colors( PB->count, PB->rgba, (const GLubyte (*)[3]) PB->spec );
+            add_colors( PB->count, PB->rgba, (GLubyte (*)[3]) PB->spec );
          }
 
 	 if (ctx->Fog.Enabled
@@ -293,7 +293,7 @@ void gl_flush_pb( GLcontext *ctx )
 
 	 if (ctx->Color.AlphaEnabled) {
 	    if (gl_alpha_test( ctx, PB->count, 
-			       (const GLubyte (*)[4])PB->rgba, mask )==0) {
+			       (GLubyte (*)[4])PB->rgba, mask )==0) {
 	       goto CleanUp;
 	    }
 	 }
@@ -315,7 +315,7 @@ void gl_flush_pb( GLcontext *ctx )
          
          if (ctx->RasterMask & MULTI_DRAW_BIT) {
             multi_write_rgba_pixels( ctx, PB->count, PB->x, PB->y,
-                                     (const GLubyte (*)[4])PB->rgba, mask );
+                                     (GLubyte (*)[4])PB->rgba, mask );
          }
          else {
             /* normal case: write to exactly one buffer */
@@ -332,11 +332,11 @@ void gl_flush_pb( GLcontext *ctx )
             }
 
             (*ctx->Driver.WriteRGBAPixels)( ctx, PB->count, PB->x, PB->y,
-                                            (const GLubyte (*)[4]) PB->rgba,
+                                            (GLubyte (*)[4]) PB->rgba,
 					    mask );
             if (ctx->RasterMask & ALPHABUF_BIT) {
                gl_write_alpha_pixels( ctx, PB->count, PB->x, PB->y, 
-				      (const GLubyte (*)[4]) PB->rgba, mask );
+				      (GLubyte (*)[4]) PB->rgba, mask );
             }
          }
       }
@@ -347,7 +347,7 @@ void gl_flush_pb( GLcontext *ctx )
 
 	 if (ctx->Color.AlphaEnabled) {
 	    if (gl_alpha_test( ctx, PB->count, 
-			       (const GLubyte (*)[4]) PB->rgba, mask )==0) {
+			       (GLubyte (*)[4]) PB->rgba, mask )==0) {
 	       goto CleanUp;
 	    }
 	 }
@@ -379,7 +379,7 @@ void gl_flush_pb( GLcontext *ctx )
                PB->rgba[i][ACOMP] = PB->color[ACOMP];
             }
             multi_write_rgba_pixels( ctx, PB->count, PB->x, PB->y,
-                                     (const GLubyte (*)[4]) PB->rgba, mask );
+                                     (GLubyte (*)[4]) PB->rgba, mask );
          }
          else {
             /* normal case: write to exactly one buffer */

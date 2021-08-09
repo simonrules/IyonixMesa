@@ -1163,7 +1163,7 @@ static GLint find_intersection( GLUtesselator *tobj, it_node_t **it,
     /* Allocate a new intersection table entry */
     *it = (it_node_t *) malloc( sizeof(it_node_t) );
     if ( *it == NULL ) {
-	tess_error_callback( tobj, GLU_OUT_OF_MEMORY );
+	tess_error_callback( tobj, (GLenum)GLU_OUT_OF_MEMORY );
 	return ret;
     }
 
@@ -1442,9 +1442,9 @@ static tess_contour_t *new_contour( GLUtesselator *tobj )
 {
     tess_contour_t	*contour;
 
-    contour = malloc( sizeof(tess_contour_t) );
+    contour = (tess_contour_t	*)(malloc( sizeof(tess_contour_t) ));
     if ( contour == NULL ) {
-	tess_error_callback( tobj, GLU_OUT_OF_MEMORY );
+	tess_error_callback( tobj, (GLenum)GLU_OUT_OF_MEMORY );
 	return NULL;
     }
 
@@ -1452,7 +1452,7 @@ static tess_contour_t *new_contour( GLUtesselator *tobj )
     contour->plane.dist = tobj->plane.dist;
 
     contour->area = 0.0;
-    contour->orientation = GLU_UNKNOWN;
+    contour->orientation = (GLenum)GLU_UNKNOWN;
 
     contour->label = 0;
     contour->winding = 0;
@@ -1489,12 +1489,12 @@ static void inspect_contour( tess_contour_t *contour )
 
     if ( area >= 0.0 )
     {
-	contour->orientation = GLU_CCW;
+	contour->orientation = (GLenum)GLU_CCW;
 	contour->area = area;
     }
     else
     {
-	contour->orientation = GLU_CW;
+	contour->orientation = (GLenum)GLU_CW;
 	contour->area = -area;
     }
 
@@ -1765,7 +1765,7 @@ GLenum tess_clip_polygons( GLUtesselator *tobj )
 	tobj->contours = NULL;
 	cleanup_lmt( &lmt );
 	free( heap );
-	return GLU_NO_ERROR;
+	return (GLenum)GLU_NO_ERROR;
     }
 
     /* Build scanbeam table from scanbeam tree */
@@ -2470,5 +2470,5 @@ GLenum tess_clip_polygons( GLUtesselator *tobj )
     }
 
     MSG( 1, "    <-- clip_polygons( tobj:%p )\n", tobj );
-    return GLU_NO_ERROR;
+    return (GLenum)GLU_NO_ERROR;
 }

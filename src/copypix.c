@@ -184,12 +184,14 @@ static void copy_rgba_pixels( GLcontext* ctx,
       }
       if (quick_draw && dy>=0 && dy<ctx->Buffer->Height) {
          (*ctx->Driver.WriteRGBASpan)( ctx, width, destx, dy, 
-				       (const GLubyte (*)[4])rgba, NULL );
+//				       (const GLubyte (*)[4])rgba, NULL );
+				       (GLubyte (*)[4])rgba, NULL );
 
       }
       else if (zoom) {
          gl_write_zoomed_rgba_span( ctx, width, destx, dy, zspan, 
-				    (const GLubyte (*)[4])rgba, desty);
+//				    (const GLubyte (*)[4])rgba, desty);
+				    (GLubyte (*)[4])rgba, desty);
       }
       else {
          gl_write_rgba_span( ctx, width, destx, dy, zspan, rgba, GL_BITMAP );
@@ -391,7 +393,8 @@ static void copy_depth_pixels( GLcontext* ctx, GLint srcx, GLint srcy,
       if (ctx->Visual->RGBAflag) {
          if (zoom) {
             gl_write_zoomed_rgba_span( ctx, width, destx, dy, zspan, 
-				       (const GLubyte (*)[4])rgba, desty );
+//				       (const GLubyte (*)[4])rgba, desty );
+				       (GLubyte (*)[4])rgba, desty );
          }
          else {
             gl_write_rgba_span( ctx, width, destx, dy, zspan, rgba, GL_BITMAP);

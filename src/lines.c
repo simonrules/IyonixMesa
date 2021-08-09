@@ -976,6 +976,7 @@ void gl_set_line_function( GLcontext *ctx )
 	 return;
       }
 
+
       if (ctx->Line.SmoothFlag) {
          /* antialiased lines */
          if (rgbmode) {
@@ -1013,14 +1014,16 @@ void gl_set_line_function( GLcontext *ctx )
                || ctx->Line.SmoothFlag) {
          if (ctx->Light.ShadeModel==GL_SMOOTH) {
             if (rgbmode)
+{
                ctx->Driver.LineFunc = general_smooth_rgba_line;
-            else
+}            else
                ctx->Driver.LineFunc = general_smooth_ci_line;
          }
          else {
             if (rgbmode)
+{
                ctx->Driver.LineFunc = general_flat_rgba_line;
-            else
+}            else
                ctx->Driver.LineFunc = general_flat_ci_line;
          }
       }
@@ -1035,8 +1038,9 @@ void gl_set_line_function( GLcontext *ctx )
             }
             else {
                if (rgbmode)
+{
                   ctx->Driver.LineFunc = smooth_rgba_line;
-               else
+}               else
                   ctx->Driver.LineFunc = smooth_ci_line;
             }
 	 }

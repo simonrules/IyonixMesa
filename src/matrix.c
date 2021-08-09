@@ -3,19 +3,19 @@
 /*
  * Mesa 3-D graphics library
  * Version:  3.1
- * 
+ *
  * Copyright (C) 1999  Brian Paul   All Rights Reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
@@ -100,7 +100,7 @@ void gl_print_matrix( const GLmatrix *m )
       matmul4(prod, m->m, m->inv);
       fprintf(stderr, "Mat * Inverse:\n");
       print_matrix_floats(prod);
-  } else 
+  } else
       fprintf(stderr, "  - not available\n");
 #endif
 }
@@ -108,13 +108,13 @@ void gl_print_matrix( const GLmatrix *m )
 
 
 /*
- * This matmul was contributed by Thomas Malik 
+ * This matmul was contributed by Thomas Malik
  *
  * Perform a 4x4 matrix multiplication  (product = a x b).
  * Input:  a, b - matrices to multiply
  * Output:  product - product of a and b
  * WARNING: (product != b) assumed
- * NOTE:    (product == a) allowed    
+ * NOTE:    (product == a) allowed
  *
  * KW: 4*16 = 64 muls
  */
@@ -191,31 +191,31 @@ static GLboolean invert_matrix_general( GLmatrix *mat )
    GLfloat wtmp[4][8];
    GLfloat m0, m1, m2, m3, s;
    GLfloat *r0, *r1, *r2, *r3;
-  
+
    r0 = wtmp[0], r1 = wtmp[1], r2 = wtmp[2], r3 = wtmp[3];
-  
+
    r0[0] = MAT(m,0,0), r0[1] = MAT(m,0,1),
    r0[2] = MAT(m,0,2), r0[3] = MAT(m,0,3),
    r0[4] = 1.0, r0[5] = r0[6] = r0[7] = 0.0,
-  
+
    r1[0] = MAT(m,1,0), r1[1] = MAT(m,1,1),
    r1[2] = MAT(m,1,2), r1[3] = MAT(m,1,3),
    r1[5] = 1.0, r1[4] = r1[6] = r1[7] = 0.0,
-  
+
    r2[0] = MAT(m,2,0), r2[1] = MAT(m,2,1),
    r2[2] = MAT(m,2,2), r2[3] = MAT(m,2,3),
    r2[6] = 1.0, r2[4] = r2[5] = r2[7] = 0.0,
-  
+
    r3[0] = MAT(m,3,0), r3[1] = MAT(m,3,1),
    r3[2] = MAT(m,3,2), r3[3] = MAT(m,3,3),
    r3[7] = 1.0, r3[4] = r3[5] = r3[6] = 0.0;
-  
+
    /* choose pivot - or die */
    if (fabs(r3[0])>fabs(r2[0])) SWAP_ROWS(r3, r2);
    if (fabs(r2[0])>fabs(r1[0])) SWAP_ROWS(r2, r1);
    if (fabs(r1[0])>fabs(r0[0])) SWAP_ROWS(r1, r0);
    if (0.0 == r0[0])  return GL_FALSE;
-  
+
    /* eliminate first variable     */
    m1 = r1[0]/r0[0]; m2 = r2[0]/r0[0]; m3 = r3[0]/r0[0];
    s = r0[1]; r1[1] -= m1 * s; r2[1] -= m2 * s; r3[1] -= m3 * s;
@@ -229,12 +229,12 @@ static GLboolean invert_matrix_general( GLmatrix *mat )
    if (s != 0.0) { r1[6] -= m1 * s; r2[6] -= m2 * s; r3[6] -= m3 * s; }
    s = r0[7];
    if (s != 0.0) { r1[7] -= m1 * s; r2[7] -= m2 * s; r3[7] -= m3 * s; }
-  
+
    /* choose pivot - or die */
    if (fabs(r3[1])>fabs(r2[1])) SWAP_ROWS(r3, r2);
    if (fabs(r2[1])>fabs(r1[1])) SWAP_ROWS(r2, r1);
    if (0.0 == r1[1])  return GL_FALSE;
-  
+
    /* eliminate second variable */
    m2 = r2[1]/r1[1]; m3 = r3[1]/r1[1];
    r2[2] -= m2 * r1[2]; r3[2] -= m3 * r1[2];
@@ -243,23 +243,23 @@ static GLboolean invert_matrix_general( GLmatrix *mat )
    s = r1[5]; if (0.0 != s) { r2[5] -= m2 * s; r3[5] -= m3 * s; }
    s = r1[6]; if (0.0 != s) { r2[6] -= m2 * s; r3[6] -= m3 * s; }
    s = r1[7]; if (0.0 != s) { r2[7] -= m2 * s; r3[7] -= m3 * s; }
-  
+
    /* choose pivot - or die */
    if (fabs(r3[2])>fabs(r2[2])) SWAP_ROWS(r3, r2);
    if (0.0 == r2[2])  return GL_FALSE;
-  
+
    /* eliminate third variable */
    m3 = r3[2]/r2[2];
    r3[3] -= m3 * r2[3], r3[4] -= m3 * r2[4],
    r3[5] -= m3 * r2[5], r3[6] -= m3 * r2[6],
    r3[7] -= m3 * r2[7];
-  
+
    /* last check */
    if (0.0 == r3[3]) return GL_FALSE;
-  
+
    s = 1.0/r3[3];              /* now back substitute row 3 */
    r3[4] *= s; r3[5] *= s; r3[6] *= s; r3[7] *= s;
-  
+
    m2 = r2[3];                 /* now back substitute row 2 */
    s  = 1.0/r2[2];
    r2[4] = s * (r2[4] - r3[4] * m2), r2[5] = s * (r2[5] - r3[5] * m2),
@@ -270,7 +270,7 @@ static GLboolean invert_matrix_general( GLmatrix *mat )
    m0 = r0[3];
    r0[4] -= r3[4] * m0, r0[5] -= r3[5] * m0,
    r0[6] -= r3[6] * m0, r0[7] -= r3[7] * m0;
-  
+
    m1 = r1[2];                 /* now back substitute row 1 */
    s  = 1.0/r1[1];
    r1[4] = s * (r1[4] - r2[4] * m1), r1[5] = s * (r1[5] - r2[5] * m1),
@@ -278,12 +278,12 @@ static GLboolean invert_matrix_general( GLmatrix *mat )
    m0 = r0[2];
    r0[4] -= r2[4] * m0, r0[5] -= r2[5] * m0,
    r0[6] -= r2[6] * m0, r0[7] -= r2[7] * m0;
-  
+
    m0 = r0[1];                 /* now back substitute row 0 */
    s  = 1.0/r0[0];
    r0[4] = s * (r0[4] - r1[4] * m0), r0[5] = s * (r0[5] - r1[5] * m0),
    r0[6] = s * (r0[6] - r1[6] * m0), r0[7] = s * (r0[7] - r1[7] * m0);
-  
+
    MAT(out,0,0) = r0[4]; MAT(out,0,1) = r0[5],
    MAT(out,0,2) = r0[6]; MAT(out,0,3) = r0[7],
    MAT(out,1,0) = r1[4]; MAT(out,1,1) = r1[5],
@@ -291,14 +291,14 @@ static GLboolean invert_matrix_general( GLmatrix *mat )
    MAT(out,2,0) = r2[4]; MAT(out,2,1) = r2[5],
    MAT(out,2,2) = r2[6]; MAT(out,2,3) = r2[7],
    MAT(out,3,0) = r3[4]; MAT(out,3,1) = r3[5],
-   MAT(out,3,2) = r3[6]; MAT(out,3,3) = r3[7]; 
-  
+   MAT(out,3,2) = r3[6]; MAT(out,3,3) = r3[7];
+
    return GL_TRUE;
 }
 #undef SWAP_ROWS
 
 /* Adapted from graphics gems II.
- */  
+ */
 static GLboolean invert_matrix_3d_general( GLmatrix *mat )
 {
    const GLfloat *in = mat->m;
@@ -307,7 +307,7 @@ static GLboolean invert_matrix_3d_general( GLmatrix *mat )
    GLfloat det;
 
    /* Calculate the determinant of upper left 3x3 submatrix and
-    * determine if the matrix is singular. 
+    * determine if the matrix is singular.
     */
    pos = neg = 0.0;
    t =  MAT(in,0,0) * MAT(in,1,1) * MAT(in,2,2);
@@ -330,9 +330,9 @@ static GLboolean invert_matrix_3d_general( GLmatrix *mat )
 
    det = pos + neg;
 
-   if (det*det < 1e-25) 
+   if (det*det < 1e-25)
       return GL_FALSE;
-   
+
    det = 1.0 / det;
    MAT(out,0,0) = (  (MAT(in,1,1)*MAT(in,2,2) - MAT(in,2,1)*MAT(in,1,2) )*det);
    MAT(out,0,1) = (- (MAT(in,0,1)*MAT(in,2,2) - MAT(in,2,1)*MAT(in,0,2) )*det);
@@ -354,7 +354,7 @@ static GLboolean invert_matrix_3d_general( GLmatrix *mat )
    MAT(out,2,3) = - (MAT(in,0,3) * MAT(out,2,0) +
 		     MAT(in,1,3) * MAT(out,2,1) +
 		     MAT(in,2,3) * MAT(out,2,2) );
-    
+
    return GL_TRUE;
 }
 
@@ -368,14 +368,14 @@ static GLboolean invert_matrix_3d( GLmatrix *mat )
    {
       return invert_matrix_3d_general( mat );
    }
-   
+
    if (mat->flags & MAT_FLAG_UNIFORM_SCALE)
    {
       GLfloat  scale = (MAT(in,0,0) * MAT(in,0,0) +
 			MAT(in,0,1) * MAT(in,0,1) +
 			MAT(in,0,2) * MAT(in,0,2));
 
-      if (scale == 0.0) 
+      if (scale == 0.0)
          return GL_FALSE;
 
       scale = 1.0 / scale;
@@ -412,7 +412,7 @@ static GLboolean invert_matrix_3d( GLmatrix *mat )
       MAT(out,2,3) = - MAT(in,2,3);
       return GL_TRUE;
    }
-    
+
    if (mat->flags & MAT_FLAG_TRANSLATION)
    {
       /* Do the translation part */
@@ -426,15 +426,15 @@ static GLboolean invert_matrix_3d( GLmatrix *mat )
 			MAT(in,1,3) * MAT(out,2,1) +
 			MAT(in,2,3) * MAT(out,2,2) );
    }
-   else 
+   else
    {
       MAT(out,0,3) = MAT(out,1,3) = MAT(out,2,3) = 0.0;
    }
-    
+
    return GL_TRUE;
 }
 
-  
+
 
 static GLboolean invert_matrix_identity( GLmatrix *mat )
 {
@@ -448,9 +448,9 @@ static GLboolean invert_matrix_3d_no_rot( GLmatrix *mat )
    const GLfloat *in = mat->m;
    GLfloat *out = mat->inv;
 
-   if (MAT(in,0,0) == 0 || MAT(in,1,1) == 0 || MAT(in,2,2) == 0 )       
+   if (MAT(in,0,0) == 0 || MAT(in,1,1) == 0 || MAT(in,2,2) == 0 )
       return GL_FALSE;
-  
+
    MEMCPY( out, Identity, 16 * sizeof(GLfloat) );
    MAT(out,0,0) = 1.0 / MAT(in,0,0);
    MAT(out,1,1) = 1.0 / MAT(in,1,1);
@@ -472,9 +472,9 @@ static GLboolean invert_matrix_2d_no_rot( GLmatrix *mat )
    const GLfloat *in = mat->m;
    GLfloat *out = mat->inv;
 
-   if (MAT(in,0,0) == 0 || MAT(in,1,1) == 0)       
+   if (MAT(in,0,0) == 0 || MAT(in,1,1) == 0)
       return GL_FALSE;
-  
+
    MEMCPY( out, Identity, 16 * sizeof(GLfloat) );
    MAT(out,0,0) = 1.0 / MAT(in,0,0);
    MAT(out,1,1) = 1.0 / MAT(in,1,1);
@@ -542,7 +542,7 @@ GLboolean gl_matrix_invert( GLmatrix *mat )
    } else {
       MEMCPY( mat->inv, Identity, sizeof(Identity) );
       return GL_FALSE;
-   }  
+   }
 }
 
 
@@ -700,7 +700,7 @@ void gl_rotation_matrix( GLfloat angle, GLfloat x, GLfloat y, GLfloat z,
 			  ZERO(3)  | ZERO(7)  |            ZERO(15) )
 
 #define SQ(x) ((x)*(x))
-  
+
 /* Determine type and flags from scratch.  This is expensive enough to
  * only want to do it once.
  */
@@ -710,11 +710,11 @@ static void analyze_from_scratch( GLmatrix *mat )
    GLuint mask = 0;
    GLuint i;
 
-   for (i = 0 ; i < 16 ; i++) 
+   for (i = 0 ; i < 16 ; i++)
    {
       if (m[i] == 0.0) mask |= (1<<i);
    }
-   
+
    if (m[0] == 1.0F) mask |= (1<<16);
    if (m[5] == 1.0F) mask |= (1<<21);
    if (m[10] == 1.0F) mask |= (1<<26);
@@ -722,24 +722,24 @@ static void analyze_from_scratch( GLmatrix *mat )
 
    mat->flags &= ~MAT_FLAGS_GEOMETRY;
 
-   /* Check for translation - no-one really cares 
+   /* Check for translation - no-one really cares
     */
-   if ((mask & MASK_NO_TRX) != MASK_NO_TRX) 
-      mat->flags |= MAT_FLAG_TRANSLATION;      
+   if ((mask & MASK_NO_TRX) != MASK_NO_TRX)
+      mat->flags |= MAT_FLAG_TRANSLATION;
 
    /* Do the real work
     */
    if (mask == MASK_IDENTITY) {
       mat->type = MATRIX_IDENTITY;
    }
-   else if ((mask & MASK_2D_NO_ROT) == MASK_2D_NO_ROT)  
+   else if ((mask & MASK_2D_NO_ROT) == MASK_2D_NO_ROT)
    {
       mat->type = MATRIX_2D_NO_ROT;
-      
+
       if ((mask & MASK_NO_2D_SCALE) != MASK_NO_2D_SCALE)
 	 mat->flags = MAT_FLAG_GENERAL_SCALE;
    }
-   else if ((mask & MASK_2D) == MASK_2D)  
+   else if ((mask & MASK_2D) == MASK_2D)
    {
       GLfloat mm = DOT2(m, m);
       GLfloat m4m4 = DOT2(m+4,m+4);
@@ -749,7 +749,7 @@ static void analyze_from_scratch( GLmatrix *mat )
 
       /* Check for scale */
       if (SQ(mm-1) > SQ(1e-6) ||
-	  SQ(m4m4-1) > SQ(1e-6)) 
+	  SQ(m4m4-1) > SQ(1e-6))
 	 mat->flags |= MAT_FLAG_GENERAL_SCALE;
 
       /* Check for rotation */
@@ -764,7 +764,7 @@ static void analyze_from_scratch( GLmatrix *mat )
       mat->type = MATRIX_3D_NO_ROT;
 
       /* Check for scale */
-      if (SQ(m[0]-m[5]) < SQ(1e-6) && 
+      if (SQ(m[0]-m[5]) < SQ(1e-6) &&
 	  SQ(m[0]-m[10]) < SQ(1e-6)) {
 	 if (SQ(m[0]-1.0) > SQ(1e-6))
 	    mat->flags |= MAT_FLAG_UNIFORM_SCALE;
@@ -786,14 +786,14 @@ static void analyze_from_scratch( GLmatrix *mat )
 	 if (SQ(c1-1.0) > SQ(1e-6))
 	    mat->flags |= MAT_FLAG_UNIFORM_SCALE;
 	 /* else no scale at all */
-      } else 
+      } else
 	 mat->flags |= MAT_FLAG_GENERAL_SCALE;
 
       /* Check for rotation */
       if (SQ(d1) < SQ(1e-6)) {
 	 CROSS3( cp, m, m+4 );
 	 SUB_3V( cp, cp, (m+8) );
-	 if (LEN_SQUARED_3FV(cp) < SQ(1e-6)) 
+	 if (LEN_SQUARED_3FV(cp) < SQ(1e-6))
 	    mat->flags |= MAT_FLAG_ROTATION;
 	 else
 	    mat->flags |= MAT_FLAG_GENERAL_3D;
@@ -801,7 +801,7 @@ static void analyze_from_scratch( GLmatrix *mat )
       else
 	 mat->flags |= MAT_FLAG_GENERAL_3D; /* shear, etc */
    }
-   else if ((mask & MASK_PERSPECTIVE) == MASK_PERSPECTIVE && m[11]==-1.0F) 
+   else if ((mask & MASK_PERSPECTIVE) == MASK_PERSPECTIVE && m[11]==-1.0F)
    {
       mat->type = MATRIX_PERSPECTIVE;
       mat->flags |= MAT_FLAG_GENERAL;
@@ -814,7 +814,7 @@ static void analyze_from_scratch( GLmatrix *mat )
 
 
 /* Analyse a matrix given that its flags are accurate - this is the
- * more common operation, hopefully. 
+ * more common operation, hopefully.
  */
 static void analyze_from_flags( GLmatrix *mat )
 {
@@ -835,13 +835,13 @@ static void analyze_from_flags( GLmatrix *mat )
       }
    }
    else if (TEST_MAT_FLAGS(mat, MAT_FLAGS_3D)) {
-      if (                                 m[ 8]==0.0F               
+      if (                                 m[ 8]==0.0F
             &&                             m[ 9]==0.0F
             && m[2]==0.0F && m[6]==0.0F && m[10]==1.0F && m[14]==0.0F)
       {
 	 mat->type = MATRIX_2D;
       }
-      else 
+      else
       {
 	 mat->type = MATRIX_3D;
       }
@@ -849,7 +849,7 @@ static void analyze_from_flags( GLmatrix *mat )
    else if (                 m[4]==0.0F                 && m[12]==0.0F
             && m[1]==0.0F                               && m[13]==0.0F
             && m[2]==0.0F && m[6]==0.0F
-            && m[3]==0.0F && m[7]==0.0F && m[11]==-1.0F && m[15]==0.0F) 
+            && m[3]==0.0F && m[7]==0.0F && m[11]==-1.0F && m[15]==0.0F)
    {
       mat->type = MATRIX_PERSPECTIVE;
    }
@@ -860,10 +860,10 @@ static void analyze_from_flags( GLmatrix *mat )
 }
 
 
-void gl_matrix_analyze( GLmatrix *mat ) 
+void gl_matrix_analyze( GLmatrix *mat )
 {
    if (mat->flags & MAT_DIRTY_TYPE) {
-      if (mat->flags & MAT_DIRTY_FLAGS) 
+      if (mat->flags & MAT_DIRTY_FLAGS)
 	 analyze_from_scratch( mat );
       else
 	 analyze_from_flags( mat );
@@ -944,7 +944,7 @@ void gl_Frustum( GLcontext *ctx,
        */
       ctx->NearFarStack[ctx->ProjectionStackDepth][0] = nearval;
       ctx->NearFarStack[ctx->ProjectionStackDepth][1] = farval;
-      
+
       if (ctx->Driver.NearFar) {
 	 (*ctx->Driver.NearFar)( ctx, nearval, farval );
       }
@@ -963,7 +963,7 @@ void gl_Ortho( GLcontext *ctx,
    GLmatrix *mat = 0;
 
    GET_ACTIVE_MATRIX( ctx,  mat, ctx->NewState, "glOrtho" );
-   
+
    if ((left == right) || (bottom == top) || (nearval == farval)) {
       gl_error( ctx,  GL_INVALID_VALUE, "gl_Ortho((l = r) or (b = top) or (n=f)" );
       return;
@@ -1012,7 +1012,7 @@ void gl_PushMatrix( GLcontext *ctx )
    ASSERT_OUTSIDE_BEGIN_END_AND_FLUSH(ctx, "glPushMatrix");
 
    if (MESA_VERBOSE&VERBOSE_API)
-      fprintf(stderr, "glPushMatrix %s\n", 
+      fprintf(stderr, "glPushMatrix %s\n",
 	      gl_lookup_enum_by_nr(ctx->Transform.MatrixMode));
 
    switch (ctx->Transform.MatrixMode) {
@@ -1061,7 +1061,7 @@ void gl_PopMatrix( GLcontext *ctx )
    ASSERT_OUTSIDE_BEGIN_END_AND_FLUSH(ctx, "glPopMatrix");
 
    if (MESA_VERBOSE&VERBOSE_API)
-      fprintf(stderr, "glPopMatrix %s\n", 
+      fprintf(stderr, "glPopMatrix %s\n",
 	      gl_lookup_enum_by_nr(ctx->Transform.MatrixMode));
 
    switch (ctx->Transform.MatrixMode) {
@@ -1122,12 +1122,12 @@ void gl_LoadIdentity( GLcontext *ctx )
       MEMCPY( mat->inv, Identity, 16*sizeof(GLfloat) );
 
    mat->type = MATRIX_IDENTITY;
-   
+
    /* Have to set this to dirty to make sure we recalculate the
     * combined matrix later.  The update_matrix in this case is a
     * shortcircuit anyway...
     */
-   mat->flags = MAT_DIRTY_DEPENDENTS;	
+   mat->flags = MAT_DIRTY_DEPENDENTS;
 }
 
 
@@ -1176,7 +1176,7 @@ void gl_MultMatrixf( GLcontext *ctx, const GLfloat *m )
 
 
 /*
- * Multiply the active matrix by an arbitary matrix.  
+ * Multiply the active matrix by an arbitary matrix.
  */
 void gl_MultMatrixd( GLcontext *ctx, const GLdouble *m )
 {
@@ -1195,14 +1195,14 @@ void gl_MultMatrixd( GLcontext *ctx, const GLdouble *m )
 void gl_mat_mul_floats( GLmatrix *mat, const GLfloat *m, GLuint flags )
 {
    mat->flags |= (flags |
-		  MAT_DIRTY_TYPE | 
-		  MAT_DIRTY_INVERSE | 
+		  MAT_DIRTY_TYPE |
+		  MAT_DIRTY_INVERSE |
 		  MAT_DIRTY_DEPENDENTS);
 
    if (TEST_MAT_FLAGS(mat, MAT_FLAGS_3D))
       matmul34( mat->m, mat->m, m );
-   else 
-      matmul4( mat->m, mat->m, m );      
+   else
+      matmul4( mat->m, mat->m, m );
 
 }
 
@@ -1212,14 +1212,14 @@ void gl_mat_mul_floats( GLmatrix *mat, const GLfloat *m, GLuint flags )
 void gl_mat_mul_mat( GLmatrix *mat, const GLmatrix *m )
 {
    mat->flags |= (m->flags |
-		  MAT_DIRTY_TYPE | 
-		  MAT_DIRTY_INVERSE | 
+		  MAT_DIRTY_TYPE |
+		  MAT_DIRTY_INVERSE |
 		  MAT_DIRTY_DEPENDENTS);
 
    if (TEST_MAT_FLAGS(mat, MAT_FLAGS_3D))
       matmul34( mat->m, mat->m, m->m );
-   else 
-      matmul4( mat->m, mat->m, m->m );      
+   else
+      matmul4( mat->m, mat->m, m->m );
 }
 
 
@@ -1260,8 +1260,8 @@ void gl_Scalef( GLcontext *ctx, GLfloat x, GLfloat y, GLfloat z )
    else
       mat->flags |= MAT_FLAG_GENERAL_SCALE;
 
-   mat->flags |= (MAT_DIRTY_TYPE | 
-		  MAT_DIRTY_INVERSE | 
+   mat->flags |= (MAT_DIRTY_TYPE |
+		  MAT_DIRTY_INVERSE |
 		  MAT_DIRTY_DEPENDENTS);
 }
 
@@ -1279,9 +1279,9 @@ void gl_Translatef( GLcontext *ctx, GLfloat x, GLfloat y, GLfloat z )
    m[14] = m[2] * x + m[6] * y + m[10] * z + m[14];
    m[15] = m[3] * x + m[7] * y + m[11] * z + m[15];
 
-   mat->flags |= (MAT_FLAG_TRANSLATION | 
-		  MAT_DIRTY_TYPE | 
-		  MAT_DIRTY_INVERSE | 
+   mat->flags |= (MAT_FLAG_TRANSLATION |
+		  MAT_DIRTY_TYPE |
+		  MAT_DIRTY_INVERSE |
 		  MAT_DIRTY_DEPENDENTS);
 }
 
@@ -1302,7 +1302,7 @@ void gl_Viewport( GLcontext *ctx,
 
    if (MESA_VERBOSE & VERBOSE_API)
       fprintf(stderr, "glViewport %d %d %d %d\n", x, y, width, height);
-   
+
    /* clamp width, and height to implementation dependent range */
    width  = CLAMP( width,  1, MAX_WIDTH );
    height = CLAMP( height, 1, MAX_HEIGHT );
@@ -1368,7 +1368,7 @@ void gl_DepthRange( GLcontext *ctx, GLclampd nearval, GLclampd farval )
    ASSERT_OUTSIDE_BEGIN_END_AND_FLUSH(ctx, "glDepthRange");
 
    if (MESA_VERBOSE&VERBOSE_API)
-      fprintf(stderr, "glDepthRange %f %f\n", nearval, farval); 
+      fprintf(stderr, "glDepthRange %f %f\n", nearval, farval);
 
    n = (GLfloat) CLAMP( nearval, 0.0, 1.0 );
    f = (GLfloat) CLAMP( farval, 0.0, 1.0 );
@@ -1447,12 +1447,12 @@ void gl_matrix_mul( GLmatrix *dest, const GLmatrix *a, const GLmatrix *b )
 {
    dest->flags = (a->flags |
 		  b->flags |
-		  MAT_DIRTY_TYPE | 
-		  MAT_DIRTY_INVERSE | 
+		  MAT_DIRTY_TYPE |
+		  MAT_DIRTY_INVERSE |
 		  MAT_DIRTY_DEPENDENTS);
 
    if (TEST_MAT_FLAGS(dest, MAT_FLAGS_3D))
       matmul34( dest->m, a->m, b->m );
-   else 
+   else
       matmul4( dest->m, a->m, b->m );
 }

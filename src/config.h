@@ -128,7 +128,6 @@
  */
 #define ACCUM_BITS 16
 
-
 #ifdef MESAD3D
    /* Mesa / Direct3D driver only */
    extern float g_DepthScale, g_MaxDepth;

@@ -2165,7 +2165,7 @@ void gl_texture_pixels( GLcontext *ctx, GLuint texUnit, GLuint n,
                                              s, t, r, lambda, texel );
 
          apply_texture( ctx, textureUnit, n, 
-			rgba, (const GLubyte (*)[4])texel );
+			rgba, (GLubyte (*)[4])texel );
       }
    }
 }

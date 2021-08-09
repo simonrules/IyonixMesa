@@ -380,6 +380,12 @@ GLuint gl_depth_test_span_less( GLcontext* ctx,
                                 GLuint n, GLint x, GLint y, const GLdepth z[],
                                 GLubyte mask[] )
 {
+//rudolf ter info:
+/*
+#define Z_ADDRESS( CTX, X, Y )  \
+            ((CTX)->Buffer->Depth + (CTX)->Buffer->Width * (Y) + (X))
+*/
+
    GLdepth *zptr = Z_ADDRESS( ctx, x, y );
    GLuint i;
    GLuint passed = 0;

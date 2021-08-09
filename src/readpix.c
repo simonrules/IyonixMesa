@@ -657,7 +657,7 @@ static void read_rgba_pixels( GLcontext *ctx,
          dest = gl_pixel_addr_in_image( packing, pixels, width, height,
                                         format, type, 0, j, 0);
 
-         gl_pack_rgba_span( ctx, readWidth, (const GLubyte (*)[4]) rgba,
+         gl_pack_rgba_span( ctx, readWidth, (GLubyte (*)[4]) rgba,
                             format, type, dest, packing, GL_TRUE );
       }
    }
@@ -679,7 +679,7 @@ static void read_rgba_pixels( GLcontext *ctx,
          dest = gl_pixel_addr_in_image( packing, pixels, width, height,
                                         format, type, 0, j, 0);
 
-         gl_pack_rgba_span( ctx, readWidth, (const GLubyte (*)[4]) rgba,
+         gl_pack_rgba_span( ctx, readWidth, (GLubyte (*)[4]) rgba,
                             format, type, dest, packing, GL_TRUE );
       }
    }

@@ -247,7 +247,7 @@ GLenum fist_recovery_process( GLUtesselator *tobj, tess_contour_t *contour )
 	    free( vertex );
 
 	    MSG( 5, "  <- fist_recovery_process( tobj:%p ) okay\n", tobj );
-	    return GLU_NO_ERROR;
+	    return (GLenum)GLU_NO_ERROR;
 	}
 
 	vertex = vertex->next;
@@ -290,9 +290,9 @@ GLenum fist_recovery_process( GLUtesselator *tobj, tess_contour_t *contour )
     classify_vertex( contour, vertex->next, tobj->orientation );
 
     free( vertex );
-    
+
     MSG( 5, "  <- fist_recovery_process( tobj:%p ) okay\n", tobj );
-    return GLU_NO_ERROR;
+    return (GLenum)GLU_NO_ERROR;
 #else
     contour_dump( contour );
 
@@ -300,7 +300,7 @@ GLenum fist_recovery_process( GLUtesselator *tobj, tess_contour_t *contour )
     tess_error_callback( tobj, GLU_TESS_ERROR8 );
 
     MSG( 5, "  <- fist_recovery_process( tobj:%p ) failed!\n", tobj );
-    return GLU_ERROR;
+    return (GLenum)GLU_ERROR;
 #endif
 }
 
@@ -365,7 +365,7 @@ static GLenum remove_coincident_vertices( GLUtesselator *tobj )
     }
 
     MSG( 5, "    <- remove_coincident_vertices( tobj:%p )\n", tobj );
-    return GLU_NO_ERROR;
+    return (GLenum)GLU_NO_ERROR;
 }
 
 
@@ -401,8 +401,8 @@ static GLenum compute_orientations( GLUtesselator *tobj )
 	sorted_contours = (tess_contour_t **)
 	    malloc( tobj->num_contours * sizeof(tess_contour_t *) );
 	if ( sorted_contours == NULL ) {
-	    tess_error_callback( tobj, GLU_OUT_OF_MEMORY );
-	    return GLU_ERROR;
+	    tess_error_callback( tobj, (GLenum)GLU_OUT_OF_MEMORY );
+	    return (GLenum)GLU_ERROR;
 	}
 
 	current = tobj->contours;
@@ -441,7 +441,7 @@ static GLenum compute_orientations( GLUtesselator *tobj )
     }
 
     MSG( 15, "    <- compute_orientations( tobj:%p )\n", tobj );
-    return GLU_NO_ERROR;
+    return (GLenum)GLU_NO_ERROR;
 }
 
 /*****************************************************************************
@@ -486,8 +486,8 @@ static GLenum sort_vertices( GLUtesselator *tobj )
     tobj->sorted_vertices = (tess_vertex_t **)
 	malloc( tobj->num_vertices * sizeof(tess_vertex_t *) );
     if ( tobj->sorted_vertices == NULL ) {
-	tess_error_callback( tobj, GLU_OUT_OF_MEMORY );
-	return GLU_ERROR;
+	tess_error_callback( tobj, (GLenum)GLU_OUT_OF_MEMORY );
+	return (GLenum)GLU_ERROR;
     }
 
     /* Add each vertex from each contour to the array for sorting. */
@@ -581,7 +581,7 @@ static GLenum sort_vertices( GLUtesselator *tobj )
     }
 
     MSG( 15, "    <-- sort_vertices( tobj:%p )\n", tobj );
-    return GLU_NO_ERROR;
+    return (GLenum)GLU_NO_ERROR;
 }
 
 /*****************************************************************************
@@ -627,8 +627,8 @@ static GLenum transform_build_bridges( GLUtesselator *tobj )
     sorted = (tess_contour_t **)
 	malloc( tobj->num_contours * sizeof(tess_contour_t *) );
     if ( sorted == NULL ) {
-	tess_error_callback( tobj, GLU_OUT_OF_MEMORY );
-	return GLU_ERROR;
+	tess_error_callback( tobj, (GLenum)GLU_OUT_OF_MEMORY );
+	return (GLenum)GLU_ERROR;
     }
 
     for ( contour = tobj->contours, num_sorted = 0, i = 0;
@@ -655,8 +655,8 @@ static GLenum transform_build_bridges( GLUtesselator *tobj )
 	closest = (fist_vecdist_t *)
 	    malloc( parent->num_vertices * sizeof(fist_vecdist_t) );
 	if ( closest == NULL ) {
-	    tess_error_callback( tobj, GLU_OUT_OF_MEMORY );
-	    return GLU_ERROR;
+	    tess_error_callback( tobj, (GLenum)GLU_OUT_OF_MEMORY );
+	    return (GLenum)GLU_ERROR;
 	}
 
 	for ( vertex = parent->vertices, j = 0;
@@ -700,8 +700,8 @@ static GLenum transform_build_bridges( GLUtesselator *tobj )
 	    new_edge[1] = (tess_vertex_t *) malloc( sizeof(tess_vertex_t) );
 
 	    if ( ( new_edge[0] == NULL ) || ( new_edge[1] == NULL ) ) {
-		tess_error_callback( tobj, GLU_OUT_OF_MEMORY );
-		return GLU_ERROR;
+		tess_error_callback( tobj, (GLenum)GLU_OUT_OF_MEMORY );
+		return (GLenum)GLU_ERROR;
 	    }
 
 	    /* FIXME: Describe what the hell is going on in here. */
@@ -763,7 +763,7 @@ static GLenum transform_build_bridges( GLUtesselator *tobj )
     }
 
     MSG( 5, "    <- transform_build_bridges( tobj:%p ) count: %d\n", tobj, tobj->num_contours );
-    return GLU_NO_ERROR;
+    return (GLenum)GLU_NO_ERROR;
 }
 
 /*****************************************************************************
@@ -828,7 +828,7 @@ static GLenum classify_angles( GLUtesselator *tobj )
     }
 
     MSG( 15, "    <- classify_angles( tobj:%p )\n", tobj );
-    return GLU_NO_ERROR;
+    return (GLenum)GLU_NO_ERROR;
 }
 
 /*****************************************************************************
@@ -886,7 +886,7 @@ static GLenum tessellate_contours( GLUtesselator *tobj )
     if ( tobj->num_contours == 0 )
     {
 	MSG( 1, "         no contours, returning...\n" );
-	return GLU_NO_ERROR;
+	return (GLenum)GLU_NO_ERROR;
     }
 
     /* Break the contour loop into a standard doubly-linked list. */
@@ -1085,7 +1085,7 @@ static GLenum tessellate_contours( GLUtesselator *tobj )
 		    /* Dump the remaining contours as line loops. */
 		    output_contours( tobj );
 #endif
-		    return GLU_ERROR;
+		    return (GLenum)GLU_ERROR;
 		}
 	    }
 	}
@@ -1119,7 +1119,7 @@ static GLenum tessellate_contours( GLUtesselator *tobj )
     tess_end_callback( tobj );
 
     MSG( 1, "    <- tessellate_contours( tobj:%p )\n", tobj );
-    return GLU_NO_ERROR;
+    return (GLenum)GLU_NO_ERROR;
 }
 
 /*****************************************************************************
@@ -1147,8 +1147,8 @@ static GLenum determine_ears( GLUtesselator *tobj, tess_contour_t *contour )
 	    element = add_ear_to_heap( tobj->ears, vertex );
 
 	    if ( element == NULL ) {
-		tess_error_callback( tobj, GLU_OUT_OF_MEMORY );
-		return GLU_ERROR;
+		tess_error_callback( tobj, (GLenum)GLU_OUT_OF_MEMORY );
+		return (GLenum)GLU_ERROR;
 	    }
 
 	    element->prev = prev;
@@ -1181,7 +1181,7 @@ static GLenum determine_ears( GLUtesselator *tobj, tess_contour_t *contour )
     }
 
     MSG( 1, "      <-- determine_ears( tobj:%p )\n", tobj );
-    return GLU_NO_ERROR;
+    return (GLenum)GLU_NO_ERROR;
 }
 
 /*****************************************************************************
@@ -1211,7 +1211,7 @@ static GLboolean earity_test( tess_contour_t *contour, tess_vertex_t *vertex,
 		tess_vertex_t	*reflex = (tess_vertex_t *) elt->ptr;
 
 		if ( point_triangle_test( vertex, reflex, orientation ) ) {
-		    return GL_FALSE;
+		    return (GLenum)GL_FALSE;
 		}
 
 		elt = elt->next;
@@ -1418,7 +1418,7 @@ static GLenum output_contours( GLUtesselator *tobj )
 	tess_end_callback( tobj );
     }
 
-    return GLU_NO_ERROR;
+    return (GLenum)GLU_NO_ERROR;
 }
 
 
@@ -1463,11 +1463,11 @@ GLboolean point_triangle_test( tess_vertex_t *triangle, tess_vertex_t *point,
 	      ( point_line_test( triangle->prev->v, triangle->v,
 				 point->v ) <= GLU_TESS_EPSILON ) )
     {
-	return GL_TRUE;
+	return (GLenum)GL_TRUE;
     }
     else
     {
-	return GL_FALSE;
+	return (GLenum)GL_FALSE;
     }
 }
 

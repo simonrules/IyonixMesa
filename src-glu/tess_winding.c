@@ -469,5 +469,5 @@ GLenum tess_preprocess_contours( GLUtesselator *tobj )
 
     cleanup( tobj );
 
-    return GLU_NO_ERROR;
+    return (GLenum)GLU_NO_ERROR;
 }

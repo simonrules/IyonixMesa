@@ -2637,12 +2637,12 @@ extract_uint_indexes(GLuint n, GLuint indexes[],
                for (i = 0; i < n; i++) {
                   GLfloat value = s[i];
                   SWAP4BYTE(value);
-                  indexes[i] = value;
+                  indexes[i] = (unsigned int)value;
                }
             }
             else {
                for (i = 0; i < n; i++)
-                  indexes[i] = s[i];
+                  indexes[i] =  (unsigned int)(s[i]);
             }
          }
          break;
@@ -3626,7 +3626,7 @@ _mesa_unpack_image( GLsizei width, GLsizei height, GLsizei depth,
    }
 
    {
-      GLubyte *destBuffer = MALLOC(bytesPerRow * height * depth);
+      GLubyte *destBuffer = (GLubyte *)(MALLOC(bytesPerRow * height * depth));
       GLubyte *dst;
       GLint img, row;
       if (!destBuffer)

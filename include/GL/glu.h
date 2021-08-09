@@ -220,18 +220,18 @@ enum {
 /*
  * These are the GLU 1.1 typedefs.  GLU 1.3 has different ones!
  */
-#if defined(__BEOS__)
+//#if defined(__BEOS__)
     /* The BeOS does something funky and makes these typedefs in one
      * of its system headers.
      */
-#else
+//#else
     typedef struct GLUquadric GLUquadricObj;
     typedef struct GLUnurbs GLUnurbsObj;
 
     /* FIXME: We need to implement the other 1.3 typedefs - GH */
     typedef struct GLUtesselator GLUtesselator;
     typedef GLUtesselator GLUtriangulatorObj;
-#endif
+//#endif
 
 
 

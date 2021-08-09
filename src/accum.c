@@ -370,8 +370,10 @@ void gl_Accum( GLcontext *ctx, GLenum op, GLfloat value )
                if (ctx->Color.SWmasking) {
                   gl_mask_rgba_span( ctx, width, xpos, ypos, rgba );
                }
+//               (*ctx->Driver.WriteRGBASpan)( ctx, width, xpos, ypos, 
+//                                           (const GLubyte (*)[4])rgba, NULL );
                (*ctx->Driver.WriteRGBASpan)( ctx, width, xpos, ypos, 
-                                             (const GLubyte (*)[4])rgba, NULL );
+                                             (GLubyte (*)[4])rgba, NULL );
                ypos++;
             }
          }
@@ -397,8 +399,10 @@ void gl_Accum( GLcontext *ctx, GLenum op, GLfloat value )
                if (ctx->Color.SWmasking) {
                   gl_mask_rgba_span( ctx, width, xpos, ypos, rgba );
                }
+//               (*ctx->Driver.WriteRGBASpan)( ctx, width, xpos, ypos, 
+//                                             (const GLubyte (*)[4])rgba, NULL );
                (*ctx->Driver.WriteRGBASpan)( ctx, width, xpos, ypos, 
-                                             (const GLubyte (*)[4])rgba, NULL );
+                                             (GLubyte (*)[4])rgba, NULL );
                ypos++;
             }
 	 }

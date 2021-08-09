@@ -79,7 +79,7 @@ void gl_ClearColor( GLcontext *ctx, GLclampf red, GLclampf green,
       GLubyte g = (GLint) (ctx->Color.ClearColor[1] * 255.0F);
       GLubyte b = (GLint) (ctx->Color.ClearColor[2] * 255.0F);
       GLubyte a = (GLint) (ctx->Color.ClearColor[3] * 255.0F);
-      (*ctx->Driver.ClearColor)( ctx, r, g, b, a );
+     (*ctx->Driver.ClearColor)( ctx, r, g, b, a );
    }
 }
 
@@ -125,7 +125,7 @@ static void clear_color_buffer_with_masking( GLcontext *ctx )
          }
          gl_mask_rgba_span( ctx, width, x, y, rgba );
          (*ctx->Driver.WriteRGBASpan)( ctx, width, x, y, 
-				       (const GLubyte (*)[4])rgba, NULL );
+				       (GLubyte (*)[4])rgba, NULL );
       }
    }
    else {

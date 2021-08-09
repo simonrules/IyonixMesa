@@ -200,17 +200,17 @@
       (void) invDx;
 #if INTERP_RGBA
       if (ctx->Light.ShadeModel == GL_SMOOTH) {
-         dfr = (IntToFixed(VB->ColorPtr->data[vert1][0]) - fr) * invDx;
-         dfg = (IntToFixed(VB->ColorPtr->data[vert1][1]) - fg) * invDx;
-         dfb = (IntToFixed(VB->ColorPtr->data[vert1][2]) - fb) * invDx;
-         dfa = (IntToFixed(VB->ColorPtr->data[vert1][3]) - fa) * invDx;
+         dfr = (GLfixed)((IntToFixed(VB->ColorPtr->data[vert1][0]) - fr) * invDx);
+         dfg = (GLfixed)((IntToFixed(VB->ColorPtr->data[vert1][1]) - fg) * invDx);
+         dfb = (GLfixed)((IntToFixed(VB->ColorPtr->data[vert1][2]) - fb) * invDx);
+         dfa = (GLfixed)((IntToFixed(VB->ColorPtr->data[vert1][3]) - fa) * invDx);
       }
 #endif
 #if INTERP_SPEC
       if (ctx->Light.ShadeModel == GL_SMOOTH) {
-         dfsr = (IntToFixed(VB->Specular[vert1][0]) - fsr) * invDx;
-         dfsg = (IntToFixed(VB->Specular[vert1][1]) - fsg) * invDx;
-         dfsb = (IntToFixed(VB->Specular[vert1][2]) - fsb) * invDx;
+         dfsr = (GLfixed)((IntToFixed(VB->Specular[vert1][0]) - fsr) * invDx);
+         dfsg = (GLfixed)((IntToFixed(VB->Specular[vert1][1]) - fsg) * invDx);
+         dfsb = (GLfixed)((IntToFixed(VB->Specular[vert1][2]) - fsb) * invDx);
       }
 #endif
 #if INTERP_STUV0
@@ -350,17 +350,17 @@
       (void) invDy;
 #if INTERP_RGBA
       if (ctx->Light.ShadeModel == GL_SMOOTH) {
-         dfr = (IntToFixed(VB->ColorPtr->data[vert1][0]) - fr) * invDy;
-         dfg = (IntToFixed(VB->ColorPtr->data[vert1][1]) - fg) * invDy;
-         dfb = (IntToFixed(VB->ColorPtr->data[vert1][2]) - fb) * invDy;
-         dfa = (IntToFixed(VB->ColorPtr->data[vert1][3]) - fa) * invDy;
+         dfr = (GLfixed)((IntToFixed(VB->ColorPtr->data[vert1][0]) - fr) * invDy);
+         dfg = (GLfixed)((IntToFixed(VB->ColorPtr->data[vert1][1]) - fg) * invDy);
+         dfb = (GLfixed)((IntToFixed(VB->ColorPtr->data[vert1][2]) - fb) * invDy);
+         dfa = (GLfixed)((IntToFixed(VB->ColorPtr->data[vert1][3]) - fa) * invDy);
       }
 #endif
 #if INTERP_SPEC
       if (ctx->Light.ShadeModel == GL_SMOOTH) {
-         dfsr = (IntToFixed(VB->Specular[vert1][0]) - fsr) * invDy;
-         dfsg = (IntToFixed(VB->Specular[vert1][1]) - fsg) * invDy;
-         dfsb = (IntToFixed(VB->Specular[vert1][2]) - fsb) * invDy;
+         dfsr = (GLfixed)((IntToFixed(VB->Specular[vert1][0]) - fsr) * invDy);
+         dfsg = (GLfixed)((IntToFixed(VB->Specular[vert1][1]) - fsg) * invDy);
+         dfsb = (GLfixed)((IntToFixed(VB->Specular[vert1][2]) - fsb) * invDy);
       }
 #endif
 #if INTERP_STUV0

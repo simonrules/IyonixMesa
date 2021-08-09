@@ -3,19 +3,19 @@
 /*
  * Mesa 3-D graphics library
  * Version:  3.1
- * 
+ *
  * Copyright (C) 1999  Brian Paul   All Rights Reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
@@ -85,7 +85,7 @@ void gl_render_clipped_line( GLcontext *ctx, GLuint v1, GLuint v2 )
       ctx->Driver.LineFunc( ctx, v1, v2, pv );
 }
 
-static INLINE void gl_render_clipped_line2( GLcontext *ctx, 
+static INLINE void gl_render_clipped_line2( GLcontext *ctx,
 					    GLuint v1, GLuint v2 )
 {
    GLuint pv = v2;
@@ -166,13 +166,13 @@ static void unfilled_polygon( GLcontext *ctx,
       for (i=0;i<n-1;i++) {
 	 j0 = vlist[i];
 	 j1 = vlist[i+1];
-	
+
 	 if (edge_ptr[j0] & 0x1) {
 	    edge_ptr[j0] &= ~0x1;
 	    (*ctx->Driver.LineFunc)( ctx, j0, j1, pv );
 	 }
       }
-      
+
       /* last edge is special */
       j0 = vlist[i];
       j1 = vlist[0];
@@ -201,78 +201,78 @@ static void unfilled_polygon( GLcontext *ctx,
  *         vlist - list of vertices in the polygon.
  *                 CCW order = front facing.
  */
-void gl_render_clipped_triangle( GLcontext *ctx, GLuint n, GLuint vlist[], 
+void gl_render_clipped_triangle( GLcontext *ctx, GLuint n, GLuint vlist[],
 				 GLuint pv )
 {
    struct vertex_buffer *VB = ctx->VB;
    GLubyte mask = 0;
    GLuint i;
 
-   for (i = 0 ; i < n ; i++) 
+   for (i = 0 ; i < n ; i++)
       mask |= VB->ClipMask[vlist[i]];
-   
+
    n = (ctx->poly_clip_tab[VB->ClipPtr->size])( VB, n, vlist, mask );
 
-   for (i=2;i<n;i++) 
-      ctx->TriangleFunc( ctx, *vlist, vlist[i-1], vlist[i], pv ); 
+   for (i=2;i<n;i++)
+      ctx->TriangleFunc( ctx, *vlist, vlist[i-1], vlist[i], pv );
 }
 
 
-static INLINE void gl_render_clipped_triangle2( GLcontext *ctx, 
+static INLINE void gl_render_clipped_triangle2( GLcontext *ctx,
 						GLuint v1, GLuint v2, GLuint v3,
 						GLuint pv )
 {
    struct vertex_buffer *VB = ctx->VB;
-   GLubyte mask = (GLubyte) (VB->ClipMask[v1] | 
-			     VB->ClipMask[v2] | 
+   GLubyte mask = (GLubyte) (VB->ClipMask[v1] |
+			     VB->ClipMask[v2] |
 			     VB->ClipMask[v3]);
    GLuint vlist[VB_MAX_CLIPPED_VERTS];
    GLuint i, n;
 
    if (!mask) {
-      ctx->TriangleFunc( ctx, v1, v2, v3, pv ); 
+      ctx->TriangleFunc( ctx, v1, v2, v3, pv );
       return;
    }
 
-   if (CLIP_ALL_BITS & VB->ClipMask[v1] & VB->ClipMask[v2] & VB->ClipMask[v3]) 
+   if (CLIP_ALL_BITS & VB->ClipMask[v1] & VB->ClipMask[v2] & VB->ClipMask[v3])
       return;
 
    ASSIGN_3V(vlist, v1, v2, v3 );
    n = (ctx->poly_clip_tab[VB->ClipPtr->size])( VB, 3, vlist, mask );
 
-   for (i=2;i<n;i++) 
-      ctx->TriangleFunc( ctx, *vlist, vlist[i-1], vlist[i], pv ); 
+   for (i=2;i<n;i++)
+      ctx->TriangleFunc( ctx, *vlist, vlist[i-1], vlist[i], pv );
 }
 
 
-static INLINE void gl_render_clipped_quad2( GLcontext *ctx, 
+static INLINE void gl_render_clipped_quad2( GLcontext *ctx,
 					    GLuint v1, GLuint v2, GLuint v3,
 					    GLuint v4,
 					    GLuint pv )
 {
    struct vertex_buffer *VB = ctx->VB;
-   GLubyte mask = (GLubyte) (VB->ClipMask[v1] | 
-			     VB->ClipMask[v2] | 
+   GLubyte mask = (GLubyte) (VB->ClipMask[v1] |
+			     VB->ClipMask[v2] |
 			     VB->ClipMask[v3] |
 			     VB->ClipMask[v4]);
    GLuint vlist[VB_MAX_CLIPPED_VERTS];
    GLuint i, n;
 
    if (!mask) {
-      ctx->QuadFunc( ctx, v1, v2, v3, v4, pv ); 
+      ctx->QuadFunc( ctx, v1, v2, v3, v4, pv );
       return;
    }
 
-   if (CLIP_ALL_BITS & VB->ClipMask[v1] & 
+   if (CLIP_ALL_BITS & VB->ClipMask[v1] &
        VB->ClipMask[v2] & VB->ClipMask[v3] &
-       VB->ClipMask[v4]) 
+       VB->ClipMask[v4])
       return;
 
    ASSIGN_4V(vlist, v1, v2, v3, v4 );
    n = (ctx->poly_clip_tab[VB->ClipPtr->size])( VB, 4, vlist, mask );
 
-   for (i=2;i<n;i++) 
-      ctx->TriangleFunc( ctx, *vlist, vlist[i-1], vlist[i], pv ); 
+   for (i=2;i<n;i++)
+      ctx->TriangleFunc( ctx, *vlist, vlist[i-1], vlist[i], pv );
 }
 
 
@@ -297,7 +297,7 @@ static void render_triangle( GLcontext *ctx,
 
    facing = (c<0.0F) ^ (ctx->Polygon.FrontFace==GL_CW);
    tricaps = ctx->IndirectTriangles;
-   
+
    if (tricaps & DD_TRI_OFFSET) {
       /* finish computing plane equation of polygon, compute offset */
       GLfloat fz = win[v2][2] - win[v0][2];
@@ -553,7 +553,7 @@ do {						\
 
 
 /* Direct, with the possibility of clipping.
- */ 
+ */
 #define RENDER_POINTS( start, count )			\
    (*ctx->Driver.PointsFunc)( ctx, start, count-1 )
 
@@ -591,25 +591,25 @@ do {						\
  *    0x4 - placeholder for multipass rendering.
  *
  * Bits 0x1 and 0x2 are cleared after they are used.  Bit 0x4 is used
- * to stop these values going to zero in multipass rendering. 
+ * to stop these values going to zero in multipass rendering.
  *
  * Clipping introduces vertices on outgoing edges with edgeflag 0x1.
- * Incoming edges retain the value of the clipped vertex, with the following 
+ * Incoming edges retain the value of the clipped vertex, with the following
  * masks:
  *    - If the incoming edge originates from the last vertex in the
- *      clipped primitive (triangle or quad), the introduced vertex 
+ *      clipped primitive (triangle or quad), the introduced vertex
  *      retains both bits (0x3) of the original flag.
  *    - All other introduced vertices retain only bit 1 (0x1).
  *
- * In a horrible hack I've had to push tristrips, fans & quadstrip handling 
+ * In a horrible hack I've had to push tristrips, fans & quadstrip handling
  * into render_tmp.h...
  *
- * Keith. 
+ * Keith.
  */
-static void 
-setup_edgeflag( struct vertex_buffer *VB, 
-                GLenum prim, 
-                GLuint start, 
+static void
+setup_edgeflag( struct vertex_buffer *VB,
+                GLenum prim,
+                GLuint start,
                 GLuint count,
                 GLuint parity )
 {
@@ -649,7 +649,7 @@ setup_edgeflag( struct vertex_buffer *VB,
 
 
 /* Could eventually generalize to handle changes of rasterization
- * state other than change-of-primitive.  An example might be 
+ * state other than change-of-primitive.  An example might be
  * some bind-texture calls.
  */
 void gl_render_vb( struct vertex_buffer *VB )
@@ -661,9 +661,10 @@ void gl_render_vb( struct vertex_buffer *VB )
    GLuint count = VB->Count;
    GLint p = 0;
 
-   if (VB->Indirect) { 
-/*        gl_render_vb_indirect( VB, VB );   */
-      return; 
+   if (VB->Indirect) {
+//rud: was so:
+//        gl_render_vb_indirect( VB, VB );
+      return;
    } else if (VB->CullMode & CULL_MASK_ACTIVE) {
       tab = ctx->Driver.RenderVBCulledTab;
    } else if (VB->CullMode & CLIP_MASK_ACTIVE) {
@@ -688,14 +689,15 @@ void gl_render_vb( struct vertex_buffer *VB )
       ctx->Driver.RenderStart( ctx );
 
    do
-   {      
-      for ( i= VB->CopyStart ; i < count ; parity = 0, i = next ) 
+   {
+
+      for ( i= VB->CopyStart ; i < count; parity = 0, i = next )
       {
 	 prim = VB->Primitive[i];
 	 next = VB->NextPrimitive[i];
 
-	 if (ctx->TriangleCaps & DD_TRI_UNFILLED) 
-	    setup_edgeflag(VB, prim, i, next, parity);
+	 if (ctx->TriangleCaps & DD_TRI_UNFILLED)
+	    setup_edgeflag(VB, (/*enum */GLenum)prim, i, next, parity);
 
 	 tab[prim]( VB, i, next, parity );
 
@@ -709,7 +711,7 @@ void gl_render_vb( struct vertex_buffer *VB )
    } while (ctx->Driver.MultipassFunc &&
 	    ctx->Driver.MultipassFunc( VB, ++p ));
 
-   if (ctx->PB->count > 0) 
+   if (ctx->PB->count > 0)
       gl_flush_pb(ctx);
 
    if (/*  ctx->Current.Primitive == GL_POLYGON+1 &&  */
@@ -720,14 +722,14 @@ void gl_render_vb( struct vertex_buffer *VB )
 
 void gl_reduced_prim_change( GLcontext *ctx, GLenum prim )
 {
-   if (ctx->PB->count > 0) 
-      gl_flush_pb(ctx);	
+   if (ctx->PB->count > 0)
+      gl_flush_pb(ctx);
 
-   ctx->PB->count = 0;				
-   ctx->PB->mono = GL_FALSE;			
-   
+   ctx->PB->count = 0;
+   ctx->PB->mono = GL_FALSE;
+
    if (ctx->PB->primitive != prim) {
-      ctx->PB->primitive = prim;			
+      ctx->PB->primitive = prim;
 
       if (ctx->Driver.ReducedPrimitiveChange)
 	 ctx->Driver.ReducedPrimitiveChange( ctx, prim );

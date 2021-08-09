@@ -181,7 +181,7 @@ GLboolean gl_direct_DrawPixels( GLcontext *ctx,
                GLint row;
                for (row=0; row<drawHeight; row++) {
                   (*ctx->Driver.WriteRGBASpan)(ctx, drawWidth, destX, destY,
-                                               (void *) src, NULL);
+                                               (unsigned char (*)[4]) src, NULL);
                   src += rowLength * 4;
                   destY++;
                }
@@ -191,7 +191,7 @@ GLboolean gl_direct_DrawPixels( GLcontext *ctx,
                GLint row;
                for (row=0; row<drawHeight; row++) {
                   gl_write_zoomed_rgba_span(ctx, drawWidth, destX, destY,
-                                            zSpan, (void *) src, zoomY0);
+                                            zSpan, (unsigned char (*)[4]) src, zoomY0);
                   src += rowLength * 4;
                   destY++;
                }
@@ -207,7 +207,7 @@ GLboolean gl_direct_DrawPixels( GLcontext *ctx,
                GLint row;
                for (row=0; row<drawHeight; row++) {
                   (*ctx->Driver.WriteRGBSpan)(ctx, drawWidth, destX, destY,
-                                              (void *) src, NULL);
+                                              (unsigned char (*)[3]) src, NULL);
                   src += rowLength * 3;
                   destY++;
                }
@@ -217,7 +217,7 @@ GLboolean gl_direct_DrawPixels( GLcontext *ctx,
                GLint row;
                for (row=0; row<drawHeight; row++) {
                   gl_write_zoomed_rgb_span(ctx, drawWidth, destX, destY,
-                                           zSpan, (void *) src, zoomY0);
+                                           zSpan, (unsigned char (*)[3]) src, zoomY0);
                   src += rowLength * 3;
                   destY++;
                }
@@ -241,7 +241,7 @@ GLboolean gl_direct_DrawPixels( GLcontext *ctx,
                      rgb[i][2] = src[i];
 		  }
                   (*ctx->Driver.WriteRGBSpan)(ctx, drawWidth, destX, destY,
-                                              (void *) rgb, NULL);
+                                              (unsigned char (*)[3]) rgb, NULL);
                   src += rowLength;
                   destY++;
                }
@@ -258,7 +258,7 @@ GLboolean gl_direct_DrawPixels( GLcontext *ctx,
                      rgb[i][2] = src[i];
 		  }
                   gl_write_zoomed_rgb_span(ctx, drawWidth, destX, destY,
-                                           zSpan, (void *) rgb, zoomY0);
+                                           zSpan, (unsigned char (*)[3]) rgb, zoomY0);
                   src += rowLength;
                   destY++;
                }
@@ -284,7 +284,7 @@ GLboolean gl_direct_DrawPixels( GLcontext *ctx,
                      rgba[i][3] = *ptr++;
 		  }
                   (*ctx->Driver.WriteRGBASpan)(ctx, drawWidth, destX, destY,
-                                               (void *) rgba, NULL);
+                                               (unsigned char (*)[4]) rgba, NULL);
                   src += rowLength*2;
                   destY++;
                }
@@ -303,7 +303,7 @@ GLboolean gl_direct_DrawPixels( GLcontext *ctx,
                      rgba[i][3] = *ptr++;
 		  }
                   gl_write_zoomed_rgba_span(ctx, drawWidth, destX, destY,
-                                            zSpan, (void *) rgba, zoomY0);
+                                            zSpan, (unsigned char (*)[4]) rgba, zoomY0);
                   src += rowLength*2;
                   destY++;
                }
@@ -322,7 +322,7 @@ GLboolean gl_direct_DrawPixels( GLcontext *ctx,
                   assert(drawWidth < MAX_WIDTH);
                   gl_map_ci8_to_rgba(ctx, drawWidth, src, rgba);
                   (*ctx->Driver.WriteRGBASpan)(ctx, drawWidth, destX, destY,
-                                               (const GLubyte (*)[4])rgba, 
+                                               (GLubyte (*)[4])rgba, 
 					       NULL);
                   src += rowLength;
                   destY++;
@@ -336,7 +336,7 @@ GLboolean gl_direct_DrawPixels( GLcontext *ctx,
                   assert(drawWidth < MAX_WIDTH);
                   gl_map_ci8_to_rgba(ctx, drawWidth, src, rgba);
                   gl_write_zoomed_rgba_span(ctx, drawWidth, destX, destY,
-                                            zSpan, (void *) rgba, zoomY0);
+                                            zSpan, (unsigned char (*)[4]) rgba, zoomY0);
                   src += rowLength;
                   destY++;
                }
@@ -451,7 +451,7 @@ static void draw_index_pixels( GLcontext *ctx, GLint x, GLint y,
          gl_map_ci_to_rgba( ctx, width, ispan, rgba );
          if (zoom) {
             gl_write_zoomed_rgba_span( ctx, width, x, y, zspan, 
-				       (const GLubyte (*)[4])rgba, desty );
+				       (GLubyte (*)[4])rgba, desty );
          }
          else {
             gl_write_rgba_span( ctx, width, x, y, zspan, rgba, GL_BITMAP );
@@ -685,7 +685,7 @@ static void draw_depth_pixels( GLcontext *ctx, GLint x, GLint y,
          if (ctx->Visual->RGBAflag) {
             if (zoom) {
                gl_write_zoomed_rgba_span( ctx, width, x, y, zspan,
-                                          (const GLubyte (*)[4])rgba, desty );
+                                          (GLubyte (*)[4])rgba, desty );
             }
             else {
                gl_write_rgba_span( ctx, width, x, y, zspan, rgba, GL_BITMAP );
@@ -872,11 +872,11 @@ static void draw_rgba_pixels( GLcontext *ctx, GLint x, GLint y,
 	 /* write to frame buffer */
          if (quickDraw) {
             (*ctx->Driver.WriteRGBASpan)( ctx, width, x, y, 
-					  (const GLubyte (*)[4])rgba, NULL);
+					  (GLubyte (*)[4])rgba, NULL);
          }
          else if (zoom) {
             gl_write_zoomed_rgba_span( ctx, width, x, y, zspan, 
-				       (const GLubyte (*)[4])rgba, desty );
+				       (GLubyte (*)[4])rgba, desty );
          }
          else {
             gl_write_rgba_span( ctx, (GLuint) width, x, y, zspan, rgba, GL_BITMAP);

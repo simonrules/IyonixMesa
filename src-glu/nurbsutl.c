@@ -81,18 +81,18 @@ test_knot(GLint nknots, GLfloat *knot, GLint order)
 	for(i=1;i<nknots;i++)
 	{
 		if(knot[i] < tmp_knot)
-			return GLU_NURBS_ERROR4;
+			return (GLenum)GLU_NURBS_ERROR4;
 		if(fabs(tmp_knot-knot[i]) > EPSILON)
 		{
 			if(knot_mult>order)
-				return GLU_NURBS_ERROR5;
+				return (GLenum)GLU_NURBS_ERROR5;
 			knot_mult=1;
 			tmp_knot=knot[i];
 		}
 		else
 			++knot_mult;
 	}
-	return GLU_NO_ERROR;
+	return (GLenum)GLU_NO_ERROR;
 }
 
 static int
@@ -188,7 +188,7 @@ set_new_t_min_t_max(knot_str_type *geom_knot, knot_str_type *color_knot,
 						EPSILON)
 					break;
 			for(t_max=cnt-1;t_max;t_max--)
-				if(fabs((geom_knot->unified_knot)[t_max] - minimal_max_knot) < 
+				if(fabs((geom_knot->unified_knot)[t_max] - minimal_max_knot) <
 						EPSILON)
 					break;
 		}
@@ -213,7 +213,7 @@ set_new_t_min_t_max(knot_str_type *geom_knot, knot_str_type *color_knot,
 						EPSILON)
 					break;
 			for(t_max=cnt-1;t_max;t_max--)
-				if(fabs((color_knot->unified_knot)[t_max] - minimal_max_knot) < 
+				if(fabs((color_knot->unified_knot)[t_max] - minimal_max_knot) <
 						EPSILON)
 					break;
 			color_knot->t_min=t_min;
@@ -227,7 +227,7 @@ set_new_t_min_t_max(knot_str_type *geom_knot, knot_str_type *color_knot,
 						EPSILON)
 					break;
 			for(t_max=cnt-1;t_max;t_max--)
-				if(fabs((normal_knot->unified_knot)[t_max] - minimal_max_knot) < 
+				if(fabs((normal_knot->unified_knot)[t_max] - minimal_max_knot) <
 						EPSILON)
 					break;
 			normal_knot->t_min=t_min;
@@ -237,11 +237,11 @@ set_new_t_min_t_max(knot_str_type *geom_knot, knot_str_type *color_knot,
 		{
 			cnt=texture_knot->unified_nknots;
 			for(t_min=0;t_min<cnt;t_min++)
-				if(fabs((texture_knot->unified_knot)[t_min] - maximal_min_knot) 
+				if(fabs((texture_knot->unified_knot)[t_min] - maximal_min_knot)
 						< EPSILON)
 					break;
 			for(t_max=cnt-1;t_max;t_max--)
-				if(fabs((texture_knot->unified_knot)[t_max] - minimal_max_knot) 
+				if(fabs((texture_knot->unified_knot)[t_max] - minimal_max_knot)
 						< EPSILON)
 					break;
 			texture_knot->t_min=t_min;
@@ -279,8 +279,8 @@ select_knot_working_range(GLUnurbsObj *nobj,knot_str_type *geom_knot,
 		if((geom_knot->unified_knot=
 				(GLfloat *)malloc(sizeof(GLfloat)*max_nknots))==NULL)
 		{
-			call_user_error(nobj,GLU_OUT_OF_MEMORY);
-			return GLU_ERROR;
+			call_user_error(nobj,(GLenum)GLU_OUT_OF_MEMORY);
+			return (GLenum)GLU_ERROR;
 		}
 		/* copy the original knot to the unified one */
 		geom_knot->unified_nknots=geom_knot->nknots;
@@ -298,8 +298,8 @@ select_knot_working_range(GLUnurbsObj *nobj,knot_str_type *geom_knot,
 					(GLfloat *)malloc(sizeof(GLfloat)*max_nknots))==NULL)
 			{
 				free(geom_knot->unified_knot);
-				call_user_error(nobj,GLU_OUT_OF_MEMORY);
-				return GLU_ERROR;
+				call_user_error(nobj,(GLenum)GLU_OUT_OF_MEMORY);
+				return (GLenum)GLU_ERROR;
 			}
 			/* copy the original knot to the unified one */
 			color_knot->unified_nknots=color_knot->nknots;
@@ -319,8 +319,8 @@ select_knot_working_range(GLUnurbsObj *nobj,knot_str_type *geom_knot,
 			{
 				free(geom_knot->unified_knot);
 				free(color_knot->unified_knot);
-				call_user_error(nobj,GLU_OUT_OF_MEMORY);
-				return GLU_ERROR;
+				call_user_error(nobj,(GLenum)GLU_OUT_OF_MEMORY);
+				return (GLenum)GLU_ERROR;
 			}
 			/* copy the original knot to the unified one */
 			normal_knot->unified_nknots=normal_knot->nknots;
@@ -341,8 +341,8 @@ select_knot_working_range(GLUnurbsObj *nobj,knot_str_type *geom_knot,
 				free(geom_knot->unified_knot);
 				free(color_knot->unified_knot);
 				free(normal_knot->unified_knot);
-				call_user_error(nobj,GLU_OUT_OF_MEMORY);
-				return GLU_ERROR;
+				call_user_error(nobj,(GLenum)GLU_OUT_OF_MEMORY);
+				return (GLenum)GLU_ERROR;
 			}
 			/* copy the original knot to the unified one */
 			texture_knot->unified_nknots=texture_knot->nknots;
@@ -385,7 +385,7 @@ select_knot_working_range(GLUnurbsObj *nobj,knot_str_type *geom_knot,
 	}
 	set_new_t_min_t_max(geom_knot,color_knot,normal_knot,texture_knot,
 		maximal_min_knot,minimal_max_knot);
-	return GLU_NO_ERROR;
+	return (GLenum)GLU_NO_ERROR;
 }
 
 void
@@ -438,7 +438,7 @@ explode_knot(knot_str_type *the_knot)
 	/* alloc space for new_knot */
 	if((new_knot=(GLfloat *)malloc(sizeof(GLfloat)*(nknots+n_new_knots)))==NULL)
 	{
-		return GLU_OUT_OF_MEMORY;
+		return (GLenum)GLU_OUT_OF_MEMORY;
 	}
 	/* fill in new knot */
 	for(j=0;j<t_min;j++)
@@ -459,7 +459,7 @@ explode_knot(knot_str_type *the_knot)
 	the_knot->new_knot=new_knot;
 	the_knot->delta_nknots+=n_new_knots;
 	the_knot->t_max+=n_new_knots;
-	return GLU_NO_ERROR;
+	return (GLenum)GLU_NO_ERROR;
 }
 
 GLenum
@@ -480,12 +480,12 @@ calc_alphas(knot_str_type *the_knot)
 	m=n+the_knot->delta_nknots;
 	if((alpha=(GLfloat *)malloc(sizeof(GLfloat)*n*m))==NULL)
 	{
-		return GLU_OUT_OF_MEMORY;
+		return (GLenum)GLU_OUT_OF_MEMORY;
 	}
 	if((alpha_new=(GLfloat *)malloc(sizeof(GLfloat)*n*m))==NULL)
 	{
 		free(alpha);
-		return GLU_OUT_OF_MEMORY;
+		return (GLenum)GLU_OUT_OF_MEMORY;
 	}
 	for(j=0;j<m;j++)
 	{
@@ -521,7 +521,7 @@ calc_alphas(knot_str_type *the_knot)
 	}
 	the_knot->alpha=alpha;
 	free(alpha_new);
-	return GLU_NO_ERROR;
+	return (GLenum)GLU_NO_ERROR;
 }
 
 GLenum
@@ -542,7 +542,7 @@ calc_new_ctrl_pts(GLfloat *ctrl,GLint stride,knot_str_type *the_knot,
 	/* allocate space for new control points */
 	if((*new_ctrl=(GLfloat *)malloc(sizeof(GLfloat)*dim*m))==NULL)
 	{
-		return GLU_OUT_OF_MEMORY;
+		return (GLenum)GLU_OUT_OF_MEMORY;
 	}
 	for(j=0;j<m;j++)
 	{
@@ -557,7 +557,7 @@ calc_new_ctrl_pts(GLfloat *ctrl,GLint stride,knot_str_type *the_knot,
 		}
 	}
 	*ncontrol=(GLint)m;
-	return GLU_NO_ERROR;
+	return (GLenum)GLU_NO_ERROR;
 }
 
 static GLint
@@ -639,7 +639,7 @@ bezier_curve(GLfloat *cp, GLfloat *out, GLfloat t,
 	GLuint i, k, bincoeff;
 
 	if(order >= 2)
-	{ 
+	{
 		bincoeff = order-1;
 		s = 1.0-t;
 
@@ -656,10 +656,10 @@ bezier_curve(GLfloat *cp, GLfloat *out, GLfloat t,
 		}
 	}
 	else /* order=1 -> constant curve */
-	{ 
+	{
 		for(k=0; k<dim; k++)
 			out[k] = cp[k];
-	} 
+	}
 }
 
 static GLint
@@ -833,13 +833,13 @@ calc_sampling_3D(new_ctrl_type *new_ctrl, GLfloat tolerance, GLint dim,
 	if((*ufactors=(GLint *)malloc(sizeof(GLint)*ufactor_cnt*3))
 			==NULL)
 	{
-		return GLU_OUT_OF_MEMORY;
+		return (GLenum)GLU_OUT_OF_MEMORY;
 	}
 	if((*vfactors=(GLint *)malloc(sizeof(GLint)*vfactor_cnt*3))
 			==NULL)
 	{
 		free(*ufactors);
-		return GLU_OUT_OF_MEMORY;
+		return (GLenum)GLU_OUT_OF_MEMORY;
 	}
 	ctrl=new_ctrl->geom_ctrl;
 	offset1=new_ctrl->geom_t_stride*vorder;
@@ -888,7 +888,7 @@ calc_sampling_3D(new_ctrl_type *new_ctrl, GLfloat tolerance, GLint dim,
 		else
 			*(*ufactors+j*3)=tmp_factor1;
 	}
-	return GL_NO_ERROR;
+	return (GLenum)GL_NO_ERROR;
 }
 
 static GLenum
@@ -906,13 +906,13 @@ calc_sampling_param_3D(new_ctrl_type *new_ctrl, GLfloat tolerance, GLint dim,
 	if((*ufactors=(GLint *)malloc(sizeof(GLint)*ufactor_cnt*3))
 			==NULL)
 	{
-		return GLU_OUT_OF_MEMORY;
+		return (GLenum)GLU_OUT_OF_MEMORY;
 	}
 	if((*vfactors=(GLint *)malloc(sizeof(GLint)*vfactor_cnt*3))
 			==NULL)
 	{
 		free(*ufactors);
-		return GLU_OUT_OF_MEMORY;
+		return (GLenum)GLU_OUT_OF_MEMORY;
 	}
 	ctrl=new_ctrl->geom_ctrl;
 	offset1=new_ctrl->geom_t_stride*vorder;
@@ -961,7 +961,7 @@ calc_sampling_param_3D(new_ctrl_type *new_ctrl, GLfloat tolerance, GLint dim,
 		else
 			*(*ufactors+j*3)=tmp_factor1;
 	}
-	return GL_NO_ERROR;
+	return (GLenum)GL_NO_ERROR;
 }
 
 static GLenum
@@ -976,7 +976,7 @@ calc_sampling_2D(GLfloat *ctrl, GLint cnt, GLint order,
 	factor_cnt=cnt/order;
 	if((*factors=(GLint *)malloc(sizeof(GLint)*factor_cnt))==NULL)
 	{
-		return GLU_OUT_OF_MEMORY;
+		return (GLenum)GLU_OUT_OF_MEMORY;
 	}
 	offset=order*dim;
 	for(i=0;i<factor_cnt;i++)
@@ -987,7 +987,7 @@ calc_sampling_2D(GLfloat *ctrl, GLint cnt, GLint order,
 		else
 			(*factors)[i]=tmp_factor;
 	}
-	return GL_NO_ERROR;
+	return (GLenum)GL_NO_ERROR;
 }
 
 static void
@@ -1041,10 +1041,10 @@ glu_do_sampling_3D( GLUnurbsObj *nobj, new_ctrl_type *new_ctrl,
 	{
 		revert_sampling_and_culling(nobj);
 		call_user_error(nobj,err);
-		return GLU_ERROR;
+		return (GLenum)GLU_ERROR;
 	}
 	revert_sampling_and_culling(nobj);
-	return GLU_NO_ERROR;
+	return (GLenum)GLU_NO_ERROR;
 }
 
 GLenum
@@ -1061,13 +1061,13 @@ glu_do_sampling_uv( GLUnurbsObj *nobj, new_ctrl_type *new_ctrl,
 	if((*sfactors=(GLint *)malloc(sizeof(GLint)*s_cnt*3))
 			==NULL)
 	{
-		return GLU_OUT_OF_MEMORY;
+		return (GLenum)GLU_OUT_OF_MEMORY;
 	}
 	if((*tfactors=(GLint *)malloc(sizeof(GLint)*t_cnt*3))
 			==NULL)
 	{
 		free(*sfactors);
-		return GLU_OUT_OF_MEMORY;
+		return (GLenum)GLU_OUT_OF_MEMORY;
 	}
 	u_steps = nobj->u_step;
 	v_steps = nobj->v_step;
@@ -1083,7 +1083,7 @@ glu_do_sampling_uv( GLUnurbsObj *nobj, new_ctrl_type *new_ctrl,
 		*(*tfactors+i*3+1) = v_steps;
 		*(*tfactors+i*3+2) = v_steps;
 	}
-	return GLU_NO_ERROR;
+	return (GLenum)GLU_NO_ERROR;
 }
 
 GLenum
@@ -1103,10 +1103,10 @@ glu_do_sampling_param_3D( GLUnurbsObj *nobj, new_ctrl_type *new_ctrl,
 	{
 		revert_sampling_and_culling(nobj);
 		call_user_error(nobj,err);
-		return GLU_ERROR;
+		return (GLenum)GLU_ERROR;
 	}
 	revert_sampling_and_culling(nobj);
-	return GLU_NO_ERROR;
+	return (GLenum)GLU_NO_ERROR;
 }
 
 GLenum
@@ -1134,12 +1134,12 @@ glu_do_sampling_u( GLUnurbsObj *nobj, GLfloat *ctrl, GLint cnt, GLint order,
 	if((*factors=(GLint *)malloc(sizeof(GLint)*cnt))
 			==NULL)
 	{
-		return GLU_OUT_OF_MEMORY;
+		return (GLenum)GLU_OUT_OF_MEMORY;
 	}
 	u_steps = nobj->u_step;
 	for(i=0; i<cnt; i++)
 		(*factors)[i] = u_steps;
-	return GLU_NO_ERROR;
+	return (GLenum)GLU_NO_ERROR;
 }
 
 GLenum
@@ -1157,7 +1157,7 @@ glu_do_sampling_param_2D( GLUnurbsObj *nobj, GLfloat *ctrl, GLint cnt,
 			==NULL)
 	{
 		revert_sampling_and_culling(nobj);
-		return GLU_OUT_OF_MEMORY;
+		return (GLenum)GLU_OUT_OF_MEMORY;
 	}
 	u_steps = nobj->u_step;
 	for(i=0; i<cnt; i++)
@@ -1167,7 +1167,7 @@ glu_do_sampling_param_2D( GLUnurbsObj *nobj, GLfloat *ctrl, GLint cnt,
 
 	}
 	revert_sampling_and_culling(nobj);
-	return GLU_NO_ERROR;
+	return (GLenum)GLU_NO_ERROR;
 }
 
 GLenum
@@ -1184,7 +1184,7 @@ glu_do_sampling_crv( GLUnurbsObj *nobj, GLfloat *ctrl, GLint cnt, GLint order,
 				GLU_NO_ERROR)
 			{
 				call_user_error(nobj,err);
-				return GLU_ERROR;
+				return (GLenum)GLU_ERROR;
 			}
 			break;
 		case GLU_DOMAIN_DISTANCE:
@@ -1192,7 +1192,7 @@ glu_do_sampling_crv( GLUnurbsObj *nobj, GLfloat *ctrl, GLint cnt, GLint order,
 				GLU_NO_ERROR)
 			{
 				call_user_error(nobj,err);
-				return GLU_ERROR;
+				return (GLenum)GLU_ERROR;
 			}
 			break;
 		case GLU_PARAMETRIC_ERROR:
@@ -1200,14 +1200,14 @@ glu_do_sampling_crv( GLUnurbsObj *nobj, GLfloat *ctrl, GLint cnt, GLint order,
 				GLU_NO_ERROR)
 			{
 				call_user_error(nobj,err);
-				return GLU_ERROR;
+				return (GLenum)GLU_ERROR;
 			}
 			break;
 		default:
 			abort();
 	}
 
-	return GLU_NO_ERROR;
+	return (GLenum)GLU_NO_ERROR;
 }
 
 /* TODO - i don't like this culling - this one just tests if at least one */
@@ -1254,7 +1254,7 @@ fine_culling_test_3D(GLUnurbsObj *nobj,GLfloat *pts,GLint s_cnt,GLint t_cnt,
 	if(nobj->culling==GL_FALSE)
 		return GL_FALSE;
 	set_sampling_and_culling(nobj);
-	
+
 	if(dim==3)
 	{
 		for(i=0;i<s_cnt;i++)
@@ -1292,7 +1292,7 @@ fine_culling_test_3D(GLUnurbsObj *nobj,GLfloat *pts,GLint s_cnt,GLint t_cnt,
 		return GL_FALSE;
 	buffer_size=5;
 	set_sampling_and_culling(nobj);
-	
+
 	glFeedbackBuffer(buffer_size,GL_2D,feedback_buffer);
 	glRenderMode(GL_FEEDBACK);
 	if(dim==3)
@@ -1344,7 +1344,7 @@ fine_culling_test_2D(GLUnurbsObj *nobj,GLfloat *pts,GLint cnt,
 	if(nobj->culling==GL_FALSE)
 		return GL_FALSE;
 	set_sampling_and_culling(nobj);
-	
+
 	if(dim==3)
 	{
 		for(i=0;i<cnt;i++)
@@ -1380,7 +1380,7 @@ fine_culling_test_2D(GLUnurbsObj *nobj,GLfloat *pts,GLint cnt,
 		return GL_FALSE;
 	buffer_size=5;
 	set_sampling_and_culling(nobj);
-	
+
 	glFeedbackBuffer(buffer_size,GL_2D,feedback_buffer);
 	glRenderMode(GL_FEEDBACK);
 	glBegin(GL_LINE_LOOP);

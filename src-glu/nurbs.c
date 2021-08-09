@@ -61,14 +61,14 @@ GLUnurbsObj * GLAPIENTRY gluNewNurbsRenderer( void )
       /* init */
       n->culling=GL_FALSE;
       n->nurbs_type=GLU_NURBS_NONE;
-      n->error=GLU_NO_ERROR;
+      n->error= (GLenum) GLU_NO_ERROR;
       n->error_callback=NULL;
       n->auto_load_matrix=GL_TRUE;
       n->sampling_tolerance=50.0;
       n->parametric_tolerance=0.5;
       n->u_step = n->v_step = 100;
-      n->sampling_method = GLU_PATH_LENGTH;
-      n->display_mode=GLU_FILL;
+      n->sampling_method = (GLenum)GLU_PATH_LENGTH;
+      n->display_mode=(GLenum)GLU_FILL;
       /* in case the user doesn't supply the sampling matrices */
       /* set projection and modelview to identity */
       for(i=0;i<4;i++)
@@ -128,7 +128,7 @@ void GLAPIENTRY gluNurbsProperty( GLUnurbsObj *nobj, GLenum property, GLfloat va
       case GLU_SAMPLING_TOLERANCE:
            if(value <= 0.0)
            {
-               call_user_error(nobj,GLU_INVALID_VALUE);
+               call_user_error(nobj,(GLenum)GLU_INVALID_VALUE);
                return;
          }
          nobj->sampling_tolerance=value;
@@ -136,7 +136,7 @@ void GLAPIENTRY gluNurbsProperty( GLUnurbsObj *nobj, GLenum property, GLfloat va
       case GLU_PARAMETRIC_TOLERANCE:
            if(value <= 0.0)
            {
-               call_user_error(nobj,GLU_INVALID_VALUE);
+               call_user_error(nobj,(GLenum)GLU_INVALID_VALUE);
                return;
          }
          nobj->parametric_tolerance=value;
@@ -144,7 +144,7 @@ void GLAPIENTRY gluNurbsProperty( GLUnurbsObj *nobj, GLenum property, GLfloat va
       case GLU_U_STEP:
            if(value <= 0.0)
            {
-               call_user_error(nobj,GLU_INVALID_VALUE);
+               call_user_error(nobj,(GLenum)GLU_INVALID_VALUE);
                return;
          }
          nobj->u_step=(GLint)value;
@@ -152,7 +152,7 @@ void GLAPIENTRY gluNurbsProperty( GLUnurbsObj *nobj, GLenum property, GLfloat va
       case GLU_V_STEP:
            if(value <= 0.0)
            {
-               call_user_error(nobj,GLU_INVALID_VALUE);
+               call_user_error(nobj,(GLenum)GLU_INVALID_VALUE);
                return;
          }
          nobj->v_step=(GLint)value;
@@ -161,7 +161,7 @@ void GLAPIENTRY gluNurbsProperty( GLUnurbsObj *nobj, GLenum property, GLfloat va
 		 val = (GLenum)value;
          if(val!=GLU_PATH_LENGTH && val!=GLU_PARAMETRIC_ERROR && val!=GLU_DOMAIN_DISTANCE)
          {
-             call_user_error(nobj,GLU_INVALID_ENUM);
+             call_user_error(nobj,(GLenum)GLU_INVALID_ENUM);
              return;
          }
 		 nobj->sampling_method=val;
@@ -170,12 +170,12 @@ void GLAPIENTRY gluNurbsProperty( GLUnurbsObj *nobj, GLenum property, GLfloat va
          val=(GLenum)value;
          if(val!=GLU_FILL && val!=GLU_OUTLINE_POLYGON && val!=GLU_OUTLINE_PATCH)
          {
-             call_user_error(nobj,GLU_INVALID_ENUM);
+             call_user_error(nobj,(GLenum)GLU_INVALID_ENUM);
              return;
          }
          if(nobj->nurbs_type==GLU_NURBS_CURVE)
          {
-             call_user_error(nobj,GLU_NURBS_ERROR26);
+             call_user_error(nobj,(GLenum)GLU_NURBS_ERROR26);
              return;
          }
          nobj->display_mode=val;
@@ -186,7 +186,7 @@ if(val==GLU_OUTLINE_PATCH)
          val=(GLenum)value;
          if(val!=GL_TRUE && val!=GL_FALSE)
          {
-             call_user_error(nobj,GLU_INVALID_ENUM);
+             call_user_error(nobj,(GLenum)GLU_INVALID_ENUM);
              return;
          }
          nobj->culling = (GLboolean) value;
@@ -195,13 +195,13 @@ if(val==GLU_OUTLINE_PATCH)
          val=(GLenum)value;
          if(val!=GL_TRUE && val!=GL_FALSE)
          {
-             call_user_error(nobj,GLU_INVALID_ENUM);
+             call_user_error(nobj,(GLenum)GLU_INVALID_ENUM);
              return;
          }
          nobj->auto_load_matrix = (GLboolean) value;
          break;
       default:
-         call_user_error(nobj,GLU_NURBS_ERROR26);
+         call_user_error(nobj,(GLenum)GLU_NURBS_ERROR26);
    }
 }
 
@@ -222,7 +222,7 @@ void GLAPIENTRY gluGetNurbsProperty( GLUnurbsObj *nobj, GLenum property, GLfloat
          *value = nobj->auto_load_matrix ? 1.0 : 0.0;
          break;
       default:
-         call_user_error(nobj,GLU_INVALID_ENUM);
+         call_user_error(nobj,(GLenum)GLU_INVALID_ENUM);
    }
 }
 
@@ -232,14 +232,14 @@ void GLAPIENTRY gluBeginCurve( GLUnurbsObj *nobj )
 {
     if(nobj->nurbs_type==GLU_NURBS_CURVE)
     {
-        call_user_error(nobj,GLU_NURBS_ERROR6);
+        call_user_error(nobj,(GLenum)GLU_NURBS_ERROR6);
         return;
     }
     nobj->nurbs_type=GLU_NURBS_CURVE;
-    nobj->curve.geom.type=GLU_INVALID_ENUM;
-    nobj->curve.color.type=GLU_INVALID_ENUM;
-    nobj->curve.texture.type=GLU_INVALID_ENUM;
-    nobj->curve.normal.type=GLU_INVALID_ENUM;
+    nobj->curve.geom.type=(GLenum)GLU_INVALID_ENUM;
+    nobj->curve.color.type=(GLenum)GLU_INVALID_ENUM;
+    nobj->curve.texture.type=(GLenum)GLU_INVALID_ENUM;
+    nobj->curve.normal.type=(GLenum)GLU_INVALID_ENUM;
 }
 
 
@@ -247,12 +247,12 @@ void GLAPIENTRY gluEndCurve( GLUnurbsObj * nobj )
 {
     if(nobj->nurbs_type==GLU_NURBS_NONE)
     {
-        call_user_error(nobj,GLU_NURBS_ERROR7);
+        call_user_error(nobj,(GLenum)GLU_NURBS_ERROR7);
         return;
     }
     if(nobj->curve.geom.type==GLU_INVALID_ENUM)
     {
-        call_user_error(nobj,GLU_NURBS_ERROR8);
+        call_user_error(nobj,(GLenum)GLU_NURBS_ERROR8);
         nobj->nurbs_type=GLU_NURBS_NONE;
         return;
     }
@@ -331,12 +331,12 @@ void GLAPIENTRY gluNurbsCurve( GLUnurbsObj *nobj, GLint nknots, GLfloat *knot,
     {
         if(type==GLU_MAP1_TRIM_2 || type==GLU_MAP1_TRIM_3)
         {
-            call_user_error(nobj,GLU_NURBS_ERROR22);
+            call_user_error(nobj,(GLenum)GLU_NURBS_ERROR22);
             return;
         }
         if(nobj->nurbs_type!=GLU_NURBS_CURVE)
         {
-            call_user_error(nobj,GLU_NURBS_ERROR10);
+            call_user_error(nobj,(GLenum)GLU_NURBS_ERROR10);
             return;
         }
         switch(type)
@@ -345,7 +345,7 @@ void GLAPIENTRY gluNurbsCurve( GLUnurbsObj *nobj, GLint nknots, GLfloat *knot,
             case GL_MAP1_VERTEX_4:
                 if(nobj->curve.geom.type!=GLU_INVALID_ENUM)
                 {
-                    call_user_error(nobj,GLU_NURBS_ERROR8);
+                    call_user_error(nobj,(GLenum)GLU_NURBS_ERROR8);
                     return;
                 }
                 nobj->curve.geom.type=type;
@@ -384,7 +384,7 @@ void GLAPIENTRY gluNurbsCurve( GLUnurbsObj *nobj, GLint nknots, GLfloat *knot,
                 nobj->curve.texture.order=order;
                 break;
             default:
-                 call_user_error(nobj,GLU_INVALID_ENUM);
+                 call_user_error(nobj,(GLenum)GLU_INVALID_ENUM);
         }
     }
 }
@@ -396,21 +396,21 @@ void GLAPIENTRY gluBeginSurface( GLUnurbsObj *nobj )
     {
         case GLU_NURBS_NONE:
             nobj->nurbs_type=GLU_NURBS_SURFACE;
-            nobj->surface.geom.type=GLU_INVALID_ENUM;
-            nobj->surface.color.type=GLU_INVALID_ENUM;
-            nobj->surface.texture.type=GLU_INVALID_ENUM;
-            nobj->surface.normal.type=GLU_INVALID_ENUM;
+            nobj->surface.geom.type=(GLenum)GLU_INVALID_ENUM;
+            nobj->surface.color.type=(GLenum)GLU_INVALID_ENUM;
+            nobj->surface.texture.type=(GLenum)GLU_INVALID_ENUM;
+            nobj->surface.normal.type=(GLenum)GLU_INVALID_ENUM;
             break;
         case GLU_NURBS_TRIM:
-            call_user_error(nobj,GLU_NURBS_ERROR16);
+            call_user_error(nobj,(GLenum)GLU_NURBS_ERROR16);
             break;
         case GLU_NURBS_SURFACE:
         case GLU_NURBS_NO_TRIM:
         case GLU_NURBS_TRIM_DONE:
-            call_user_error(nobj,GLU_NURBS_ERROR27);
+            call_user_error(nobj,(GLenum)GLU_NURBS_ERROR27);
             break;
         case GLU_NURBS_CURVE:
-            call_user_error(nobj,GLU_NURBS_ERROR6);
+            call_user_error(nobj,(GLenum)GLU_NURBS_ERROR6);
             break;
     }
 }
@@ -421,10 +421,10 @@ void GLAPIENTRY gluEndSurface( GLUnurbsObj * nobj )
     switch(nobj->nurbs_type)
     {
         case GLU_NURBS_NONE:
-            call_user_error(nobj,GLU_NURBS_ERROR13);
+            call_user_error(nobj,(GLenum)GLU_NURBS_ERROR13);
             break;
         case GLU_NURBS_TRIM:
-            call_user_error(nobj,GLU_NURBS_ERROR12);
+            call_user_error(nobj,(GLenum)GLU_NURBS_ERROR12);
             break;
         case GLU_NURBS_TRIM_DONE:
 /*            if(nobj->trim->trim_loop==NULL)
@@ -458,7 +458,7 @@ void GLAPIENTRY gluEndSurface( GLUnurbsObj * nobj )
             glPopAttrib();
             break;
         default:
-            call_user_error(nobj,GLU_NURBS_ERROR8);
+            call_user_error(nobj,(GLenum)GLU_NURBS_ERROR8);
     }
     nobj->nurbs_type=GLU_NURBS_NONE;
 }
@@ -477,14 +477,14 @@ void GLAPIENTRY gluNurbsSurface( GLUnurbsObj *nobj,
     {
         if(type==GL_MAP2_VERTEX_3 || type==GL_MAP2_VERTEX_4)
         {
-            call_user_error(nobj,GLU_NURBS_ERROR8);
+            call_user_error(nobj,(GLenum)GLU_NURBS_ERROR8);
             return;
         }
     }
     else
     if(nobj->nurbs_type!=GLU_NURBS_SURFACE)
     {
-        call_user_error(nobj,GLU_NURBS_ERROR11);
+        call_user_error(nobj,(GLenum)GLU_NURBS_ERROR11);
         return;
     }
     switch(type)
@@ -544,7 +544,7 @@ void GLAPIENTRY gluNurbsSurface( GLUnurbsObj *nobj,
             nobj->surface.texture.type=type;
             break;
         default:
-             call_user_error(nobj,GLU_INVALID_ENUM);
+             call_user_error(nobj,(GLenum)GLU_INVALID_ENUM);
     }
 }
 
@@ -555,7 +555,7 @@ gluNurbsCallback( GLUnurbsObj *nobj, GLenum which, void (GLCALLBACK *fn)())
     nobj->error_callback = (void(GLCALLBACKPCAST)(GLenum))fn;
 
     if(which!=GLU_ERROR)
-        call_user_error(nobj,GLU_INVALID_ENUM);
+        call_user_error(nobj,(GLenum)GLU_INVALID_ENUM);
 }
 
 void GLAPIENTRY
@@ -568,7 +568,7 @@ gluBeginTrim( GLUnurbsObj *nobj )
     if(nobj->nurbs_type!=GLU_NURBS_TRIM_DONE)
         if(nobj->nurbs_type!=GLU_NURBS_NO_TRIM)
         {
-            call_user_error(nobj,GLU_NURBS_ERROR15);
+            call_user_error(nobj,(GLenum)GLU_NURBS_ERROR15);
             return;
         }
     nobj->nurbs_type=GLU_NURBS_TRIM;
@@ -604,17 +604,17 @@ gluPwlCurve( GLUnurbsObj *nobj, GLint count, GLfloat *array, GLint stride,
 #endif
     if(nobj->nurbs_type==GLU_NURBS_CURVE)
     {
-        call_user_error(nobj,GLU_NURBS_ERROR9);
+        call_user_error(nobj,(GLenum)GLU_NURBS_ERROR9);
         return;
     }
     if(nobj->nurbs_type==GLU_NURBS_NONE)
     {
-        call_user_error(nobj,GLU_NURBS_ERROR19);
+        call_user_error(nobj,(GLenum)GLU_NURBS_ERROR19);
         return;
     }
     if(type!=GLU_MAP1_TRIM_2 && type!=GLU_MAP1_TRIM_3)
     {
-        call_user_error(nobj,GLU_NURBS_ERROR14);
+        call_user_error(nobj,(GLenum)GLU_NURBS_ERROR14);
         return;
     }
 #if 0
@@ -653,7 +653,7 @@ gluEndTrim( GLUnurbsObj *nobj )
 {
     if(nobj->nurbs_type!=GLU_NURBS_TRIM)
     {
-        call_user_error(nobj,GLU_NURBS_ERROR17);
+        call_user_error(nobj,(GLenum)GLU_NURBS_ERROR17);
         return;
     }
     nobj->nurbs_type=GLU_NURBS_TRIM_DONE;

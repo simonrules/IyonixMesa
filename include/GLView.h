@@ -53,7 +53,7 @@ public:
 	status_t    CopyPixelsOut(BPoint source, BBitmap *dest);
 	status_t    CopyPixelsIn(BBitmap *source, BPoint dest);
 
-	virtual void        ErrorCallback(GLenum errorCode);
+	virtual void        ErrorCallback(unsigned long errorCode);
 		
 	virtual	void		Draw(BRect updateRect);
 

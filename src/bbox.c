@@ -107,7 +107,8 @@ static void transform_bounds3( GLubyte *orMask, GLubyte *andMask,
       ACC_4V( data[i], dz );
 
    
-   cliptest_bounds( orMask, andMask, (const GLfloat (*)[4])data, 8 );
+//   cliptest_bounds( orMask, andMask, (const GLfloat (*)[4])data, 8 );
+   cliptest_bounds( orMask, andMask, (GLfloat (*)[4])data, 8 );
 }
 
 static void transform_bounds2( GLubyte *orMask, GLubyte *andMask, 
@@ -141,7 +142,8 @@ static void transform_bounds2( GLubyte *orMask, GLubyte *andMask,
    ACC_4V( data[2], dy );
    ACC_4V( data[3], dy );
 
-   cliptest_bounds( orMask, andMask, (const GLfloat (*)[4])data, 4 );
+//   cliptest_bounds( orMask, andMask, (const GLfloat (*)[4])data, 4 );
+   cliptest_bounds( orMask, andMask, (GLfloat (*)[4])data, 4 );
 }
 
 /* Dummy

@@ -94,53 +94,53 @@ test_nurbs_surface(GLUnurbsObj *nobj, surface_attribs *attrib)
 
 	if(attrib->sorder < 0 || attrib->torder < 0)
 	{
-		call_user_error(nobj,GLU_INVALID_VALUE);
-		return GLU_ERROR;
+		call_user_error(nobj,(GLenum)GLU_INVALID_VALUE);
+		return (GLenum)GLU_ERROR;
 	}
 	glGetIntegerv(GL_MAX_EVAL_ORDER,&tmp_int);
 	if(attrib->sorder > tmp_int || attrib->sorder < 2)
 	{
-		call_user_error(nobj,GLU_NURBS_ERROR1);
-		return GLU_ERROR;
+		call_user_error(nobj,(GLenum)GLU_NURBS_ERROR1);
+		return (GLenum)GLU_ERROR;
 	}
 	if(attrib->torder > tmp_int || attrib->torder < 2)
 	{
-		call_user_error(nobj,GLU_NURBS_ERROR1);
-		return GLU_ERROR;
+		call_user_error(nobj,(GLenum)GLU_NURBS_ERROR1);
+		return (GLenum)GLU_ERROR;
 	}
 	if(attrib->sknot_count < attrib->sorder +2)
 	{
-		call_user_error(nobj,GLU_NURBS_ERROR2);
-		return GLU_ERROR;
+		call_user_error(nobj,(GLenum)GLU_NURBS_ERROR2);
+		return (GLenum)GLU_ERROR;
 	}
 	if(attrib->tknot_count < attrib->torder +2)
 	{
-		call_user_error(nobj,GLU_NURBS_ERROR2);
-		return GLU_ERROR;
+		call_user_error(nobj,(GLenum)GLU_NURBS_ERROR2);
+		return (GLenum)GLU_ERROR;
 	}
 	if(attrib->s_stride < 0 || attrib->t_stride < 0)
 	{
-		call_user_error(nobj,GLU_NURBS_ERROR34);
-		return GLU_ERROR;
+		call_user_error(nobj,(GLenum)GLU_NURBS_ERROR34);
+		return (GLenum)GLU_ERROR;
 	}
 	if(attrib->sknot==NULL || attrib->tknot==NULL || attrib->ctrlarray==NULL)
 	{
-		call_user_error(nobj,GLU_NURBS_ERROR36);
-		return GLU_ERROR;
+		call_user_error(nobj,(GLenum)GLU_NURBS_ERROR36);
+		return (GLenum)GLU_ERROR;
 	}
 	if((err=test_knot(attrib->tknot_count,attrib->tknot,attrib->torder))
 		!=GLU_NO_ERROR)
 	{
 		call_user_error(nobj,err);
-		return GLU_ERROR;
+		return (GLenum)GLU_ERROR;
 	}
 	if((err=test_knot(attrib->sknot_count,attrib->sknot,attrib->sorder))
 		!=GLU_NO_ERROR)
 	{
 		call_user_error(nobj,err);
-		return GLU_ERROR;
+		return (GLenum)GLU_ERROR;
 	}
-	return GLU_NO_ERROR;
+	return (GLenum)GLU_NO_ERROR;
 }
 
 static GLenum
@@ -148,21 +148,21 @@ test_nurbs_surfaces(GLUnurbsObj *nobj)
 {
 	/* test the geometric data */
 	if(test_nurbs_surface(nobj,&(nobj->surface.geom))!=GLU_NO_ERROR)
-		return GLU_ERROR;
+		return (GLenum)GLU_ERROR;
 	/* now test the attributive data */
 	/* color */
 	if(nobj->surface.color.type!=GLU_INVALID_ENUM)
 		if(test_nurbs_surface(nobj,&(nobj->surface.color))!=GLU_NO_ERROR)
-			return GLU_ERROR;
+			return (GLenum)GLU_ERROR;
 	/* normal */
 	if(nobj->surface.normal.type!=GLU_INVALID_ENUM)
 		if(test_nurbs_surface(nobj,&(nobj->surface.normal))!=GLU_NO_ERROR)
-			return GLU_ERROR;
+			return (GLenum)GLU_ERROR;
 	/* texture */
 	if(nobj->surface.texture.type!=GLU_INVALID_ENUM)
 		if(test_nurbs_surface(nobj,&(nobj->surface.texture))!=GLU_NO_ERROR)
-			return GLU_ERROR;
-	return GLU_NO_ERROR;
+			return (GLenum)GLU_ERROR;
+	return (GLenum)GLU_NO_ERROR;
 }
 
 static GLenum
@@ -179,7 +179,7 @@ convert_surf(knot_str_type *s_knot, knot_str_type *t_knot,
 	GLenum err;
 
 	/* valid range is empty? */
-	if((s_knot->unified_knot !=NULL && s_knot->unified_nknots==0) || 
+	if((s_knot->unified_knot !=NULL && s_knot->unified_nknots==0) ||
 		(t_knot->unified_knot !=NULL && t_knot->unified_nknots==0))
 	{
 		if(s_knot->unified_knot)
@@ -194,12 +194,12 @@ convert_surf(knot_str_type *s_knot, knot_str_type *t_knot,
 		}
 		*s_n_ctrl=0;
 		*t_n_ctrl=0;
-		return GLU_NO_ERROR;
+		return (GLenum)GLU_NO_ERROR;
 	}
 	t_cnt=attrib->tknot_count-attrib->torder;
 	s_cnt=attrib->sknot_count-attrib->sorder;
 	if((tmp_ctrl=(GLfloat **)malloc(sizeof(GLfloat *)*t_cnt))==NULL)
-		return GLU_OUT_OF_MEMORY;
+		return (GLenum)GLU_OUT_OF_MEMORY;
 	if((err=explode_knot(s_knot))!=GLU_NO_ERROR)
 	{
 		free(tmp_ctrl);
@@ -245,7 +245,7 @@ convert_surf(knot_str_type *s_knot, knot_str_type *t_knot,
 		for(i=0;i<t_cnt;i++)
 			free(tmp_ctrl[i]);
 		free(tmp_ctrl);
-		return GLU_OUT_OF_MEMORY;
+		return (GLenum)GLU_OUT_OF_MEMORY;
 	}
 	for(i=0;i<tmp_n_control;i++)
 		for(j=0;j<t_cnt;j++)
@@ -255,10 +255,10 @@ convert_surf(knot_str_type *s_knot, knot_str_type *t_knot,
 		free(tmp_ctrl[i]);
 	free(tmp_ctrl);
 	*s_n_ctrl=tmp_n_control;
-	
+
 	if((tmp_ctrl=(GLfloat **)malloc(sizeof(GLfloat *)*(*s_n_ctrl)))==NULL)
 	{
-		return GLU_OUT_OF_MEMORY;
+		return (GLenum)GLU_OUT_OF_MEMORY;
 	}
 	if((err=explode_knot(t_knot))!=GLU_NO_ERROR)
 	{
@@ -305,7 +305,7 @@ convert_surf(knot_str_type *s_knot, knot_str_type *t_knot,
 		for(i=0;i<(*s_n_ctrl);i++)
 			free(tmp_ctrl[i]);
 		free(tmp_ctrl);
-		return GLU_OUT_OF_MEMORY;
+		return (GLenum)GLU_OUT_OF_MEMORY;
 	}
 	for(i=0;i<(*s_n_ctrl);i++)
 	{
@@ -314,7 +314,7 @@ convert_surf(knot_str_type *s_knot, knot_str_type *t_knot,
 	}
 	free(tmp_ctrl);
 	*t_n_ctrl=tmp_n_control;
-	return GLU_NO_ERROR;
+	return (GLenum)GLU_NO_ERROR;
 }
 
 /* prepare the knot information structures */
@@ -339,8 +339,8 @@ fill_knot_structures(GLUnurbsObj *nobj,
 	t_max=geom_s_knot->t_max=nknots-order;
 	if(fabs(knot[t_min]-knot[t_max])<EPSILON)
 	{
-		call_user_error(nobj,GLU_NURBS_ERROR3);
-		return GLU_ERROR;
+		call_user_error(nobj,(GLenum)GLU_NURBS_ERROR3);
+		return (GLenum)GLU_ERROR;
 	}
 	if(fabs(knot[0]-knot[t_min])<EPSILON)
 	{
@@ -365,8 +365,8 @@ fill_knot_structures(GLUnurbsObj *nobj,
 	t_max=geom_t_knot->t_max=nknots-order;
 	if(fabs(knot[t_min]-knot[t_max])<EPSILON)
 	{
-		call_user_error(nobj,GLU_NURBS_ERROR3);
-		return GLU_ERROR;
+		call_user_error(nobj,(GLenum)GLU_NURBS_ERROR3);
+		return (GLenum)GLU_ERROR;
 	}
 	if(fabs(knot[0]-knot[t_min])<EPSILON)
 	{
@@ -394,8 +394,8 @@ fill_knot_structures(GLUnurbsObj *nobj,
 		t_max=color_s_knot->t_max=nknots-order;
 		if(fabs(knot[t_min]-knot[t_max])<EPSILON)
 		{
-			call_user_error(nobj,GLU_NURBS_ERROR3);
-			return GLU_ERROR;
+			call_user_error(nobj,(GLenum)GLU_NURBS_ERROR3);
+			return (GLenum)GLU_ERROR;
 		}
 		if(fabs(knot[0]-knot[t_min])<EPSILON)
 		{
@@ -420,8 +420,8 @@ fill_knot_structures(GLUnurbsObj *nobj,
 		t_max=color_t_knot->t_max=nknots-order;
 		if(fabs(knot[t_min]-knot[t_max])<EPSILON)
 		{
-			call_user_error(nobj,GLU_NURBS_ERROR3);
-			return GLU_ERROR;
+			call_user_error(nobj,(GLenum)GLU_NURBS_ERROR3);
+			return (GLenum)GLU_ERROR;
 		}
 		if(fabs(knot[0]-knot[t_min])<EPSILON)
 		{
@@ -455,8 +455,8 @@ fill_knot_structures(GLUnurbsObj *nobj,
 		t_max=normal_s_knot->t_max=nknots-order;
 		if(fabs(knot[t_min]-knot[t_max])<EPSILON)
 		{
-			call_user_error(nobj,GLU_NURBS_ERROR3);
-			return GLU_ERROR;
+			call_user_error(nobj,(GLenum)GLU_NURBS_ERROR3);
+			return (GLenum)GLU_ERROR;
 		}
 		if(fabs(knot[0]-knot[t_min])<EPSILON)
 		{
@@ -481,8 +481,8 @@ fill_knot_structures(GLUnurbsObj *nobj,
 		t_max=normal_t_knot->t_max=nknots-order;
 		if(fabs(knot[t_min]-knot[t_max])<EPSILON)
 		{
-			call_user_error(nobj,GLU_NURBS_ERROR3);
-			return GLU_ERROR;
+			call_user_error(nobj,(GLenum)GLU_NURBS_ERROR3);
+			return (GLenum)GLU_ERROR;
 		}
 		if(fabs(knot[0]-knot[t_min])<EPSILON)
 		{
@@ -516,8 +516,8 @@ fill_knot_structures(GLUnurbsObj *nobj,
 		t_max=texture_s_knot->t_max=nknots-order;
 		if(fabs(knot[t_min]-knot[t_max])<EPSILON)
 		{
-			call_user_error(nobj,GLU_NURBS_ERROR3);
-			return GLU_ERROR;
+			call_user_error(nobj,(GLenum)GLU_NURBS_ERROR3);
+			return (GLenum)GLU_ERROR;
 		}
 		if(fabs(knot[0]-knot[t_min])<EPSILON)
 		{
@@ -542,8 +542,8 @@ fill_knot_structures(GLUnurbsObj *nobj,
 		t_max=texture_t_knot->t_max=nknots-order;
 		if(fabs(knot[t_min]-knot[t_max])<EPSILON)
 		{
-			call_user_error(nobj,GLU_NURBS_ERROR3);
-			return GLU_ERROR;
+			call_user_error(nobj,(GLenum)GLU_NURBS_ERROR3);
+			return (GLenum)GLU_ERROR;
 		}
 		if(fabs(knot[0]-knot[t_min])<EPSILON)
 		{
@@ -565,7 +565,7 @@ fill_knot_structures(GLUnurbsObj *nobj,
 		texture_s_knot->unified_knot=NULL;
 		texture_t_knot->unified_knot=NULL;
 	}
-	return GLU_NO_ERROR;
+	return (GLenum)GLU_NO_ERROR;
 }
 
 void
@@ -690,7 +690,7 @@ convert_surfs(GLUnurbsObj *nobj, new_ctrl_type *new_ctrl)
 			return err;
 		}
 	}
-	return GLU_NO_ERROR;
+	return (GLenum)GLU_NO_ERROR;
 }
 
 /* tesselate the "boundary" Bezier edge strips */
@@ -770,8 +770,8 @@ tesselate_strip_t_fill(GLint top_start,GLint top_end,GLint top_z,
 }
 
 void
-tesselate_strip_t(GLenum display_mode, GLint top_start, GLint top_end, 
-	GLint top_z, GLint bottom_start, GLint bottom_end, GLint bottom_z, 
+tesselate_strip_t(GLenum display_mode, GLint top_start, GLint top_end,
+	GLint top_z, GLint bottom_start, GLint bottom_end, GLint bottom_z,
 	GLint bottom_domain)
 {
 	if(display_mode==GL_FILL)
@@ -781,7 +781,7 @@ tesselate_strip_t(GLenum display_mode, GLint top_start, GLint top_end,
 		tesselate_strip_t_line(top_start,top_end,top_z,bottom_start,
 			bottom_end,bottom_z,bottom_domain);
 }
-	
+
 
 void
 tesselate_strip_s_fill(GLint top_start, GLint top_end, GLint top_z,
@@ -1296,29 +1296,29 @@ augment_new_ctrl(GLUnurbsObj *nobj, new_ctrl_type *p)
 	p->texture_s_stride=(p->texture_t_pt_cnt)*(nobj->surface.texture.dim);
 	if((p->geom_offsets=(GLfloat **)malloc(sizeof(GLfloat *)*offset_size))==NULL)
 	{
-		call_user_error(nobj,GLU_OUT_OF_MEMORY);
-		return GLU_ERROR;
+		call_user_error(nobj,(GLenum)GLU_OUT_OF_MEMORY);
+		return (GLenum)GLU_ERROR;
 	}
 	if(p->color_ctrl)
 		if((p->color_offsets=(GLfloat **)malloc(sizeof(GLfloat *)*offset_size))==NULL)
 		{
 			free_new_ctrl(p);
-			call_user_error(nobj,GLU_OUT_OF_MEMORY);
-			return GLU_ERROR;
+			call_user_error(nobj,(GLenum)GLU_OUT_OF_MEMORY);
+			return (GLenum)GLU_ERROR;
 		}
 	if(p->normal_ctrl)
 		if((p->normal_offsets=(GLfloat **)malloc(sizeof(GLfloat *)*offset_size))==NULL)
 		{
 			free_new_ctrl(p);
-			call_user_error(nobj,GLU_OUT_OF_MEMORY);
-			return GLU_ERROR;
+			call_user_error(nobj,(GLenum)GLU_OUT_OF_MEMORY);
+			return (GLenum)GLU_ERROR;
 		}
 	if(p->texture_ctrl)
 		if((p->texture_offsets=(GLfloat **)malloc(sizeof(GLfloat *)*offset_size))==NULL)
 		{
 			free_new_ctrl(p);
-			call_user_error(nobj,GLU_OUT_OF_MEMORY);
-			return GLU_ERROR;
+			call_user_error(nobj,(GLenum)GLU_OUT_OF_MEMORY);
+			return (GLenum)GLU_ERROR;
 		}
 	for(i=0;i<p->s_bezier_cnt;i++)
 		for(j=0;j<p->t_bezier_cnt;j++)
@@ -1347,7 +1347,7 @@ augment_new_ctrl(GLUnurbsObj *nobj, new_ctrl_type *p)
 					p->texture_ctrl + i*(nobj->surface.texture.sorder)*
 					(nobj->surface.texture.dim)*(p->texture_t_pt_cnt) +
 					j*(nobj->surface.texture.dim)*(nobj->surface.texture.torder);
-	return GLU_NO_ERROR;
+	return (GLenum)GLU_NO_ERROR;
 }
 
 /* main NURBS surface procedure */
@@ -1405,7 +1405,7 @@ do_nurbs_surface( GLUnurbsObj *nobj )
 			break;
 		case GLU_OUTLINE_POLYGON:
 			/* TODO - missing trimming handeling */
-/* just for now - no OUTLINE_PATCH mode 
+/* just for now - no OUTLINE_PATCH mode
 			draw_patch_mode(GL_LINE,nobj,&new_ctrl,sfactors,tfactors);
 			break; */
 		case GLU_OUTLINE_PATCH:

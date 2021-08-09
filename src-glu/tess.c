@@ -112,7 +112,7 @@ static GLenum find_normal( GLUtesselator *tobj )
 
     MSG( 15, "      --> find_normal( tobj:%p )\n", tobj );
 
-    if ( contour == NULL ) { return GLU_ERROR; }
+    if ( contour == NULL ) { return (GLenum)GLU_ERROR; }
 
     va = contour->vertices;
     vb = va->next;
@@ -125,7 +125,7 @@ static GLenum find_normal( GLUtesselator *tobj )
 
     if ( vb == va ) {
 	/* FIXME: What error is this? */
-	tess_error_callback( tobj, GLU_TESS_ERROR7 );
+	tess_error_callback( tobj, (GLenum)GLU_TESS_ERROR7 );
     }
 
     SUB_3V( a, vb->coords, va->coords );
@@ -150,13 +150,13 @@ static GLenum find_normal( GLUtesselator *tobj )
 					    va->coords );
 
 	    MSG( 15, "      <-- find_normal( tobj:%p ) n: (%.2f, %.2f, %.2f)\n", tobj, contour->plane.normal[X], contour->plane.normal[Y], contour->plane.normal[Z] );
-	    return GLU_NO_ERROR;
+	    return (GLenum)GLU_NO_ERROR;
 	}
     }
     /* FIXME: What error is this? */
-    tess_error_callback( tobj, GLU_TESS_ERROR7 );
+    tess_error_callback( tobj, (GLenum)GLU_TESS_ERROR7 );
 
-    return GLU_ERROR;
+    return (GLenum)GLU_ERROR;
 }
 
 /*****************************************************************************
@@ -252,7 +252,7 @@ static void project_current_contour( GLUtesselator *tobj )
     }
 
     current->area = twice_contour_area( current );
-    current->orientation = ( current->area >= 0.0 ) ? GLU_CCW : GLU_CW;
+    current->orientation = ( current->area >= 0.0 ) ? (GLenum)GLU_CCW : (GLenum)GLU_CW;
 
     MSG( 15, "            area: %.2f orientation: %s\n",
 	 current->area, ( current->orientation == GLU_CCW ) ? "CCW" : "CW" );
@@ -269,7 +269,7 @@ static GLenum save_current_contour( GLUtesselator *tobj )
     tess_vertex_t	*vertex;
     GLint		i;
 
-    if ( current == NULL ) { return GLU_ERROR; }
+    if ( current == NULL ) { return (GLenum)GLU_ERROR; }
 
     if ( tobj->contours == NULL )
     {
@@ -294,12 +294,12 @@ static GLenum save_current_contour( GLUtesselator *tobj )
 	vertex->edge_flag = GL_TRUE;
     }
 
-    current->type = GLU_UNKNOWN;
+    current->type = (GLenum)GLU_UNKNOWN;
 
     tobj->num_contours++;
     tobj->current_contour = NULL;
 
-    return GLU_NO_ERROR;
+    return (GLenum)GLU_NO_ERROR;
 }
 
 /*****************************************************************************
@@ -382,7 +382,7 @@ void reverse_contour( tess_contour_t *contour )
     }
 
     contour->orientation =
-	( contour->orientation == GLU_CCW ) ? GLU_CW : GLU_CCW;
+	( contour->orientation == GLU_CCW ) ? (GLenum)GLU_CW : (GLenum)GLU_CCW;
 
     contour->last_vertex = contour->vertices->prev;
 }
@@ -567,17 +567,17 @@ GLUtesselator* GLAPIENTRY gluNewTess( void )
 
     MSG( 15, "-> gluNewTess()\n" );
 
-    tobj = malloc( sizeof(GLUtesselator) );
+    tobj = ( GLUtesselator *)(malloc( sizeof(GLUtesselator) ));
     if ( tobj == NULL ) {
 	return NULL;
     }
 
     init_callbacks( &tobj->callbacks );
 
-    tobj->winding_rule = GLU_TESS_WINDING_ODD;
-    tobj->boundary_only = GL_FALSE;
-    tobj->tolerance = GLU_TESS_EPSILON;
-    tobj->orientation = GLU_UNKNOWN;
+    tobj->winding_rule = (GLenum)GLU_TESS_WINDING_ODD;
+    tobj->boundary_only = (GLenum)GL_FALSE;
+    tobj->tolerance = (GLenum)GLU_TESS_EPSILON;
+    tobj->orientation = (GLenum)GLU_UNKNOWN;
 
     tobj->data = NULL;
 
@@ -598,7 +598,7 @@ GLUtesselator* GLAPIENTRY gluNewTess( void )
     ZERO_3V( tobj->plane.normal );
     tobj->plane.dist = 0.0;
 
-    tobj->error = GLU_NO_ERROR;
+    tobj->error = (GLenum)GLU_NO_ERROR;
 
     MSG( 15, "<- gluNewTess() tobj:%p\n", tobj );
     return tobj;
@@ -615,7 +615,7 @@ void GLAPIENTRY gluDeleteTess( GLUtesselator *tobj )
     if ( ( tobj->error == GLU_NO_ERROR ) && ( tobj->num_contours > 0 ) )
     {
 	/* gluEndPolygon was not called. */
-	tess_error_callback( tobj, GLU_TESS_ERROR3 );
+	tess_error_callback( tobj, (GLenum)GLU_TESS_ERROR3 );
     }
 
     /* Delete all internal structures. */
@@ -633,12 +633,12 @@ void GLAPIENTRY gluTessBeginPolygon( GLUtesselator *tobj, void *polygon_data )
 {
     MSG( 15, "-> gluTessBeginPolygon( tobj:%p data:%p )\n", tobj, polygon_data );
 
-    tobj->error = GLU_NO_ERROR;
+    tobj->error = (GLenum)GLU_NO_ERROR;
 
     if ( tobj->current_contour != NULL )
     {
 	/* gluEndPolygon was not called. */
-	tess_error_callback( tobj, GLU_TESS_ERROR3 );
+	tess_error_callback( tobj, (GLenum)GLU_TESS_ERROR3 );
 	tess_cleanup( tobj );
     }
 
@@ -662,13 +662,13 @@ void GLAPIENTRY gluTessBeginContour( GLUtesselator *tobj )
     if ( tobj->current_contour != NULL )
     {
 	/* gluTessEndContour was not called. */
-	tess_error_callback( tobj, GLU_TESS_ERROR4 );
+	tess_error_callback( tobj, (GLenum)GLU_TESS_ERROR4 );
 	return;
     }
 
-    tobj->current_contour = malloc( sizeof(tess_contour_t) );
+    tobj->current_contour = (tess_contour_t *) (malloc( sizeof(tess_contour_t) ));
     if ( tobj->current_contour == NULL ) {
-	tess_error_callback( tobj, GLU_OUT_OF_MEMORY );
+	tess_error_callback( tobj, (GLenum)GLU_OUT_OF_MEMORY );
 	return;
     }
 
@@ -676,7 +676,7 @@ void GLAPIENTRY gluTessBeginContour( GLUtesselator *tobj )
     tobj->current_contour->plane.dist = tobj->plane.dist;
 
     tobj->current_contour->area = 0.0;
-    tobj->current_contour->orientation = GLU_UNKNOWN;
+    tobj->current_contour->orientation = (GLenum)GLU_UNKNOWN;
 
     tobj->current_contour->label = 0;
     tobj->current_contour->winding = 0;
@@ -713,7 +713,7 @@ void GLAPIENTRY gluTessVertex( GLUtesselator *tobj, GLdouble coords[3],
     if ( current == NULL )
     {
 	/* gluTessBeginContour was not called. */
-	tess_error_callback( tobj, GLU_TESS_ERROR2 );
+	tess_error_callback( tobj, (GLenum)GLU_TESS_ERROR2 );
 	return;
     }
 
@@ -723,9 +723,9 @@ void GLAPIENTRY gluTessVertex( GLUtesselator *tobj, GLdouble coords[3],
 
     if ( last_vertex == NULL )
     {
-	last_vertex = malloc( sizeof(tess_vertex_t) );
+	last_vertex = (tess_vertex_t *)(malloc( sizeof(tess_vertex_t) ));
 	if ( last_vertex == NULL ) {
-	    tess_error_callback( tobj, GLU_OUT_OF_MEMORY );
+	    tess_error_callback( tobj, (GLenum)GLU_OUT_OF_MEMORY );
 	    return;
 	}
 
@@ -755,9 +755,9 @@ void GLAPIENTRY gluTessVertex( GLUtesselator *tobj, GLdouble coords[3],
     {
 	tess_vertex_t	*vertex;
 
-	vertex = malloc( sizeof(tess_vertex_t) );
+	vertex = (tess_vertex_t *)(malloc( sizeof(tess_vertex_t) ));
 	if ( vertex == NULL ) {
-	    tess_error_callback( tobj, GLU_OUT_OF_MEMORY );
+	    tess_error_callback( tobj, (GLenum)GLU_OUT_OF_MEMORY );
 	    return;
 	}
 
@@ -771,7 +771,7 @@ void GLAPIENTRY gluTessVertex( GLUtesselator *tobj, GLdouble coords[3],
 	vertex->v[X] = 0.0;
 	vertex->v[Y] = 0.0;
 
-	vertex->edge_flag = GL_TRUE;
+	vertex->edge_flag = (GLenum)GL_TRUE;
 
 	vertex->side = 0.0;
 
@@ -801,7 +801,7 @@ void GLAPIENTRY gluTessEndContour( GLUtesselator *tobj )
     if ( tobj->current_contour == NULL )
     {
 	/* gluTessBeginContour was not called. */
-	tess_error_callback( tobj, GLU_TESS_ERROR2 );
+	tess_error_callback( tobj, (GLenum)GLU_TESS_ERROR2 );
 	return;
     }
 
@@ -828,7 +828,7 @@ void GLAPIENTRY gluTessEndPolygon( GLUtesselator *tobj )
     if ( tobj->current_contour != NULL )
     {
 	/* gluTessBeginPolygon was not called. */
-	tess_error_callback( tobj, GLU_TESS_ERROR1 );
+	tess_error_callback( tobj, (GLenum)GLU_TESS_ERROR1 );
 	return;
     }
     TESS_CHECK_ERRORS( tobj );
@@ -931,7 +931,7 @@ void GLAPIENTRY gluTessCallback( GLUtesselator *tobj, GLenum which,
 
     default:
 	MSG( 1, "  gluTessCallback( tobj:%p which:%d ) invalid enum\n", tobj, which );
-	tobj->error = GLU_INVALID_ENUM;
+	tobj->error = (GLenum)GLU_INVALID_ENUM;
 	break;
     }
 }
@@ -962,7 +962,7 @@ void GLAPIENTRY gluTessProperty( GLUtesselator *tobj, GLenum which,
 
     default:
 	MSG( 1, "   gluTessProperty( tobj:%p which:%d ) invalid enum\n", tobj, which );
-	tobj->error = GLU_INVALID_ENUM;
+	tobj->error = (GLenum)GLU_INVALID_ENUM;
 	break;
     }
 }
@@ -992,7 +992,7 @@ void GLAPIENTRY gluGetTessProperty( GLUtesselator *tobj, GLenum which,
 
     default:
 	MSG( 1, "   gluGetTessProperty( tobj:%p which:%d ) invalid enum\n", tobj, which );
-	tobj->error = GLU_INVALID_ENUM;
+	tobj->error = (GLenum)GLU_INVALID_ENUM;
 	break;
     }
 }

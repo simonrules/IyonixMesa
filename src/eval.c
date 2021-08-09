@@ -116,8 +116,9 @@ horner_bezier_curve(const GLfloat *cp, GLfloat *out, GLfloat t,
                     GLuint dim, GLuint order)
 {
   GLfloat s, powert;
-  GLuint i, k, bincoeff;
-
+  GLuint i, k;//, bincoeff;
+//rud
+GLfloat bincoeff;
   if(order >= 2)
   { 
     bincoeff = order-1;
@@ -129,6 +130,7 @@ horner_bezier_curve(const GLfloat *cp, GLfloat *out, GLfloat t,
     for(i=2, cp+=2*dim, powert=t*t; i<order; i++, powert*=t, cp +=dim)
     {
       bincoeff *= order-i;
+//          bincoeff *= (GLuint)(inv_tab[i]);
       bincoeff *= inv_tab[i];
 
       for(k=0; k<dim; k++)
@@ -168,7 +170,9 @@ horner_bezier_surf(GLfloat *cn, GLfloat *out, GLfloat u, GLfloat v,
     if(uorder >= 2)
     { 
       GLfloat s, poweru;
-      GLuint j, k, bincoeff;
+      GLuint j, k;//, bincoeff;
+//rud
+GLfloat bincoeff;
 
       /* Compute the control polygon for the surface-curve in u-direction */
       for(j=0; j<vorder; j++)
@@ -187,6 +191,7 @@ horner_bezier_surf(GLfloat *cn, GLfloat *out, GLfloat u, GLfloat v,
             i++, poweru*=u, ucp +=uinc)
 	{
 	  bincoeff *= uorder-i;
+//          bincoeff *= (GLuint)(inv_tab[i]);
           bincoeff *= inv_tab[i];
 
 	  for(k=0; k<dim; k++)

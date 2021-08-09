@@ -268,7 +268,7 @@ static void simple_textured_triangle( GLcontext *ctx, GLuint v0, GLuint v1,
 		 fft += fdtdx;					\
 	      }							\
               (*ctx->Driver.WriteRGBSpan)( ctx, n, LEFT, Y,	\
-                           (const GLubyte (*)[3]) rgb, NULL );	\
+                           (GLubyte (*)[3]) rgb, NULL );	\
 	   }							\
 	}
 
@@ -328,7 +328,7 @@ static void simple_z_textured_triangle( GLcontext *ctx, GLuint v0, GLuint v1,
 		 fft += fdtdx;					\
 	      }							\
               (*ctx->Driver.WriteRGBSpan)( ctx, n, LEFT, Y,	\
-                           (const GLubyte (*)[3]) rgb, mask );	\
+                           (GLubyte (*)[3]) rgb, mask );	\
 	   }							\
 	}
 
@@ -392,7 +392,7 @@ static void affine_textured_triangle( GLcontext *ctx, GLuint v0, GLuint v1,
       return;                                                           \
    }                                                                    \
    tbytesline = obj->Image[b]->Width * comp;                            \
-   tsize = theight * tbytesline;
+   tsize = (GLint)(theight * tbytesline);
    (void) pv;
 
   /* Instead of defining a function for each mode, a test is done 
@@ -696,7 +696,7 @@ static void persp_textured_triangle( GLcontext *ctx, GLuint v0, GLuint v1,
       tscale = FIXED_SCALE * theight;                                   \
    }                                                                    \
    tbytesline = obj->Image[b]->Width * comp;                            \
-   tsize = theight * tbytesline;
+   tsize = (GLint)(theight * tbytesline);
    (void) pv;
 
 #define SPAN1(DO_TEX,COMP)                                 \
@@ -1033,7 +1033,7 @@ static void general_textured_spec_triangle1( GLcontext *ctx, GLuint v0,
               }							\
 	      gl_write_texture_span( ctx, n, LEFT, Y, zspan,	\
                                    s, t, u, NULL, rgba,		\
-                                   (const GLubyte (*)[4]) spec,	\
+                                   (GLubyte (*)[4]) spec,	\
 	                           GL_POLYGON );		\
 	   }							\
 	}
@@ -1258,7 +1258,7 @@ static void lambda_textured_spec_triangle1( GLcontext *ctx, GLuint v0,
               }								\
 	      gl_write_texture_span( ctx, n, LEFT, Y, zspan,		\
                                      s, t, u, lambda,	 		\
-	                             rgba, (const GLubyte (*)[4]) spec, \
+	                             rgba, (GLubyte (*)[4]) spec, \
                                      GL_POLYGON );			\
 	   }								\
 	}
@@ -1385,9 +1385,9 @@ static void lambda_multitextured_triangle1( GLcontext *ctx, GLuint v0,
 		 }							\
               }								\
 	      gl_write_multitexture_span( ctx, 2, n, LEFT, Y, zspan,	\
-                                      (const GLfloat (*)[MAX_WIDTH]) s,	\
-                                      (const GLfloat (*)[MAX_WIDTH]) t,	\
-                                      (const GLfloat (*)[MAX_WIDTH]) u,	\
+                                      (GLfloat (*)[MAX_WIDTH]) s,	\
+                                      (GLfloat (*)[MAX_WIDTH]) t,	\
+                                      (GLfloat (*)[MAX_WIDTH]) u,	\
                                       (GLfloat (*)[MAX_WIDTH]) lambda,	\
 	                              rgba, NULL, GL_POLYGON );		\
 	   }								\

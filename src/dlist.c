@@ -2567,7 +2567,8 @@ static void execute_list( GLcontext *ctx, GLuint list )
 	 case OPCODE_BITMAP:
             {
                const struct gl_image *image = (struct gl_image *) n[7].data;
-               const GLubyte *bitmap = image ? image->Data : NULL;
+//               const GLubyte *bitmap = image ? image->Data : NULL;
+               const GLubyte *bitmap = image ? (GLubyte *)(image->Data) : NULL;
                gl_Bitmap( ctx, (GLsizei) n[1].i, (GLsizei) n[2].i,
                           n[3].f, n[4].f, n[5].f, n[6].f,
                           bitmap, &defaultPacking );

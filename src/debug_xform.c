@@ -375,7 +375,8 @@ void gl_test_all_transform_functions( char *description )
 
    for (masked = 0; masked <= 1; masked++) {
       int cma = masked ? CULL_MASK_ACTIVE : 0;
-      char *cmastring = masked ? "CULL_MASK_ACTIVE" : "0";
+//      char *cmastring = masked ? "CULL_MASK_ACTIVE" : "0";
+      const char *cmastring = masked ? "CULL_MASK_ACTIVE" : "0";
 
 #ifdef RUN_XFORM_BENCHMARK
       if (mesa_profile) {
@@ -754,7 +755,8 @@ void gl_test_all_normal_transform_functions( char *description )
 
    for (masked = 0; masked <= 1; masked++) {
       int cma = masked ? CULL_MASK_ACTIVE : 0;
-      char *cmastring = masked ? "CULL_MASK_ACTIVE" : "0";
+//      char *cmastring = masked ? "CULL_MASK_ACTIVE" : "0";
+      const char *cmastring = masked ? "CULL_MASK_ACTIVE" : "0";
 
 #ifdef RUN_XFORM_BENCHMARK
       if (mesa_profile) {

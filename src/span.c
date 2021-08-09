@@ -408,10 +408,10 @@ static void multi_write_rgba_span( GLcontext *ctx, GLuint n,
          }
 
          (*ctx->Driver.WriteRGBASpan)( ctx, n, x, y, 
-				       (const GLubyte (*)[4]) rgbaTmp, mask );
+				       (GLubyte (*)[4]) rgbaTmp, mask );
          if (ctx->RasterMask & ALPHABUF_BIT) {
             gl_write_alpha_span( ctx, n, x, y, 
-				 (const GLubyte (*)[4])rgbaTmp, mask );
+				 (GLubyte (*)[4])rgbaTmp, mask );
          }
       }
    }
@@ -474,7 +474,7 @@ void gl_write_rgba_span( GLcontext *ctx,
 
    /* Do the alpha test */
    if (ctx->Color.AlphaEnabled) {
-      if (gl_alpha_test( ctx, n, (const GLubyte (*)[4]) rgba, mask )==0) {
+      if (gl_alpha_test( ctx, n, (GLubyte (*)[4]) rgba, mask )==0) {
 	 return;
       }
       write_all = GL_FALSE;
@@ -502,7 +502,7 @@ void gl_write_rgba_span( GLcontext *ctx,
 
    if (ctx->RasterMask & MULTI_DRAW_BIT) {
       multi_write_rgba_span( ctx, n, x, y,
-			     (const GLubyte (*)[4]) rgba, 
+			     (GLubyte (*)[4]) rgba, 
 			     write_all ? Null : mask );
    }
    else {
@@ -522,12 +522,12 @@ void gl_write_rgba_span( GLcontext *ctx,
 
       /* write pixels */
       (*ctx->Driver.WriteRGBASpan)( ctx, n, x, y, 
-				    (const GLubyte (*)[4]) rgba, 
+				    (GLubyte (*)[4]) rgba, 
 				    write_all ? Null : mask );
 
       if (ctx->RasterMask & ALPHABUF_BIT) {
          gl_write_alpha_span( ctx, n, x, y, 
-			      (const GLubyte (*)[4]) rgba, 
+			      (GLubyte (*)[4]) rgba, 
 			      write_all ? Null : mask );
       }
 
@@ -586,7 +586,7 @@ void gl_write_monocolor_span( GLcontext *ctx,
       for (i=0;i<n;i++) {
          rgba[i][ACOMP] = color[ACOMP];
       }
-      if (gl_alpha_test( ctx, n, (const GLubyte (*)[4])rgba, mask )==0) {
+      if (gl_alpha_test( ctx, n, (GLubyte (*)[4])rgba, mask )==0) {
 	 return;
       }
       write_all = GL_FALSE;
@@ -627,7 +627,7 @@ void gl_write_monocolor_span( GLcontext *ctx,
       }
 
       if (ctx->RasterMask & MULTI_DRAW_BIT) {
-         multi_write_rgba_span( ctx, n, x, y, (const GLubyte (*)[4]) rgba,
+         multi_write_rgba_span( ctx, n, x, y, (GLubyte (*)[4]) rgba,
 				mask );
       }
       else {
@@ -646,11 +646,11 @@ void gl_write_monocolor_span( GLcontext *ctx,
 
          /* write pixels */
          (*ctx->Driver.WriteRGBASpan)( ctx, n, x, y, 
-				       (const GLubyte (*)[4]) rgba, 
+				       (GLubyte (*)[4]) rgba, 
 				       write_all ? Null : mask );
          if (ctx->RasterMask & ALPHABUF_BIT) {
             gl_write_alpha_span( ctx, n, x, y, 
-				 (const GLubyte (*)[4]) rgba, 
+				 (GLubyte (*)[4]) rgba, 
 				 write_all ? Null : mask );
          }
       }
@@ -668,7 +668,7 @@ void gl_write_monocolor_span( GLcontext *ctx,
             }
          }
          multi_write_rgba_span( ctx, n, x, y, 
-				(const GLubyte (*)[4]) rgba, 
+				(GLubyte (*)[4]) rgba, 
 				mask );
       }
       else {
@@ -777,7 +777,7 @@ void gl_write_texture_span( GLcontext *ctx,
 
    /* Do the alpha test */
    if (ctx->Color.AlphaEnabled) {
-      if (gl_alpha_test( ctx, n, (const GLubyte (*)[4]) rgba, mask )==0) {
+      if (gl_alpha_test( ctx, n, (GLubyte (*)[4]) rgba, mask )==0) {
 	 return;
       }
       write_all = GL_FALSE;
@@ -804,7 +804,7 @@ void gl_write_texture_span( GLcontext *ctx,
    }
 
    if (ctx->RasterMask & MULTI_DRAW_BIT) {
-      multi_write_rgba_span( ctx, n, x, y, (const GLubyte (*)[4])rgba, 
+      multi_write_rgba_span( ctx, n, x, y, (GLubyte (*)[4])rgba, 
 			     write_all ? Null : mask );
    }
    else {
@@ -819,10 +819,10 @@ void gl_write_texture_span( GLcontext *ctx,
          gl_mask_rgba_span( ctx, n, x, y, rgba );
       }
 
-      (*ctx->Driver.WriteRGBASpan)( ctx, n, x, y, (const GLubyte (*)[4])rgba,
+      (*ctx->Driver.WriteRGBASpan)( ctx, n, x, y, (GLubyte (*)[4])rgba,
 				    write_all ? Null : mask );
       if (ctx->RasterMask & ALPHABUF_BIT) {
-         gl_write_alpha_span( ctx, n, x, y, (const GLubyte (*)[4]) rgba, 
+         gl_write_alpha_span( ctx, n, x, y, (GLubyte (*)[4]) rgba, 
 			      write_all ? Null : mask );
       }
    }
@@ -904,7 +904,7 @@ void gl_write_multitexture_span( GLcontext *ctx, GLuint texUnits,
 
    /* Do the alpha test */
    if (ctx->Color.AlphaEnabled) {
-      if (gl_alpha_test( ctx, n, (const GLubyte (*)[4])rgba, mask )==0) {
+      if (gl_alpha_test( ctx, n, (GLubyte (*)[4])rgba, mask )==0) {
 	 return;
       }
       write_all = GL_FALSE;
@@ -931,7 +931,7 @@ void gl_write_multitexture_span( GLcontext *ctx, GLuint texUnits,
    }
 
    if (ctx->RasterMask & MULTI_DRAW_BIT) {
-      multi_write_rgba_span( ctx, n, x, y, (const GLubyte (*)[4]) rgba, write_all ? Null : mask );
+      multi_write_rgba_span( ctx, n, x, y, (GLubyte (*)[4]) rgba, write_all ? Null : mask );
    }
    else {
       /* normal: write to exactly one buffer */
@@ -946,9 +946,9 @@ void gl_write_multitexture_span( GLcontext *ctx, GLuint texUnits,
          gl_mask_rgba_span( ctx, n, x, y, rgba );
       }
 
-      (*ctx->Driver.WriteRGBASpan)( ctx, n, x, y, (const GLubyte (*)[4])rgba, write_all ? Null : mask );
+      (*ctx->Driver.WriteRGBASpan)( ctx, n, x, y, (GLubyte (*)[4])rgba, write_all ? Null : mask );
       if (ctx->RasterMask & ALPHABUF_BIT) {
-         gl_write_alpha_span( ctx, n, x, y, (const GLubyte (*)[4])rgba,
+         gl_write_alpha_span( ctx, n, x, y, (GLubyte (*)[4])rgba,
 			      write_all ? Null : mask );
       }
    }

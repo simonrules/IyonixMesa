@@ -99,10 +99,10 @@ GLUquadricObj * GLAPIENTRY gluNewQuadric( void )
 
    q = (GLUquadricObj *) malloc( sizeof(struct GLUquadric) );
    if (q) {
-      q->DrawStyle = GLU_FILL;
-      q->Orientation = GLU_OUTSIDE;
-      q->TextureFlag = GL_FALSE;
-      q->Normals = GLU_SMOOTH;
+      q->DrawStyle = (GLenum)GLU_FILL;
+      q->Orientation = (GLenum)GLU_OUTSIDE;
+      q->TextureFlag = (GLenum)GL_FALSE;
+      q->Normals = (GLenum)GLU_SMOOTH;
       q->ErrorFunc = NULL;
    }
    return q;
@@ -130,7 +130,7 @@ void GLAPIENTRY gluQuadricDrawStyle( GLUquadricObj *quadObject, GLenum drawStyle
       quadObject->DrawStyle = drawStyle;
    }
    else {
-      quadric_error( quadObject, GLU_INVALID_ENUM, "qluQuadricDrawStyle" );
+      quadric_error( quadObject, (GLenum)GLU_INVALID_ENUM, "qluQuadricDrawStyle" );
    }
 }
 
@@ -146,7 +146,7 @@ void GLAPIENTRY gluQuadricOrientation( GLUquadricObj *quadObject,
       quadObject->Orientation = orientation;
    }
    else {
-      quadric_error( quadObject, GLU_INVALID_ENUM, "qluQuadricOrientation" );
+      quadric_error( quadObject, (GLenum)GLU_INVALID_ENUM, "qluQuadricOrientation" );
    }
 }
 

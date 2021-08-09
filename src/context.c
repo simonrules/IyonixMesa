@@ -1326,14 +1326,14 @@ GLcontext *gl_create_context( GLvisual *visual,
       ctx->Pixel.DriverReadBuffer = GL_FRONT_LEFT;
    }
 
-   
+
    /* Fill in some driver defaults now.
     */
    ctx->Driver.AllocDepthBuffer = gl_alloc_depth_buffer;
    ctx->Driver.ReadDepthSpanFloat = gl_read_depth_span_float;
    ctx->Driver.ReadDepthSpanInt = gl_read_depth_span_int;
 
-   
+
 #ifdef PROFILE
    init_timings( ctx );
 #endif
@@ -1570,6 +1570,7 @@ void gl_make_current( GLcontext *ctx, GLframebuffer *buffer )
       ctx->NewState = NEW_ALL;   /* just to be safe */
       gl_update_state( ctx );
    }
+   return;
 
    /* We can use this to help debug user's problems.  Tell the to set
     * the MESA_INFO env variable before running their app.  Then the
@@ -2006,11 +2007,11 @@ static void update_fog_mode( GLcontext *ctx )
       if (ctx->Texture.Enabled || ctx->Hint.Fog == GL_NICEST)
 	 ctx->FogMode = FOG_FRAGMENT;
 
-      if ( ctx->Driver.GetParameteri && 
+      if ( ctx->Driver.GetParameteri &&
 	   ctx->Driver.GetParameteri( ctx, DD_HAVE_HARDWARE_FOG ) )
 	 ctx->FogMode = FOG_FRAGMENT;
    }
-   
+
    if (old_mode != ctx->FogMode)
       ctx->NewState |= NEW_FOG;
 }
@@ -2244,7 +2245,7 @@ void gl_update_state( GLcontext *ctx )
 
 	 /* The driver isn't managing the depth buffer.
 	  */
-	 if (ctx->Driver.AllocDepthBuffer == gl_alloc_depth_buffer) 
+	 if (ctx->Driver.AllocDepthBuffer == gl_alloc_depth_buffer)
 	 {
 	    if (ctx->Depth.Mask) {
 	       switch (ctx->Depth.Func) {
@@ -2377,9 +2378,9 @@ void gl_update_state( GLcontext *ctx )
 	 gl_set_triangle_function(ctx);
 	 gl_set_quad_function(ctx);
 
-	 if ((ctx->IndirectTriangles & 
+	 if ((ctx->IndirectTriangles &
 	      (DD_TRI_SW_RASTERIZE|DD_QUAD_SW_RASTERIZE|DD_TRI_CULL)) ==
-	     (DD_TRI_SW_RASTERIZE|DD_QUAD_SW_RASTERIZE|DD_TRI_CULL)) 
+	     (DD_TRI_SW_RASTERIZE|DD_QUAD_SW_RASTERIZE|DD_TRI_CULL))
 	    ctx->IndirectTriangles &= ~DD_TRI_CULL;
       }
 
@@ -2415,9 +2416,9 @@ void gl_update_state( GLcontext *ctx )
     */
    if ((ctx->Enabled & (ENABLE_POINT_ATTEN | ENABLE_LIGHT | ENABLE_FOG |
 			ENABLE_TEXGEN0 | ENABLE_TEXGEN1)) &&
-       (ctx->NewState & (NEW_LIGHTING | 
+       (ctx->NewState & (NEW_LIGHTING |
                          NEW_FOG |
-			 NEW_MODELVIEW | 
+			 NEW_MODELVIEW |
 			 NEW_PROJECTION |
 			 NEW_TEXTURING |
 			 NEW_RASTER_OPS |

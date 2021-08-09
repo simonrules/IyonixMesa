@@ -3,19 +3,19 @@
 /*
  * Mesa 3-D graphics library
  * Version:  3.1
- * 
+ *
  * Copyright (C) 1999  Brian Paul   All Rights Reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
@@ -446,7 +446,7 @@ void gl_BindTexture( GLcontext *ctx, GLenum target, GLuint texName )
    if (oldTexObj->Name == texName)
       return;
 
-   if (texName == 0) 
+   if (texName == 0)
       newTexObj = ctx->Shared->DefaultD[dim];
    else {
       struct _mesa_HashTable *hash = ctx->Shared->TexObjects;
@@ -481,7 +481,7 @@ void gl_BindTexture( GLcontext *ctx, GLenum target, GLuint texName )
         || oldTexObj->WrapR != newTexObj->WrapR
         || oldTexObj->MinFilter != newTexObj->MinFilter
         || oldTexObj->MagFilter != newTexObj->MagFilter
-        || (oldTexObj->Image[0] && newTexObj->Image[0] && 
+        || (oldTexObj->Image[0] && newTexObj->Image[0] &&
 	   (oldTexObj->Image[0]->Format!=newTexObj->Image[0]->Format))))
    {
       ctx->NewState |= (NEW_RASTER_OPS | NEW_TEXTURING);
@@ -542,7 +542,7 @@ void gl_PrioritizeTextures( GLcontext *ctx,
 
 
 /*
- * Execute glAreTexturesResident 
+ * Execute glAreTexturesResident
  */
 GLboolean gl_AreTexturesResident( GLcontext *ctx, GLsizei n,
                                   const GLuint *texName,
@@ -551,7 +551,7 @@ GLboolean gl_AreTexturesResident( GLcontext *ctx, GLsizei n,
    GLboolean resident = GL_TRUE;
    GLint i;
 
-   ASSERT_OUTSIDE_BEGIN_END_AND_FLUSH_WITH_RETVAL(ctx, 
+   ASSERT_OUTSIDE_BEGIN_END_AND_FLUSH_WITH_RETVAL(ctx,
 						  "glAreTexturesResident",
 						  GL_FALSE);
    if (n<0) {
@@ -570,7 +570,7 @@ GLboolean gl_AreTexturesResident( GLcontext *ctx, GLsizei n,
       if (t) {
 	 if (ctx->Driver.IsTextureResident)
 	    residences[i] = ctx->Driver.IsTextureResident( ctx, t );
-	 else 
+	 else
 	    residences[i] = GL_TRUE;
       }
       else {

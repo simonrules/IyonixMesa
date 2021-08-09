@@ -3,19 +3,19 @@
 /*
  * Mesa 3-D graphics library
  * Version:  3.1
- * 
+ *
  * Copyright (C) 1999  Brian Paul   All Rights Reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
@@ -80,7 +80,7 @@ void gl_TexEnvfv( GLcontext *ctx,
    }
 
    if (MESA_VERBOSE&(VERBOSE_API|VERBOSE_TEXTURE))
-      fprintf(stderr, "glTexEnv %s %s %.1f(%s) ...\n",  
+      fprintf(stderr, "glTexEnv %s %s %.1f(%s) ...\n",
 	      gl_lookup_enum_by_nr(target),
 	      gl_lookup_enum_by_nr(pname),
 	      *param,
@@ -92,7 +92,7 @@ void gl_TexEnvfv( GLcontext *ctx,
       switch (mode) {
          case GL_ADD:
 	    if (!ctx->Texture.ExtAddEnv) {
-	       if (gl_extension_is_enabled(ctx, "GL_EXT_texture_env_add")) 
+	       if (gl_extension_is_enabled(ctx, "GL_EXT_texture_env_add"))
 		  ctx->Texture.ExtAddEnv = 1;
 	       else {
 		  gl_error( ctx, GL_INVALID_VALUE, "glTexEnv(param)" );
@@ -207,7 +207,7 @@ void gl_TexParameterfv( GLcontext *ctx,
    ASSERT_OUTSIDE_BEGIN_END_AND_FLUSH(ctx, "glTexParameterfv");
 
    if (MESA_VERBOSE&(VERBOSE_API|VERBOSE_TEXTURE))
-      fprintf(stderr, "texPARAM %s %s %d...\n", 
+      fprintf(stderr, "texPARAM %s %s %d...\n",
 	      gl_lookup_enum_by_nr(target),
 	      gl_lookup_enum_by_nr(pname),
 	      eparam);
@@ -382,7 +382,7 @@ void gl_GetTexLevelParameteriv( GLcontext *ctx, GLenum target, GLint level,
          break;
       case GL_TEXTURE_3D:
          img = texUnit->CurrentD[3]->Image[level];
-         dimensions = 3; 
+         dimensions = 3;
         break;
       case GL_PROXY_TEXTURE_1D:
          img = ctx->Texture.Proxy1D->Image[level];
@@ -627,7 +627,7 @@ void gl_TexGenfv( GLcontext *ctx,
    ASSERT_OUTSIDE_BEGIN_END_AND_FLUSH(ctx, "glTexGenfv");
 
    if (MESA_VERBOSE&(VERBOSE_API|VERBOSE_TEXTURE))
-      fprintf(stderr, "texGEN %s %s %x...\n", 
+      fprintf(stderr, "texGEN %s %s %x...\n",
 	      gl_lookup_enum_by_nr(coord),
 	      gl_lookup_enum_by_nr(pname),
 	      *(int *)params);
@@ -777,7 +777,7 @@ void gl_TexGenfv( GLcontext *ctx,
          if (pname==GL_TEXTURE_GEN_MODE) {
 	    GLenum mode = (GLenum) (GLint) *params;
 	    switch (mode) {
-	    case GL_OBJECT_LINEAR: 
+	    case GL_OBJECT_LINEAR:
 	       texUnit->GenModeQ = GL_OBJECT_LINEAR;
 	       texUnit->GenBitQ = TEXGEN_OBJ_LINEAR;
 	       break;
@@ -1081,7 +1081,7 @@ void gl_ActiveTexture( GLcontext *ctx, GLenum target )
    ASSERT_OUTSIDE_BEGIN_END( ctx, "glActiveTextureARB" );
 
    if (MESA_VERBOSE & (VERBOSE_API|VERBOSE_TEXTURE))
-      fprintf(stderr, "glActiveTexture %s\n", 
+      fprintf(stderr, "glActiveTexture %s\n",
 	      gl_lookup_enum_by_nr(target));
 
    if (target >= GL_TEXTURE0_ARB && target < GL_TEXTURE0_ARB + maxUnits) {

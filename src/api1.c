@@ -3,19 +3,19 @@
 /*
  * Mesa 3-D graphics library
  * Version:  3.1
- * 
+ *
  * Copyright (C) 1999  Brian Paul   All Rights Reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
@@ -124,7 +124,7 @@ void GLAPIENTRY glBegin(CTX_ARG GLenum mode )
 
    if (mode < GL_POINTS || mode > GL_POLYGON) {
       gl_compile_error( CC, GL_INVALID_ENUM, "glBegin" );
-      return;		     
+      return;
    }
 
    gl_Begin(CC,mode);
@@ -248,7 +248,7 @@ void GLAPIENTRY glClipPlane(CTX_ARG GLenum plane, const GLdouble *equation )
  *
  * But in truth, this is not a bad thing, because it was necessary
  * to implement that mechanism to get good performance from
- * color-material and vertex arrays.  
+ * color-material and vertex arrays.
  */
 #define COLOR( IM, r,g,b,a )			\
 {						\
@@ -295,8 +295,8 @@ void GLAPIENTRY glClipPlane(CTX_ARG GLenum plane, const GLdouble *equation )
 void GLAPIENTRY glColor3b(CTX_ARG GLbyte red, GLbyte green, GLbyte blue )
 {
    GET_IMMEDIATE;
-   COLOR( IM, 
-	  BYTE_TO_UBYTE(red), 
+   COLOR( IM,
+	  BYTE_TO_UBYTE(red),
 	  BYTE_TO_UBYTE(green),
 	  BYTE_TO_UBYTE(blue),
 	  255 );
@@ -337,7 +337,7 @@ void GLAPIENTRY glColor3f(CTX_ARG GLfloat red, GLfloat green, GLfloat blue )
 void GLAPIENTRY glColor3i(CTX_ARG GLint red, GLint green, GLint blue )
 {
    GET_IMMEDIATE;
-   COLOR( IM, INT_TO_UBYTE(red), 
+   COLOR( IM, INT_TO_UBYTE(red),
 	  INT_TO_UBYTE(green),
 	  INT_TO_UBYTE(blue),
 	  255);
@@ -347,7 +347,7 @@ void GLAPIENTRY glColor3i(CTX_ARG GLint red, GLint green, GLint blue )
 void GLAPIENTRY glColor3s(CTX_ARG GLshort red, GLshort green, GLshort blue )
 {
    GET_IMMEDIATE;
-   COLOR( IM, SHORT_TO_UBYTE(red), 
+   COLOR( IM, SHORT_TO_UBYTE(red),
 	  SHORT_TO_UBYTE(green),
 	  SHORT_TO_UBYTE(blue),
 	  255);
@@ -836,14 +836,14 @@ void GLAPIENTRY glEnd(CTX_VOID )
 
    if (MESA_VERBOSE&VERBOSE_API) {
       if (MESA_VERBOSE&VERBOSE_IMMEDIATE)
-	 fprintf(stderr, "glEnd(IM %d), BeginState is %x, errors %x\n", 
+	 fprintf(stderr, "glEnd(IM %d), BeginState is %x, errors %x\n",
 		 IM->id, state,
 		 inflags<<2);
       else
 	 fprintf(stderr, ">");
    }
 
-   
+
    if (inflags != (VERT_BEGIN_0|VERT_BEGIN_1))
    {
       GLuint count = IM->Count;
@@ -860,11 +860,11 @@ void GLAPIENTRY glEnd(CTX_VOID )
 	 IM->FlushElt = 0;
       }
    }
-   
+
    if (MESA_VERBOSE&VERBOSE_API)
       fprintf(stderr, "in glEnd final state %x\n", state);
 
-   IM->BeginState = state;      
+   IM->BeginState = state;
 
    if ((MESA_DEBUG_FLAGS&DEBUG_ALWAYS_FLUSH))
       IM->maybe_transform_vb( IM );
@@ -880,7 +880,7 @@ void gl_End( GLcontext *ctx )
 
    if (MESA_VERBOSE&VERBOSE_API) {
       if (MESA_VERBOSE&VERBOSE_IMMEDIATE)
-	 fprintf(stderr, "gl_End(IM %d), BeginState is %x, errors %x\n", 
+	 fprintf(stderr, "gl_End(IM %d), BeginState is %x, errors %x\n",
 		 IM->id, state,
 		 inflags<<2);
       else
@@ -906,7 +906,7 @@ void gl_End( GLcontext *ctx )
       }
    }
 
-   IM->BeginState = state;      
+   IM->BeginState = state;
 
    /* You can set this flag to get the old 'flush vb on glEnd()'
     * behaviour.
@@ -931,13 +931,13 @@ void GLAPIENTRY glEndList(CTX_VOID )
  *     map(1,2)_vertex is disabled, and to purge those vertices from
  *     the vb.  This is currently done
  *     via  modifications to the cull_vb and render_vb operations, and
- *     by using the existing cullmask mechanism for all other operations.  
+ *     by using the existing cullmask mechanism for all other operations.
  */
 
 
 /* KW: Because the eval values don't become 'current', fixup will flow
  *     through these vertices, and then evaluation will write on top
- *     of the fixup results.  
+ *     of the fixup results.
  *
  *     This is a little inefficient, but at least it is correct.  This
  *     could be short-circuited in the case where all vertices are
@@ -975,7 +975,7 @@ void GLAPIENTRY glEndList(CTX_VOID )
    if (count == VB_MAX-1)				\
       IM->maybe_transform_vb( IM );			\
 }
- 
+
 #define EVALPOINT2(IM, x, y)				\
 {							\
    GLuint count = IM->Count++;				\
@@ -1469,9 +1469,9 @@ void GLAPIENTRY glHint(CTX_ARG GLenum target, GLenum mode )
 {
    GET_CONTEXT;
    CHECK_CONTEXT;
-   if (mode!=GL_DONT_CARE && mode!=GL_FASTEST && mode!=GL_NICEST) 
+   if (mode!=GL_DONT_CARE && mode!=GL_FASTEST && mode!=GL_NICEST)
       (*CC->API.Error)( CC, GL_INVALID_ENUM, "glHint(mode)" );
-   else 
+   else
       (*CC->API.Hint)(CC, target, mode);
 }
 
@@ -2044,7 +2044,7 @@ void GLAPIENTRY glNormal3fv(CTX_ARG const GLfloat *v )
 void GLAPIENTRY glNormal3iv(CTX_ARG const GLint *v )
 {
    NORMAL( INT_TO_FLOAT(v[0]),
-	   INT_TO_FLOAT(v[1]), 
+	   INT_TO_FLOAT(v[1]),
 	   INT_TO_FLOAT(v[2]) );
 }
 
